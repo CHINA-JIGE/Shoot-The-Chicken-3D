@@ -7,31 +7,28 @@
 
 #pragma once
 
-namespace Noise3D
-{
 	class _declspec(dllexport) ICamera 
 	{
 	public:
-		friend  class IScene;
 		friend  class IRenderer;
 
 		ICamera();
 
 		void				Destroy();
 
-		void				SetLookAt(NVECTOR3 vLookat);//要更新旋转角
+		void				SetLookAt(VECTOR3 vLookat);//要更新旋转角
 
 		void				SetLookAt(float x, float y, float z);//要更新旋转角
 
-		NVECTOR3	GetLookAt();
+		VECTOR3	GetLookAt();
 
-		void				SetPosition(NVECTOR3 vPos);
+		void				SetPosition(VECTOR3 vPos);
 
 		void				SetPosition(float x, float y, float z);
 
-		NVECTOR3	GetPosition();
+		VECTOR3	GetPosition();
 
-		void				Move(NVECTOR3 vRelativePos);//pos and lookat
+		void				Move(VECTOR3 vRelativePos);//pos and lookat
 
 		void				Move(float relativeX, float relativeY, float relativeZ);
 
@@ -65,18 +62,10 @@ namespace Noise3D
 
 		void				fps_MoveUp(float fSignedDistance);
 
-		/*
-		void				sm_Update();
-		void				sm_LinearMoveTo();
-		void				sm_SineMoveTo();
-		void				sm_RotateAroundAxis();*/
-
-
 	private:
-		IScene*			m_pFatherScene;
 
-		void		NOISE_MACRO_FUNCTION_EXTERN_CALL mFunction_UpdateProjMatrix();
-		void		NOISE_MACRO_FUNCTION_EXTERN_CALL mFunction_UpdateViewMatrix();
+		void		mFunction_UpdateProjMatrix();
+		void		mFunction_UpdateViewMatrix();
 		void		mFunction_UpdateRotation();
 		void		mFunction_UpdateDirection();
 		float		mViewAngleY;
@@ -84,12 +73,12 @@ namespace Noise3D
 		float		mNearPlane;
 		float		mFarPlane;
 
-		NVECTOR3*		m_pPosition;
-		NVECTOR3*		m_pLookat;
-		NVECTOR3*		m_pDirection;
+		VECTOR3		mPosition;
+		VECTOR3		mLookat;
+		VECTOR3		mDirection;
 
-		NMATRIX*		m_pMatrixView;
-		NMATRIX*		m_pMatrixProjection;
+		MATRIX4x4*		m_pMatrixView;
+		MATRIX4x4*		m_pMatrixProjection;
 
 		float			mRotateX_Pitch;
 		float			mRotateY_Yaw;

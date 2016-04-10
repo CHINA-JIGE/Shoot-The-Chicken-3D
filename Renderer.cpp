@@ -8,11 +8,11 @@
 
 #include "MyConsoleEngine.h"
 
-Renderer::Renderer()
+IRenderer::IRenderer()
 {
 }
 
-Renderer::~Renderer()
+IRenderer::~IRenderer()
 {
 	CloseHandle(m_hScreenBuffer);
 	CloseHandle(m_hScreenOutput);
@@ -20,7 +20,7 @@ Renderer::~Renderer()
 	delete m_pZBuffer;
 }
 
-void Renderer::Init(UINT bufferWidth, UINT bufferHeight)
+void IRenderer::Init(UINT bufferWidth, UINT bufferHeight)
 {
 	//Get the std stream output handle
 	m_hScreenOutput = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -76,7 +76,7 @@ void Renderer::Init(UINT bufferWidth, UINT bufferHeight)
 
 }
 
-void Renderer::Clear(COLOR3 clearColor,BOOL clearZBuff)
+void IRenderer::Clear(COLOR3 clearColor,BOOL clearZBuff)
 {
 	//clear with SPACE; buffer is a continuous memory block, but it should
 	//be regarded as a 2D buffer
@@ -97,15 +97,12 @@ void Renderer::Clear(COLOR3 clearColor,BOOL clearZBuff)
 	}
 }
 
-void Renderer::Render()
+void IRenderer::Render()
 {
-	for (UINT i = 0;i < mBufferWidth*mBufferHeight;i++)
-	{
-		printf("%c", m_pCharBuffer->at(i));
-	}
+
 }
 
-void Renderer::Present()
+void IRenderer::Present()
 {
 	//to fit and present the whole buffer
 	mFunction_AdjustWindowSize();
@@ -132,7 +129,7 @@ void Renderer::Present()
 
 }
 
-void Renderer::SetWindowTitle(char * titleStr)
+void IRenderer::SetWindowTitle(char * titleStr)
 {
 	SetConsoleTitleA(titleStr);
 }
@@ -141,12 +138,12 @@ void Renderer::SetWindowTitle(char * titleStr)
 							P R I V A T E
 *****************************************************/
 
-inline UINT Renderer::mFunction_GetIndex(UINT x, UINT y)
+inline UINT IRenderer::mFunction_GetIndex(UINT x, UINT y)
 {
 	return y*mBufferWidth+x;
 }
 
-void Renderer::mFunction_AdjustWindowSize()
+void IRenderer::mFunction_AdjustWindowSize()
 {
 	int frameX_Width = GetSystemMetrics(SM_CXFIXEDFRAME);//frame boarder thickness
 	int frameY_Height = GetSystemMetrics(SM_CYFIXEDFRAME);//frame boarder thickness
@@ -167,7 +164,7 @@ void Renderer::mFunction_AdjustWindowSize()
 
 }
 
-inline WORD Renderer::mFunction_GetTextAttr(COLOR3 color)
+inline WORD IRenderer::mFunction_GetTextAttr(COLOR3 color)
 {
 	/*
 	FOREGROUND_BLUE À¶É«

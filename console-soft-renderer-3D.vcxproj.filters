@@ -22,9 +22,6 @@
     <ClCompile Include="main.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Math.cpp">
-      <Filter>源文件\_Core</Filter>
-    </ClCompile>
     <ClCompile Include="Renderer.cpp">
       <Filter>源文件\_Renderer</Filter>
     </ClCompile>
@@ -42,6 +39,12 @@
     </ClCompile>
     <ClCompile Include="_2VertexShader.cpp">
       <Filter>源文件\_Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="LightManager.cpp">
+      <Filter>源文件\_Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshLoader.cpp">
+      <Filter>源文件\_Scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -62,6 +65,12 @@
     </ClInclude>
     <ClInclude Include="Game.h">
       <Filter>源文件\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="LightManager.h">
+      <Filter>源文件\_Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshLoader.h">
+      <Filter>源文件\_Scene</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

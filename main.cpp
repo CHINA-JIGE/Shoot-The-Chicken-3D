@@ -2,7 +2,7 @@
 #include "MyConsoleEngine.h"
 #include "Game.h"
 
-Renderer myRenderer;
+IRenderer myRenderer;
 
 int main() 
 {

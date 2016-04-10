@@ -7,132 +7,41 @@
 
 ************************************************************************/
 
-#include "Noise3D.h"
-
-using namespace Noise3D;
+#include "MyConsoleEngine.h"
 
 ILightManager::ILightManager()
 {
-	m_pLightList_Dir_Dynamic	= new std::vector<IDirectionalLight*>;
-	m_pLightList_Point_Dynamic	= new std::vector<IPointLight*>;
-	m_pLightList_Spot_Dynamic		=	new std::vector<ISpotLight*>;
-	mIsDynamicLightingEnabled = TRUE;
-
-	m_pLightList_Dir_Static		= new std::vector<IDirectionalLight>;
-	m_pLightList_Point_Static	= new std::vector<IPointLight>;
-	m_pLightList_Spot_Static	=	new std::vector<ISpotLight>;
-	mIsStaticLightingEnabled = TRUE;
-	mCanUpdateStaticLights = FALSE;
+	m_pLightList	= new std::vector<IDirectionalLight*>;
 }
 
 void ILightManager::Destroy()
 {
-	m_pFatherScene = nullptr;
 
 };
 
 //这些烂鬼add remove 就用macro吧
-void	ILightManager::AddDynamicDirLight(IDirectionalLight& refLight)
+void	ILightManager::AddLight(IDirectionalLight& refLight)
 {
-	mFunction_AddLight<IDirectionalLight*>(m_pLightList_Dir_Dynamic, &refLight,10);
+	mFunction_AddLight<IDirectionalLight*>(m_pLightList, &refLight,10);
 };
 
-void	ILightManager::AddDynamicPointLight(IPointLight& refLight)
+void	ILightManager::RemoveLight(IDirectionalLight& refLight)
 {
-	mFunction_AddLight<IPointLight*>(m_pLightList_Point_Dynamic,&refLight,10);
-};          
+	mFunction_RemoveLight_ByAddr<IDirectionalLight*>(m_pLightList, &refLight);
+}
 
-void ILightManager::AddDynamicSpotLight(ISpotLight& refLight)
+IDirectionalLight* ILightManager::GetLight(UINT index)
 {
-	mFunction_AddLight<ISpotLight*>(m_pLightList_Spot_Dynamic, &refLight,10);
-};
-
-void	ILightManager::RemoveDynamicDirLight(IDirectionalLight& refLight)
-{
-	mFunction_RemoveLight_ByAddr<IDirectionalLight*>(m_pLightList_Dir_Dynamic, &refLight);
-};
-
-void	ILightManager::RemoveDynamicPointLight(IPointLight& refLight)
-{
-	mFunction_RemoveLight_ByAddr<IPointLight*>(m_pLightList_Point_Dynamic, &refLight);
-};
-
-void	ILightManager::RemoveDynamicSpotLight(ISpotLight& refLight)
-{	
-	mFunction_RemoveLight_ByAddr<ISpotLight*>(m_pLightList_Spot_Dynamic, &refLight);
-};
-
-void	ILightManager::SetDynamicLightingEnabled(BOOL isEnabled)
-{
-	mIsDynamicLightingEnabled = isEnabled;
-};
-
-
-
-void	ILightManager::AddStaticDirLight(IDirectionalLight iLight)
-{
-	mFunction_AddLight<IDirectionalLight>(m_pLightList_Dir_Static,iLight,50);
-	mCanUpdateStaticLights = TRUE; 
-};
-
-void	ILightManager::AddStaticPointLight(IPointLight iLight)
-{
-	mFunction_AddLight<IPointLight>(m_pLightList_Point_Static,iLight,50);
-	mCanUpdateStaticLights = TRUE; 
-};
-
-void	ILightManager::AddStaticSpotLight(ISpotLight iLight)
-{
-	mFunction_AddLight<ISpotLight>(m_pLightList_Spot_Static,iLight,50);
-	mCanUpdateStaticLights = TRUE; 
-};
-
-void	ILightManager::RemoveStaticDirLight(UINT iLight_Index)
-{
-	mFunction_RemoveLight_ByIndex<IDirectionalLight>(m_pLightList_Dir_Static,iLight_Index);
-	mCanUpdateStaticLights = TRUE; 
-};
-
-void	ILightManager::RemoveStaticPointLight(UINT iLight_Index)
-{
-	mFunction_RemoveLight_ByIndex<IPointLight>(m_pLightList_Point_Static,iLight_Index);
-	mCanUpdateStaticLights = TRUE; 
-};
-
-void	ILightManager::RemoveStaticSpotLight(UINT iLight_Index)
-{
-	mFunction_RemoveLight_ByIndex<ISpotLight>(m_pLightList_Spot_Static,iLight_Index);
-	mCanUpdateStaticLights = TRUE; 
-};
-
-void	ILightManager::SetStaticLightingEnabled(BOOL isEnabled)
-{
-	mIsStaticLightingEnabled = isEnabled;
-};
-
-
-UINT	 ILightManager::GetLightCount(NOISE_LIGHT_TYPE lightType)
-{
-	switch(lightType)
+	if (index < m_pLightList->size())
 	{
-	case NOISE_LIGHT_TYPE_DIRECTIONAL :
-		return (m_pLightList_Dir_Dynamic->size()+m_pLightList_Dir_Static->size());		
-		break;
-	case NOISE_LIGHT_TYPE_POINT :
-		return (m_pLightList_Point_Dynamic->size()+m_pLightList_Point_Static->size());		
-		break;
-	case NOISE_LIGHT_TYPE_SPOT :
-		return (m_pLightList_Spot_Dynamic->size()+m_pLightList_Spot_Static->size());		
-		break;
+		return  m_pLightList->at(index);
 	}
-	return 0;
+
 };
 
 UINT	 ILightManager::GetTotalLightCount()
 {
-	return m_pLightList_Dir_Dynamic->size()+m_pLightList_Dir_Static->size()+
-			m_pLightList_Point_Dynamic->size()+m_pLightList_Point_Static->size() + 
-			m_pLightList_Spot_Dynamic->size()+m_pLightList_Spot_Static->size();
+	return m_pLightList->size();
 };
 
 

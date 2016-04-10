@@ -5,21 +5,13 @@
 
 ************************************************************************/
 
-#include "Noise3D.h"
-
-using namespace Noise3D;
-
-static BOOL localFunction_ImportFile_STL_Binary(NFilePath pFilePath, std::vector<NVECTOR3>& refVertexBuffer, std::vector<UINT>& refIndexBuffer, std::vector<NVECTOR3>& refNormalBuffer, std::string& refFileInfo);
-
-static BOOL localFunction_ImportFile_STL_Ascii(NFilePath pFilePath, std::vector<NVECTOR3>& refVertexBuffer, std::vector<UINT>& refIndexBuffer, std::vector<NVECTOR3>& refNormalBuffer, std::string& refFileInfo);
+#include "MyConsoleEngine.h"
 
 
 /*******************************************************************
-
 									INTERFACE
-
 *********************************************************************/
-BOOL IFileManager::ImportFile_STL(NFilePath pFilePath, std::vector<NVECTOR3>& refVertexBuffer, std::vector<UINT>& refIndexBuffer, std::vector<NVECTOR3>& refNormalBuffer, std::string & refFileInfo)
+BOOL IFileManager::ImportFile_STL(std::string pFilePath, std::vector<VECTOR3>& refVertexBuffer, std::vector<UINT>& refIndexBuffer, std::vector<VECTOR3>& refNormalBuffer, std::string & refFileInfo)
 {
 	std::ifstream tmpFile(pFilePath, std::ios::binary);
 
@@ -46,22 +38,20 @@ BOOL IFileManager::ImportFile_STL(NFilePath pFilePath, std::vector<NVECTOR3>& re
 	//ASCII STL starts with "solid"
 	if (firstChar == 's')
 	{
-		return localFunction_ImportFile_STL_Ascii(pFilePath, refVertexBuffer, refIndexBuffer, refNormalBuffer, refFileInfo);
+		return mFunction_ImportFile_STL_Ascii(pFilePath, refVertexBuffer, refIndexBuffer, refNormalBuffer, refFileInfo);
 	}
 	else
 	{
-		return localFunction_ImportFile_STL_Binary(pFilePath, refVertexBuffer, refIndexBuffer, refNormalBuffer, refFileInfo);
+		return mFunction_ImportFile_STL_Binary(pFilePath, refVertexBuffer, refIndexBuffer, refNormalBuffer, refFileInfo);
 	}
 }
 
 
 /*******************************************************************
-
-								LOCAL FUNCTION
-
+									PRIVATE
 *********************************************************************/
-BOOL localFunction_ImportFile_STL_Binary(NFilePath pFilePath, std::vector<NVECTOR3>& refVertexBuffer,
-	std::vector<UINT>& refIndexBuffer, std::vector<NVECTOR3>& refNormalBuffer, std::string& refFileInfo)
+BOOL IFileManager::mFunction_ImportFile_STL_Binary(std::string pFilePath, std::vector<VECTOR3>& refVertexBuffer,
+	std::vector<UINT>& refIndexBuffer, std::vector<VECTOR3>& refNormalBuffer, std::string& refFileInfo)
 {
 	std::ifstream fileIn(pFilePath, std::ios::binary);
 
@@ -132,7 +122,7 @@ BOOL localFunction_ImportFile_STL_Binary(NFilePath pFilePath, std::vector<NVECTO
 	{
 
 		//a facet normal
-		NVECTOR3 tmpVec3(0, 0, 0);
+		VECTOR3 tmpVec3(0, 0, 0);
 		REINTERPRET_READ(tmpVec3.x);
 		REINTERPRET_READ(tmpVec3.y);
 		REINTERPRET_READ(tmpVec3.z);
@@ -170,7 +160,7 @@ BOOL localFunction_ImportFile_STL_Binary(NFilePath pFilePath, std::vector<NVECTO
 	return TRUE;
 }
 
-BOOL localFunction_ImportFile_STL_Ascii(NFilePath pFilePath, std::vector<NVECTOR3>& refVertexBuffer, std::vector<UINT>& refIndexBuffer, std::vector<NVECTOR3>& refNormalBuffer, std::string& refFileInfo)
+BOOL IFileManager::mFunction_ImportFile_STL_Ascii(std::string pFilePath, std::vector<VECTOR3>& refVertexBuffer, std::vector<UINT>& refIndexBuffer, std::vector<VECTOR3>& refNormalBuffer, std::string& refFileInfo)
 {
 	std::ifstream fileIn(pFilePath);
 
@@ -220,7 +210,7 @@ BOOL localFunction_ImportFile_STL_Ascii(NFilePath pFilePath, std::vector<NVECTOR
 		//"facet normal" + x+y+z
 		if (currString == "normal")
 		{
-			NVECTOR3 tmpFaceNormal(0, 0, 0);
+			VECTOR3 tmpFaceNormal(0, 0, 0);
 			fileIn >> tmpFaceNormal.x >> tmpFaceNormal.y >> tmpFaceNormal.z;
 			//face normal (may be used as vertex normal)
 			refNormalBuffer.push_back(tmpFaceNormal);
@@ -229,7 +219,7 @@ BOOL localFunction_ImportFile_STL_Ascii(NFilePath pFilePath, std::vector<NVECTOR
 		//"vertex" +x +y+z
 		if (currString == "vertex")
 		{
-			NVECTOR3 tmpPoint(0, 0, 0);
+			VECTOR3 tmpPoint(0, 0, 0);
 			fileIn >> tmpPoint.x >> tmpPoint.z >> tmpPoint.y;
 			refVertexBuffer.push_back(tmpPoint);
 		}

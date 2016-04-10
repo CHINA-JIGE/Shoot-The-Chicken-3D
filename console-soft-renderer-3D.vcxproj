@@ -111,9 +111,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="LightManager.cpp" />
+    <ClCompile Include="MeshLoader.cpp" />
     <ClCompile Include="_1InputAssembler.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Math.cpp" />
     <ClCompile Include="_3Rasterizer.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Timer.cpp" />
@@ -122,7 +123,9 @@
   <ItemGroup>
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="LightManager.h" />
     <ClInclude Include="Math.h" />
+    <ClInclude Include="MeshLoader.h" />
     <ClInclude Include="MyConsoleEngine.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="Timer.h" />

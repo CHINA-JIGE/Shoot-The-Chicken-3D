@@ -15,13 +15,13 @@ struct COLOR3
 };
 
 
-class Renderer
+class IRenderer
 {
 public:
 
-	Renderer();
+	IRenderer();
 
-	~Renderer();
+	~IRenderer();
 
 	void Init(UINT bufferWidth,UINT bufferHeight);
 
