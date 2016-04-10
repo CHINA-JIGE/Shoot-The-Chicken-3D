@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="源文件">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="源文件\Game">
+      <UniqueIdentifier>{8551c2db-5c7f-4d6b-9ed5-555903c50b2a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\_Core">
+      <UniqueIdentifier>{9988b8f6-8fae-42a7-9669-73bac56fed32}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\_Renderer">
+      <UniqueIdentifier>{6f672f37-f8b7-4f32-b677-5b9da42889c0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\_Scene">
+      <UniqueIdentifier>{444ffb1a-b468-4fc6-ad80-c3c0bd934e7c}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Math.cpp">
+      <Filter>源文件\_Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer.cpp">
+      <Filter>源文件\_Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>源文件\_Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Timer.cpp">
+      <Filter>源文件\_Core</Filter>
+    </ClCompile>
+    <ClCompile Include="_1InputAssembler.cpp">
+      <Filter>源文件\_Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="_3Rasterizer.cpp">
+      <Filter>源文件\_Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="_2VertexShader.cpp">
+      <Filter>源文件\_Renderer</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Renderer.h">
+      <Filter>源文件\_Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Math.h">
+      <Filter>源文件\_Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>源文件\_Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>源文件\_Core</Filter>
+    </ClInclude>
+    <ClInclude Include="MyConsoleEngine.h">
+      <Filter>源文件\_Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Game.h">
+      <Filter>源文件\Game</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
