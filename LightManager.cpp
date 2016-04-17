@@ -36,7 +36,7 @@ IDirectionalLight* ILightManager::GetLight(UINT index)
 	{
 		return  m_pLightList->at(index);
 	}
-
+	return nullptr;
 };
 
 UINT	 ILightManager::GetTotalLightCount()

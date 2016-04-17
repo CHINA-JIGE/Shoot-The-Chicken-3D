@@ -14,22 +14,24 @@
 
 #include "MyConsoleEngine.h"
 
+using namespace Math;
+
 ICamera::ICamera()
 {
 	mRotateX_Pitch=0;
 	mRotateY_Yaw=0;
 	mRotateZ_Roll=0;
-	mViewAngleY = (float)60/180 * MATH_PI;
+	mViewAngleY = 60.0f/180.0f * CONST_PI;
 	mAspectRatio = 1.5;
 	mPosition = VECTOR3(0,0,0);
 	mLookat = VECTOR3(1,0,0);
 	mDirection = VECTOR3(1,0,0);
-	mNearPlane=1;
-	mFarPlane= 1000;
+	mNearPlane=1.0f;
+	mFarPlane= 1000.0f;
 
 
-	D3DXMatrixPerspectiveFovLH(m_pMatrixProjection,mViewAngleY,mAspectRatio,mNearPlane,mFarPlane);
-	D3DXMatrixIdentity(m_pMatrixView);
+	mMatrixProjection= Matrix_PerspectiveProjection(mViewAngleY,mAspectRatio,mNearPlane,mFarPlane);
+	mMatrixView.Identity();
 };
 
 void ICamera::Destroy()
@@ -102,7 +104,7 @@ void	ICamera::SetRotationY_Yaw(float angleY)
 void	ICamera::SetRotationX_Pitch(float AngleX)
 {
 	//clamp to [-pi/2,pi/2]
-	mRotateX_Pitch = AngleX > (MATH_PI / 2) ? (MATH_PI / 2) : (AngleX < (-MATH_PI / 2) ? (-MATH_PI / 2) : AngleX);
+	mRotateX_Pitch = AngleX > (CONST_PI / 2) ? (CONST_PI / 2) : (AngleX < (-CONST_PI / 2) ? (-CONST_PI / 2) : AngleX);
 
 	mFunction_UpdateDirection();
 };
@@ -238,7 +240,7 @@ void	ICamera::SetViewFrustumPlane(float iNearPlaneZ,float iFarPlaneZ)
 
 void ICamera::SetViewAngle(float iViewAngleY,float iAspectRatio)
 {
-	if(iViewAngleY>0 && (mViewAngleY <(MATH_PI/2))){mViewAngleY	=	iViewAngleY;	}
+	if(iViewAngleY>0 && (mViewAngleY <(CONST_PI/2.0f))){mViewAngleY	=	iViewAngleY;	}
 	if(iAspectRatio>0){mAspectRatio	= iAspectRatio;}
 };
 
@@ -249,32 +251,28 @@ void ICamera::SetViewAngle(float iViewAngleY,float iAspectRatio)
 
 void	ICamera::mFunction_UpdateProjMatrix()
 {
-	D3DXMatrixPerspectiveFovLH(
-		m_pMatrixProjection,
+	mMatrixProjection=Matrix_PerspectiveProjection(
 		mViewAngleY,
 		mAspectRatio,
 		mNearPlane,
 		mFarPlane);
 
-	//要更新到GPU，TM居然要先转置
-	D3DXMatrixTranspose(m_pMatrixProjection,m_pMatrixProjection);
 };
 
 void	ICamera::mFunction_UpdateViewMatrix()
 {
 
-	D3DXMATRIX	tmpMatrixTranslation;
-	D3DXMATRIX	tmpMatrixRotation;
+	MATRIX4x4	tmpMatrixTranslation;
+	MATRIX4x4	tmpMatrixRotation;
 	//先对齐原点
-	D3DXMatrixTranslation(&tmpMatrixTranslation, -mPosition.x, -mPosition.y, -mPosition.z);
-	//然后用yawpitchroll的逆阵转到view空间
-	D3DXMatrixRotationYawPitchRoll(&tmpMatrixRotation, mRotateY_Yaw, mRotateX_Pitch, mRotateZ_Roll);
+	
+	tmpMatrixTranslation=Matrix_Translation(-mPosition.x, -mPosition.y, -mPosition.z);
+	//然后用 yawpitchroll的逆阵 转到view空间
+	tmpMatrixRotation = Matrix_YawPitchRoll(mRotateY_Yaw, mRotateX_Pitch, mRotateZ_Roll);
 	//正交矩阵的转置是逆
-	D3DXMatrixTranspose(&tmpMatrixRotation,&tmpMatrixRotation);
+	tmpMatrixRotation=Matrix_Transpose(tmpMatrixRotation);
 	//先平移，再旋转
-	D3DXMatrixMultiply(m_pMatrixView,&tmpMatrixTranslation,&tmpMatrixRotation);
-	//要更新到GPU，TM居然要先转置
-	D3DXMatrixTranspose(m_pMatrixView,m_pMatrixView);
+	mMatrixView= Matrix_Multiply(tmpMatrixTranslation,tmpMatrixRotation);
 
 };
 
@@ -286,7 +284,7 @@ void	ICamera::mFunction_UpdateRotation()
 	VECTOR3	tmpDirection;
 	//检查新direction是否为0
 	tmpDirection=mLookat-mPosition;
-	float mLength = D3DXVec3Length(&tmpDirection);
+	float mLength = Vec3_Length(tmpDirection);
 	//注意浮点数误差，视点和位置不能重合
 	if (mLength<0.001)
 	{
@@ -312,9 +310,9 @@ void	ICamera::mFunction_UpdateRotation()
 	{
 		//是否在原点的正上下方
 		if(mDirection.y>=0)
-		{mRotateX_Pitch=-MATH_PI/2;}
+		{mRotateX_Pitch=-CONST_PI/2;}
 		else
-		{mRotateX_Pitch=MATH_PI/2;}
+		{mRotateX_Pitch= CONST_PI /2;}
 	}
 	else
 	{
@@ -336,7 +334,7 @@ void	ICamera::mFunction_UpdateDirection()
 	//主要功能：这个函数主要是为了处理姿态角改变带来的视线Direction变化
 
 	//要更新Lookat
-	float tmpDirectionLength = D3DXVec3Length(mDirection);
+	float tmpDirectionLength = Vec3_Length(mDirection);
 	//直接用三角函数表达Direction	3dscanner的世界变换一章里面有
 	mDirection.x =- tmpDirectionLength* sin(mRotateY_Yaw)* cos(mRotateX_Pitch);
 	mDirection.z =tmpDirectionLength* cos(mRotateY_Yaw)*cos(mRotateX_Pitch);

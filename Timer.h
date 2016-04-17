@@ -7,17 +7,12 @@
 
 #pragma once
 
-
-namespace Noise3D
+class  ITimer
 {
-	namespace Ut
-	{
-		class _declspec(dllexport) ITimer
-		{
-		public:
+public:
 
 			//构造函数
-			ITimer(NOISE_TIMER_TIMEUNIT timeUnit);
+			ITimer(TIMER_TIMEUINT timeUnit);
 
 			void		SelfDestruction();
 
@@ -29,7 +24,7 @@ namespace Noise3D
 			double GetInterval()const;
 
 			//设置时间单位
-			void SetTimeUnit(NOISE_TIMER_TIMEUNIT timeUnit = NOISE_TIMER_TIMEUNIT_MILLISECOND);
+			void SetTimeUnit(TIMER_TIMEUINT timeUnit = TIMER_TIMEUNIT_MILLISECOND);
 
 			//进入下一帧
 			void NextTick();
@@ -47,7 +42,7 @@ namespace Noise3D
 
 			void ResetTotalTime();
 
-		private:
+private:
 			//更新后的总时间(ms)
 			double					mTotalTime;
 			//就是INTERVAL 两帧间的时间间隔
@@ -62,7 +57,7 @@ namespace Noise3D
 			UINT						mFPS;
 
 			//时间制
-			NOISE_TIMER_TIMEUNIT	mTimeUnit;
+			TIMER_TIMEUINT	mTimeUnit;
 			//
 			BOOL					mIsPaused;
 			//queryPerformance貌似返回的是绝对count而不是两次query间的count
@@ -71,6 +66,4 @@ namespace Noise3D
 			INT64					mCurrentCount;
 			//
 			INT64					mDeltaCount;
-		};
-	}
-}
+};

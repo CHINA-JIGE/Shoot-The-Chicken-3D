@@ -1,7 +1,7 @@
 
 /***********************************************************************
 
-							类：NOISE TIMER
+							类：TIMER
 
 	简述：高精度计时器，主要用WINAPI的queryPerformanceCount来实现    
 
@@ -9,7 +9,9 @@
 
 #include "MyConsoleEngine.h"
 
-ITimer::ITimer(NOISE_TIMER_TIMEUNIT timeUnit = NOISE_TIMER_TIMEUNIT_MILLISECOND)
+using namespace Math;
+
+ITimer::ITimer(TIMER_TIMEUINT timeUnit)
 {
 	//默认用毫秒制
 	mTimeUnit				= timeUnit;
@@ -21,9 +23,9 @@ ITimer::ITimer(NOISE_TIMER_TIMEUNIT timeUnit = NOISE_TIMER_TIMEUNIT_MILLISECOND)
 	//每秒可以数多少次
 	INT64 countsPerSecond;
 	//获取这个计数计时器的频率
-	NOISE_MACRO_FUNCTION_WINAPI QueryPerformanceFrequency((LARGE_INTEGER*)&countsPerSecond);
+	QueryPerformanceFrequency((LARGE_INTEGER*)&countsPerSecond);
 	mMilliSecondsPerCount = (1000.0) /(double)countsPerSecond;//每一count多少毫秒
-	NOISE_MACRO_FUNCTION_WINAPI QueryPerformanceCounter((LARGE_INTEGER*)&mCurrentCount);
+	QueryPerformanceCounter((LARGE_INTEGER*)&mCurrentCount);
 
 }
 
@@ -42,7 +44,7 @@ void ITimer::NextTick()
 	{
 		//更新count
 		mPrevCount = mCurrentCount;
-		NOISE_MACRO_FUNCTION_WINAPI QueryPerformanceCounter((LARGE_INTEGER*)&mCurrentCount);
+		QueryPerformanceCounter((LARGE_INTEGER*)&mCurrentCount);
 
 		//如果在省电模式下，若切换处理器可能会导致counts也是负的
 		mDeltaCount = mCurrentCount - mPrevCount;
@@ -84,10 +86,10 @@ double ITimer::GetTotalTime()const
 {
 	switch(mTimeUnit)
 	{
-	case NOISE_TIMER_TIMEUNIT_MILLISECOND:
+	case TIMER_TIMEUNIT_MILLISECOND:
 		return mTotalTime; 
 		break;
-	case NOISE_TIMER_TIMEUNIT_SECOND:
+	case TIMER_TIMEUNIT_SECOND:
 		return (mTotalTime/1000.0); 
 		break;
 	};
@@ -98,19 +100,19 @@ double ITimer::GetInterval()const
 {
 	switch(mTimeUnit)
 	{
-	case NOISE_TIMER_TIMEUNIT_MILLISECOND:
+	case TIMER_TIMEUNIT_MILLISECOND:
 		return mDeltaTime; 
 		break;
-	case NOISE_TIMER_TIMEUNIT_SECOND:
+	case TIMER_TIMEUNIT_SECOND:
 		return (mDeltaTime/1000); 
 		break;
 	};
 	return 0;
 };
 
-void ITimer::SetTimeUnit(NOISE_TIMER_TIMEUNIT timeUnit)
+void ITimer::SetTimeUnit(TIMER_TIMEUINT timeUnit)
 {
-	if (timeUnit ==NOISE_TIMER_TIMEUNIT_SECOND||timeUnit==NOISE_TIMER_TIMEUNIT_MILLISECOND)
+	if (timeUnit ==TIMER_TIMEUNIT_SECOND||timeUnit==TIMER_TIMEUNIT_MILLISECOND)
 	{mTimeUnit = timeUnit;};
 };
 

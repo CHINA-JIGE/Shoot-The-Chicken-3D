@@ -7,7 +7,9 @@
 
 #pragma once
 
-	class _declspec(dllexport) ICamera 
+using namespace Math;
+
+	class ICamera 
 	{
 	public:
 		friend  class IRenderer;
@@ -77,15 +79,11 @@
 		VECTOR3		mLookat;
 		VECTOR3		mDirection;
 
-		MATRIX4x4*		m_pMatrixView;
-		MATRIX4x4*		m_pMatrixProjection;
+		MATRIX4x4	mMatrixView;
+		MATRIX4x4	mMatrixProjection;
 
 		float			mRotateX_Pitch;
 		float			mRotateY_Yaw;
 		float			mRotateZ_Roll;
 
 	};
-
-};
-
-

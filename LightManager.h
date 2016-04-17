@@ -7,32 +7,33 @@
 #pragma once
 
 
-	struct IDirectionalLight
+struct IDirectionalLight
+{
+public:
+	IDirectionalLight()
 	{
-	public:
-		IDirectionalLight()
-		{
-			ZeroMemory(this, sizeof(*this));
-			mSpecularIntensity = 1.0f;
-			mDirection = VECTOR3(1.0f, 0, 0);
-			mDiffuseIntensity = 0.5;
-		}
+		ZeroMemory(this, sizeof(*this));
+		mSpecularIntensity = 1.0f;
+		mDirection = VECTOR3(1.0f, 0, 0);
+		mDiffuseIntensity = 0.5;
+		mIsEnabled = TRUE;
+	}
 
-		BOOL operator==(IDirectionalLight& Light)
+	BOOL operator==(IDirectionalLight& Light)
+	{
+		//two memory fragments are identical
+		if (memcmp(this, &Light, sizeof(Light)) == 0)
 		{
-			//two memory fragments are identical
-			if (memcmp(this, &Light, sizeof(Light)) == 0)
-			{
-				return TRUE;
-			}
-			return FALSE;
+			return TRUE;
 		}
+		return FALSE;
+	}
 
-		VECTOR3 mAmbientColor;	 float		mSpecularIntensity;
-		VECTOR3 mDiffuseColor;	float			mDiffuseIntensity;
-		VECTOR3 mSpecularColor;	 float		mPad2;//用于内存对齐
-		VECTOR3 mDirection;			 float		mPad3;//用于内存对齐
-	};
+	VECTOR3 mAmbientColor;	 float		mSpecularIntensity;
+	VECTOR3 mDiffuseColor;		float			mDiffuseIntensity;
+	VECTOR3 mSpecularColor;	 BOOL		mIsEnabled;
+	VECTOR3 mDirection;			 
+};
 
 	class _declspec(dllexport) ILightManager
 	{

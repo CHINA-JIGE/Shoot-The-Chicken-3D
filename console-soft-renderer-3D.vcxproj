@@ -111,24 +111,39 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Game.cpp" />
+    <ClCompile Include="_GeometryMeshGenerator.cpp" />
+    <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="Picture2D.cpp" />
+    <ClCompile Include="RenderPipeline3D.cpp" />
     <ClCompile Include="LightManager.cpp" />
-    <ClCompile Include="MeshLoader.cpp" />
-    <ClCompile Include="_1InputAssembler.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="_3Rasterizer.cpp" />
+    <ClCompile Include="Math.cpp" />
+    <ClCompile Include="FileLoader.cpp" />
+    <ClCompile Include="UnitTest_Mathcpp.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Timer.cpp" />
-    <ClCompile Include="_2VertexShader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="_GeometryMeshGenerator.h" />
+    <ClInclude Include="Mesh.h" />
+    <ClInclude Include="Picture2D.h" />
+    <ClInclude Include="RenderPipeline3D.h" />
     <ClInclude Include="LightManager.h" />
     <ClInclude Include="Math.h" />
-    <ClInclude Include="MeshLoader.h" />
+    <ClInclude Include="FileLoader.h" />
     <ClInclude Include="MyConsoleEngine.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="Timer.h" />
+    <ClInclude Include="Types_def.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

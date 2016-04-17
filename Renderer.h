@@ -1,21 +1,9 @@
 #pragma once
 
-typedef unsigned char BYTE;
-
-const UINT c_ConsoleCharSize = 3;//size of one char (in pixels)
 
 
-struct COLOR3
-{
-	COLOR3() { r = g = b = 255U; }
-	COLOR3(BYTE R, BYTE G, BYTE B) { r = R;g = G;b = B; }
-	BYTE r;
-	BYTE g;
-	BYTE b;
-};
 
-
-class IRenderer
+class IRenderer : private IRenderPipeline3D
 {
 public:
 
@@ -23,23 +11,34 @@ public:
 
 	~IRenderer();
 
-	void Init(UINT bufferWidth,UINT bufferHeight);
+	void		Init(UINT bufferWidth,UINT bufferHeight);
 
-	void	Clear(COLOR3 clearColor=COLOR3(0,0,0),BOOL clearZBuff=TRUE);
+	void		Clear(COLOR3 clearColor=COLOR3(0,0,0),BOOL clearZBuff=TRUE);
 
-	void	Render();
+	BOOL	RenderMesh(IMesh& mesh);
 
-	void	Present();
+	BOOL	DrawPicture(IPicture& pic, UINT x1, UINT y1, UINT x2, UINT y2);
 
-	void	SetWindowTitle(char* titleStr);
+	void		DrawLine(COLOR3 color, UINT x1, UINT y1, UINT x2, UINT y2);
+
+	void		Present();
+
+	void		SetWindowTitle(const char* titleStr);
 
 private:
+
+	void			mFunction_BlendPixel(UINT x, UINT y,float blendFactor, const COLOR3& newColor);
+
+	void			mFunction_SetPixel(UINT x, UINT y, const COLOR3& color);
 
 	UINT			mFunction_GetIndex(UINT x, UINT y);
 
 	void			mFunction_AdjustWindowSize();
 
-	WORD		mFunction_GetTextAttr(COLOR3 color);
+	void			mFunction_UpdateCharAndTextAttrBuffer();
+
+	const short c_ConsoleCharSize = 3;//size of one char (in pixels)
+
 
 	DWORD	mBufferWidth;
 	DWORD	mBufferHeight;

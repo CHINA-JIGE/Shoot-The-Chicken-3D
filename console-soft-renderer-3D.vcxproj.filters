@@ -8,14 +8,17 @@
     <Filter Include="源文件\Game">
       <UniqueIdentifier>{8551c2db-5c7f-4d6b-9ed5-555903c50b2a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="源文件\_Core">
-      <UniqueIdentifier>{9988b8f6-8fae-42a7-9669-73bac56fed32}</UniqueIdentifier>
+    <Filter Include="源文件\Engine">
+      <UniqueIdentifier>{de095081-f083-4920-a9aa-1179afe34747}</UniqueIdentifier>
     </Filter>
-    <Filter Include="源文件\_Renderer">
+    <Filter Include="源文件\Engine\_Scene">
+      <UniqueIdentifier>{444ffb1a-b468-4fc6-ad80-c3c0bd934e7c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Engine\_Renderer">
       <UniqueIdentifier>{6f672f37-f8b7-4f32-b677-5b9da42889c0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="源文件\_Scene">
-      <UniqueIdentifier>{444ffb1a-b468-4fc6-ad80-c3c0bd934e7c}</UniqueIdentifier>
+    <Filter Include="源文件\Engine\_Core">
+      <UniqueIdentifier>{9988b8f6-8fae-42a7-9669-73bac56fed32}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -23,54 +26,81 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Renderer.cpp">
-      <Filter>源文件\_Renderer</Filter>
+      <Filter>源文件\Engine\_Renderer</Filter>
     </ClCompile>
     <ClCompile Include="Camera.cpp">
-      <Filter>源文件\_Scene</Filter>
+      <Filter>源文件\Engine\_Scene</Filter>
     </ClCompile>
     <ClCompile Include="Timer.cpp">
-      <Filter>源文件\_Core</Filter>
-    </ClCompile>
-    <ClCompile Include="_1InputAssembler.cpp">
-      <Filter>源文件\_Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="_3Rasterizer.cpp">
-      <Filter>源文件\_Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="_2VertexShader.cpp">
-      <Filter>源文件\_Renderer</Filter>
+      <Filter>源文件\Engine\_Core</Filter>
     </ClCompile>
     <ClCompile Include="LightManager.cpp">
-      <Filter>源文件\_Scene</Filter>
+      <Filter>源文件\Engine\_Scene</Filter>
     </ClCompile>
-    <ClCompile Include="MeshLoader.cpp">
-      <Filter>源文件\_Scene</Filter>
+    <ClCompile Include="UnitTest_Mathcpp.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Math.cpp">
+      <Filter>源文件\Engine\_Core</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderPipeline3D.cpp">
+      <Filter>源文件\Engine\_Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Picture2D.cpp">
+      <Filter>源文件\Engine\_Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="FileLoader.cpp">
+      <Filter>源文件\Engine\_Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Game.cpp">
+      <Filter>源文件\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Mesh.cpp">
+      <Filter>源文件\Engine\_Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="_GeometryMeshGenerator.cpp">
+      <Filter>源文件\Engine\_Scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Renderer.h">
-      <Filter>源文件\_Renderer</Filter>
+      <Filter>源文件\Engine\_Renderer</Filter>
     </ClInclude>
     <ClInclude Include="Math.h">
-      <Filter>源文件\_Core</Filter>
+      <Filter>源文件\Engine\_Core</Filter>
     </ClInclude>
     <ClInclude Include="Camera.h">
-      <Filter>源文件\_Scene</Filter>
+      <Filter>源文件\Engine\_Scene</Filter>
     </ClInclude>
     <ClInclude Include="Timer.h">
-      <Filter>源文件\_Core</Filter>
+      <Filter>源文件\Engine\_Core</Filter>
     </ClInclude>
     <ClInclude Include="MyConsoleEngine.h">
-      <Filter>源文件\_Core</Filter>
+      <Filter>源文件\Engine\_Core</Filter>
     </ClInclude>
     <ClInclude Include="Game.h">
       <Filter>源文件\Game</Filter>
     </ClInclude>
     <ClInclude Include="LightManager.h">
-      <Filter>源文件\_Scene</Filter>
+      <Filter>源文件\Engine\_Scene</Filter>
     </ClInclude>
-    <ClInclude Include="MeshLoader.h">
-      <Filter>源文件\_Scene</Filter>
+    <ClInclude Include="RenderPipeline3D.h">
+      <Filter>源文件\Engine\_Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Picture2D.h">
+      <Filter>源文件\Engine\_Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="FileLoader.h">
+      <Filter>源文件\Engine\_Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Types_def.h">
+      <Filter>源文件\Engine\_Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>源文件\Engine\_Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="_GeometryMeshGenerator.h">
+      <Filter>源文件\Engine\_Scene</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
