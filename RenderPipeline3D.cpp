@@ -14,7 +14,7 @@
 IRenderPipeline3D::IRenderPipeline3D()
 {
 	m_pVB_HomoSpace = new std::vector<VertexShaderOutput_Vertex>;
-	m_pVB_Rasterized = new std::vector<RasterizedVertex>;
+	m_pVB_Rasterized = new std::vector<RasterizedFragment>;
 	mWorldMatrix.Identity();
 	mViewMatrix.Identity();
 	mProjMatrix.Identity();
@@ -35,8 +35,8 @@ BOOL IRenderPipeline3D::Init(RenderPipeline_InitData & initData)
 	}
 	else
 	{
-		return FALSE;
 		DEBUG_MSG1("Render PipeLine: color buffer ptr invalid!!");
+		return FALSE;
 	}
 
 
@@ -46,8 +46,9 @@ BOOL IRenderPipeline3D::Init(RenderPipeline_InitData & initData)
 	}
 	else
 	{
-		return FALSE;
 		DEBUG_MSG1("Render PipeLine: Z buffer ptr invalid!!");
+		return FALSE;
+
 	}
 	return TRUE;
 }
@@ -63,7 +64,6 @@ void IRenderPipeline3D::DrawTriangles(RenderPipeline_DrawCallData & drawCallData
 	UINT vCount = drawCallData.VertexCount;
 	auto pVB = drawCallData.pVertexBuffer;
 	auto pIB = drawCallData.pIndexBuffer;
-	UINT triangleCount = pIB->size() / 3;
 
 	//reserve space for vector, because they need to push_back later
 	m_pVB_HomoSpace->reserve(vCount);
@@ -91,6 +91,7 @@ void IRenderPipeline3D::DrawTriangles(RenderPipeline_DrawCallData & drawCallData
 	{
 		PixelShader(rasterizedVertex);
 	}
+
 
 }
 
@@ -135,6 +136,7 @@ void IRenderPipeline3D::SetMaterial(const Material & mat)
 								P R I V A T E
 
 ************************************************************/
+
 void IRenderPipeline3D::VertexShader(Vertex& inVertex)
 {
 	VertexShaderOutput_Vertex outVertex;
@@ -143,15 +145,24 @@ void IRenderPipeline3D::VertexShader(Vertex& inVertex)
 	VECTOR4 pos(inVertex.pos.x, inVertex.pos.y, inVertex.pos.z, 1.0f);
 	pos = Matrix_Multiply(mWorldMatrix, pos);
 	pos = Matrix_Multiply(mViewMatrix, pos);
+
+	//non-linear operation
+	float Z_ViewSpace = pos.z;
 	pos = Matrix_Multiply(mProjMatrix, pos);
+	if (Z_ViewSpace != 0)
+	{
+		pos.x /= (Z_ViewSpace);
+		pos.y /= (Z_ViewSpace);
+	}
+
 	outVertex.posH = pos;
 
 	//Normal also need transformation,actually it need a World-Inverse-Transpose
 	//But I rule out all non-Orthogonal Transformation, so inverse can just use Transpose to substitude
 	//thus inverse-transpose yields world matrix itself
-	VECTOR4 norm(inVertex.normal.x, inVertex.normal.y, inVertex.normal.z, 1.0f);
-	norm = Matrix_Multiply(mWorldMatrix, norm);
-	outVertex.normalW = VECTOR3(norm.x, norm.y, norm.z);
+	VECTOR4 normW(inVertex.normal.x, inVertex.normal.y, inVertex.normal.z, 1.0f);
+	normW = Matrix_Multiply(mWorldMatrix, normW);
+
 
 	//-----TexCoord
 	outVertex.texcoord = VECTOR2(
@@ -159,15 +170,19 @@ void IRenderPipeline3D::VertexShader(Vertex& inVertex)
 		inVertex.texcoord.y*mTexCoord_scale + mTexCoord_offsetY);
 
 
-	//-------Should I Perform Gouraud Shading??
+	//-------Should I Perform Gouraud Shading??Yes...
 	outVertex.color = inVertex.color;
 
 	m_pVB_HomoSpace->push_back(outVertex);
 }
 
+void IRenderPipeline3D::HomoSpaceClipping()
+{
+}
+
 void IRenderPipeline3D::Rasterize(UINT idx1, UINT idx2, UINT idx3)
 {
-	RasterizedVertex outVertex;
+	RasterizedFragment outVertex;
 
 	//3 vertices of triangles ( in homogeneous space , [-1,1]x[-1,1])
 	const auto& v1 = m_pVB_HomoSpace->at(idx1);
@@ -187,39 +202,74 @@ void IRenderPipeline3D::Rasterize(UINT idx1, UINT idx2, UINT idx3)
 	convertToPixelSpace(v2, v2_pixel);
 	convertToPixelSpace(v3, v3_pixel);
 
+	//Basis Vector, used to compute the bilinear interpolation coord (s,t) of current pixel
+	VECTOR2 basisVector1 = v2_pixel - v1_pixel;
+	VECTOR2 basisVector2 = v3_pixel - v1_pixel;
+
+	//a determinant to solve B-Lerp Coord equation
+	//refer to doc for more math detail.
+	float D = basisVector1.x*basisVector2.y - basisVector2.x*basisVector1.y;
+
+	//in such circumstances,A B C lie on the same line.
+	//------well , use THE SIGN OF D can implement BACKFACE CULLING--------
+	if (D == 0)return;
+
 	//scanline rasterization , generate pixels ROW-BY-ROW
-	float minY = min(min(v1_pixel.y, v2_pixel.y), v3_pixel.y);
-	float maxY = max(max(v1_pixel.y, v2_pixel.y), v3_pixel.y);
+	float minY = Clamp(min(min(v1_pixel.y, v2_pixel.y), v3_pixel.y),0,float(mBufferHeight-1));
+	float maxY = Clamp(max(max(v1_pixel.y, v2_pixel.y), v3_pixel.y),0,float(mBufferHeight-1));
 
 	//------------ horizontal scan line Intersection ------------
-	for (UINT j = UINT(minY);j < UINT(maxY) + 1;++j)
+	for (int j = int(minY);j < int(maxY) + 1;++j)
 	{
 		BOOL intersectSucceeded = FALSE;
 		UINT x1 = 0, x2 = 0;
 		intersectSucceeded = 
 			mFunction_HorizontalIntersect(float(j),v1_pixel,v2_pixel,v3_pixel,x1,x2);
 
+		x1 = Clamp(x1, 0, mBufferWidth-1);
+		x2 = Clamp(x2, 0, mBufferWidth-1);
+
+		//if intersect succeed, we will get X region [x1,x2] which indicate the range of pixels to fill
 		if (intersectSucceeded == TRUE)
 		{
+			//-----------------FOR EACH RASTERIZED FRAGMENT----------------
 			for (UINT i = x1;i <= x2;++i)
 			{
+				//pixel coord of current processing pixel
+				VECTOR2 currentPoint_pixel= VECTOR2(float(i)+0.5f, float(j)+0.5f);
 
+				//v1 (A) is the orginal point of basis, calculate the relative pixel coordinate
+				VECTOR2 currentPointLocal_pixel = currentPoint_pixel - v1_pixel;
+
+				//calculate the bilinear interpolation ratio coordinate (s,t)
+				// (->localP) = s (->V1) + t(->V2)
+				float s = (currentPointLocal_pixel.x*basisVector2.y - currentPointLocal_pixel.y*basisVector2.x) / D;
+				float t = (basisVector1.x*currentPointLocal_pixel.y - basisVector1.y*currentPointLocal_pixel.x) / D;
+
+				//.......
+				float depth = s*v2.posH.z + t *v3.posH.z + (1 - s - t)*v1.posH.z;
+				if (mFunction_DepthTest(i, j, depth) == FALSE)break;
+
+				//I will use normal bilinear interpolation to see the result first
+				outVertex.pixelX = i;
+				outVertex.pixelY = j;
+				outVertex.color = s * v2.color + t*v3.color + (1-s - t)*v1.color;
+				outVertex.texcoord = s*v2.texcoord + t*v3.texcoord + (1-s - t)*v1.texcoord;
+
+
+				m_pVB_Rasterized->push_back(outVertex);
 			}
-
 		}
-
 
 	}
 
-
-	m_pVB_Rasterized->push_back(outVertex);
 }
 
-void IRenderPipeline3D::PixelShader(RasterizedVertex& inVertex)
+void IRenderPipeline3D::PixelShader(RasterizedFragment& inVertex)
 {
 	COLOR3 outColor;
-
-	m_pOutColorBuffer->push_back(outColor);
+	outColor =COLOR3(inVertex.color.x, inVertex.color.y, inVertex.color.z);
+	m_pOutColorBuffer->at(inVertex.pixelY*mBufferWidth + inVertex.pixelX) = outColor;
 }
 
 /************************************************************
@@ -234,9 +284,9 @@ BOOL IRenderPipeline3D::mFunction_HorizontalIntersect(float y, const VECTOR2 & v
 
 	//step1, find out how many vertices have the same Y Coord with test Y Coord
 	std::vector<UINT> indexList_sameYCoord;
-	if (v1.y == y) indexList_sameYCoord.push_back(1); 
-	if (v2.y == y) indexList_sameYCoord.push_back(2); 
-	if (v3.y == y) indexList_sameYCoord.push_back(3); 
+	if (v1.y == y) indexList_sameYCoord.push_back(0); 
+	if (v2.y == y) indexList_sameYCoord.push_back(1); 
+	if (v3.y == y) indexList_sameYCoord.push_back(2); 
 
 
 	//line-line intersection
@@ -281,8 +331,8 @@ BOOL IRenderPipeline3D::mFunction_HorizontalIntersect(float y, const VECTOR2 & v
 			//there must be exactly 2 intersect point
 			if (intersectPointList.size() == 2) 
 			{
-				outX1 = UINT(intersectPointList.at(0).x);
-				outX2 = UINT(intersectPointList.at(1).x);
+				outX1 = UINT(Clamp(intersectPointList.at(0).x,0,float(mBufferWidth)));
+				outX2 = UINT(Clamp(intersectPointList.at(1).x,0,float(mBufferWidth)));
 				if (outX1 > outX2)std::swap(outX1, outX2);
 				return TRUE;
 			}
@@ -303,21 +353,21 @@ BOOL IRenderPipeline3D::mFunction_HorizontalIntersect(float y, const VECTOR2 & v
 			BOOL canOppositeLineSegmentIntersect = FALSE;
 			switch (indexList_sameYCoord.at(0))
 			{
-			case 1:
+			case 0:
 				canOppositeLineSegmentIntersect = func_intersect(y, v2, v3, tmpVec);
 				break;
-			case 2:
+			case 1:
 				canOppositeLineSegmentIntersect = func_intersect(y, v1, v3, tmpVec);
 				break;
-			case 3:
+			case 2:
 				canOppositeLineSegmentIntersect = func_intersect(y, v1, v2, tmpVec);
 				break;
 			}
 
 			if (canOppositeLineSegmentIntersect==TRUE)
 			{
-				outX1 = UINT(tmpVec.x);//new intersect point
-				outX2 = UINT(triangleVertices[indexList_sameYCoord.at(0)].x);//the one on the tested-y line
+				outX1 = UINT(Clamp(tmpVec.x,0,float(mBufferWidth)));//new intersect point
+				outX2 = UINT(Clamp(triangleVertices[indexList_sameYCoord.at(0)].x,0,float(mBufferWidth)));//the one on the tested-y line
 				if (outX1 > outX2)std::swap(outX1, outX2);
 				return TRUE;
 			}
@@ -334,12 +384,27 @@ BOOL IRenderPipeline3D::mFunction_HorizontalIntersect(float y, const VECTOR2 & v
 		//------------2 : 2 vertices lie on line Y=y-----------------
 		case 2:
 		{
-			outX1 = UINT(triangleVertices[indexList_sameYCoord.at(0)].x);//new intersect point
-			outX2 = UINT(triangleVertices[indexList_sameYCoord.at(1)].x);//the one on the tested-y line
+			outX1 = UINT(Clamp(triangleVertices[indexList_sameYCoord.at(0)].x,0,float(mBufferWidth)));//new intersect point
+			outX2 = UINT(Clamp(triangleVertices[indexList_sameYCoord.at(1)].x,0,float(mBufferWidth)));//the one on the tested-y line
 			if (outX1 > outX2)std::swap(outX1, outX2);
 			return TRUE;
 			break;
 		}
+
+		default:
+			return FALSE;
 	}
 
+}
+
+inline BOOL IRenderPipeline3D::mFunction_DepthTest(UINT x, UINT y, float testZ)
+{
+	if (testZ > m_pZBuffer->at(y*mBufferWidth + x))
+	{
+		return TRUE;
+	}
+	else
+	{
+		return FALSE;
+	}
 }

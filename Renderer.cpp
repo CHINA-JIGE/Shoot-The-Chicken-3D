@@ -5,7 +5,6 @@
 
 ************************************************************/
 
-
 #include "MyConsoleEngine.h"
 
 IRenderer::IRenderer()
@@ -64,8 +63,8 @@ void IRenderer::Init(UINT bufferWidth, UINT bufferHeight)
 
 	//set the size of buffer
 	COORD dwBuffSize;
-	dwBuffSize.X = bufferWidth;
-	dwBuffSize.Y = bufferHeight;
+	dwBuffSize.X = SHORT(bufferWidth);
+	dwBuffSize.Y = SHORT(bufferHeight);
 	isSuceeded = ::SetConsoleScreenBufferSize(m_hScreenBuffer, dwBuffSize);
 
 	m_pCharBuffer = new std::vector<char>(mBufferHeight*mBufferWidth);
@@ -104,6 +103,11 @@ void IRenderer::Clear(COLOR3 clearColor,BOOL clearZBuff)
 			m_pZBuffer->at(i) = 0.0f;
 		}
 	}
+}
+
+void IRenderer::SetCamera(ICamera & cam)
+{
+	m_pCamera = &cam;
 }
 
 BOOL IRenderer::DrawPicture(IPicture & pic, UINT x1, UINT y1, UINT x2, UINT y2)
@@ -175,8 +179,7 @@ void IRenderer::DrawLine(COLOR3 color, UINT x1, UINT y1, UINT x2, UINT y2)
 				mFunction_SetPixel(i, y1 + UINT(offset),color);
 
 				//anti-alising
-				float frac = fractionPart(offset);
-				mFunction_BlendPixel(i, y1 + UINT(offset)+ 1, frac,color);
+				//mFunction_BlendPixel(i, y1 + UINT(offset)+ 1,  fractionPart(offset),color);
 				offset += k;//dy = dx * k;
 
 				if (x2 > x1)++i;else --i;
@@ -190,7 +193,7 @@ void IRenderer::DrawLine(COLOR3 color, UINT x1, UINT y1, UINT x2, UINT y2)
 				mFunction_SetPixel(x1+UINT(offset), j, color);
 
 				//anti-alising
-				mFunction_BlendPixel(x1+UINT(offset) +1,j, fractionPart(offset),color);
+				//mFunction_BlendPixel(x1+UINT(offset) +1,j, fractionPart(offset),color);
 				offset += (k_inv);
 
 				if (y2 > y1) 
@@ -201,10 +204,74 @@ void IRenderer::DrawLine(COLOR3 color, UINT x1, UINT y1, UINT x2, UINT y2)
 		}
 	}
 
+}
+
+void IRenderer::DrawTriangle(COLOR3 color, const VECTOR2 & v1_pixel, const VECTOR2 & v2_pixel, const VECTOR2 & v3_pixel)
+{
+	//matrix set to identity
+	MATRIX4x4 matIdentity;
+	matIdentity.Identity();
+	IRenderPipeline3D::SetWorldMatrix(matIdentity);
+	IRenderPipeline3D::SetProjMatrix(matIdentity);
+	IRenderPipeline3D::SetViewMatrix(matIdentity);
+
+	//convert to pixel space
+	auto convertToHomoSpace = [&](const VECTOR2& v, VECTOR2& outV)
+	{
+		outV.x = (v.x / float(mBufferWidth) *2.0f) - 1.0f;
+		outV.y = (-v.y / float(mBufferHeight) *2.0f) + 1.0f;
+	};
+
+	VECTOR2 v1, v2, v3;
+	convertToHomoSpace(v1_pixel, v1);
+	convertToHomoSpace(v2_pixel, v2);
+	convertToHomoSpace(v3_pixel, v3);
+
+	//well, pipeline 3D will convert homo space coord to pixel space
+	std::vector<Vertex> vertexArray(3);
+	vertexArray[0].color = VECTOR4(color.x, color.y, color.z, 1.0f);
+	vertexArray[0].pos = VECTOR3(v1.x, v1.y, 0.0f);
+	vertexArray[0].normal = VECTOR3(0.0f, 1.0f, 0.0f);
+	vertexArray[0].texcoord = VECTOR2(0.0f, 1.0f);
+
+	vertexArray[1].color = VECTOR4(color.x, color.y, color.z, 1.0f);
+	vertexArray[1].pos = VECTOR3(v2.x, v2.y, 0.0f);
+	vertexArray[1].normal = VECTOR3(0.0f, 1.0f, 0.0f);
+	vertexArray[1].texcoord = VECTOR2(1.0f, 0.0f);
+
+	vertexArray[2].color = VECTOR4(color.x, color.y, color.z, 1.0f);
+	vertexArray[2].pos = VECTOR3(v3.x, v3.y, 0.0f);
+	vertexArray[2].normal = VECTOR3(0.0f, 1.0f, 0.0f);
+	vertexArray[2].texcoord = VECTOR2(1.0f, 1.0f);
+
+	std::vector<UINT> indexArray = { 0,1,2 };
+
+	RenderPipeline_DrawCallData drawCallData;
+	drawCallData.offset = 0;
+	drawCallData.pIndexBuffer = &indexArray;
+	drawCallData.pVertexBuffer = &vertexArray;
+	drawCallData.VertexCount = 3;
+
+	//Pipeline will directly draw to ColorBuffer and ZBuffer......
+	IRenderPipeline3D::DrawTriangles(drawCallData);
+
 };
 
-BOOL IRenderer::RenderMesh(IMesh& mesh)
+
+void IRenderer::RenderMesh(IMesh& mesh)
 {
+	if (m_pCamera == nullptr)return;
+
+	//set WVP matrices
+	MATRIX4x4 matW, matV, matP;
+	mesh.GetWorldMatrix(matW);
+	m_pCamera->GetViewMatrix(matV);
+	m_pCamera->GetProjMatrix(matP);
+
+	IRenderPipeline3D::SetWorldMatrix(matW);
+	IRenderPipeline3D::SetProjMatrix(matP);
+	IRenderPipeline3D::SetViewMatrix(matV);
+
 	RenderPipeline_DrawCallData drawCallData;
 	drawCallData.offset = 0;
 	drawCallData.pIndexBuffer = mesh.m_pIB_Mem;
@@ -214,7 +281,6 @@ BOOL IRenderer::RenderMesh(IMesh& mesh)
 	//Pipeline will directly draw to ColorBuffer and ZBuffer......
 	IRenderPipeline3D::DrawTriangles(drawCallData);
 
-	return TRUE;
 }
 
 void IRenderer::Present()
@@ -260,9 +326,9 @@ void IRenderer::mFunction_BlendPixel(UINT x, UINT y, float blendFactor, const CO
 	if (x < mBufferWidth && y < mBufferHeight)
 	{
 		COLOR3& c = m_pColorBuffer->at(y*mBufferWidth + x);
-		c.r = Lerp(c.r, newColor.r, blendFactor);
-		c.g = Lerp(c.g, newColor.g, blendFactor);
-		c.b = Lerp(c.b, newColor.b, blendFactor);
+		c.x = Lerp(c.x, newColor.x, blendFactor);
+		c.y = Lerp(c.y, newColor.y, blendFactor);
+		c.z= Lerp(c.z, newColor.z, blendFactor);
 	}
 
 }
@@ -353,10 +419,10 @@ void IRenderer::mFunction_UpdateCharAndTextAttrBuffer()
 		COLOR3& color = m_pColorBuffer->at(i);
 
 		//quantization
-		//the .01 is in case the r/g/b=255, I want the rLevel = [0,7]
-		UINT rLevel = UINT(c_color_level_Count	 * (color.r) / 255.01f);
-		UINT gLevel = UINT(c_color_level_Count * (color.g) / 255.01f);
-		UINT bLevel = UINT(c_color_level_Count * (color.b) / 255.01f);
+		//the .01 is in case the r/g/b=1.0f, I want the rLevel = [0,7]
+		UINT rLevel = UINT(c_color_level_Count* (color.x) / 1.0001f);
+		UINT gLevel = UINT(c_color_level_Count * (color.y) / 1.0001f);
+		UINT bLevel = UINT(c_color_level_Count * (color.z) / 1.0001f);
 		UINT maxLevel = max(max(rLevel, gLevel), bLevel);
 
 		m_pCharBuffer->at(i) = color_level_to_char[maxLevel];

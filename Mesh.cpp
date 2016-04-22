@@ -154,9 +154,12 @@ BOOL IMesh::LoadFile_OBJ(std::string pFilePath)
 	return TRUE;
 }
 
-void IMesh::SetColor(COLOR3 color)
+void IMesh::SetColor(const VECTOR4& color)
 {
-	mColor = color;
+	for (auto& v : *m_pVB_Mem)
+	{
+		v.color = color;
+	}
 }
 
 void IMesh::SetPosition(float x,float y,float z)
@@ -186,6 +189,12 @@ void IMesh::SetRotationY_Yaw(float angleY)
 void IMesh::SetRotationZ_Roll(float angleZ)
 {
 	mRotationZ_Roll = angleZ;
+}
+
+void IMesh::GetWorldMatrix(MATRIX4x4 & outMat)
+{
+	mFunction_UpdateWorldMatrix();
+	outMat = mMatrixWorld;
 }
 
 UINT IMesh::GetVertexCount()

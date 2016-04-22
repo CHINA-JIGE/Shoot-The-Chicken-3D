@@ -104,7 +104,7 @@ void	ICamera::SetRotationY_Yaw(float angleY)
 void	ICamera::SetRotationX_Pitch(float AngleX)
 {
 	//clamp to [-pi/2,pi/2]
-	mRotateX_Pitch = AngleX > (CONST_PI / 2) ? (CONST_PI / 2) : (AngleX < (-CONST_PI / 2) ? (-CONST_PI / 2) : AngleX);
+	mRotateX_Pitch = Clamp(AngleX, -(CONST_PI / 2), (CONST_PI / 2));
 
 	mFunction_UpdateDirection();
 };
@@ -225,7 +225,21 @@ void ICamera::fps_MoveUp(float fSignedDistance)
 {
 	mPosition += VECTOR3(0, fSignedDistance, 0);
 	mLookat += VECTOR3(0, fSignedDistance, 0);
+}
+
+void ICamera::GetViewMatrix(MATRIX4x4 & outMat)
+{
+	mFunction_UpdateViewMatrix();
+	outMat = mMatrixView;
+}
+
+void ICamera::GetProjMatrix(MATRIX4x4 & outMat)
+{
+	mFunction_UpdateProjMatrix();
+	outMat = mMatrixProjection;
 };
+
+
 
 
 void	ICamera::SetViewFrustumPlane(float iNearPlaneZ,float iFarPlaneZ)
@@ -246,14 +260,16 @@ void ICamera::SetViewAngle(float iViewAngleY,float iAspectRatio)
 
 
 /************************************************************************
+
 											PRIVATE	
+
 ************************************************************************/
 
 void	ICamera::mFunction_UpdateProjMatrix()
 {
 	mMatrixProjection=Matrix_PerspectiveProjection(
 		mViewAngleY,
-		mAspectRatio,
+		mAspectRatio*c_ConsoleCharAspectRatio,
 		mNearPlane,
 		mFarPlane);
 
@@ -268,12 +284,14 @@ void	ICamera::mFunction_UpdateViewMatrix()
 	
 	tmpMatrixTranslation=Matrix_Translation(-mPosition.x, -mPosition.y, -mPosition.z);
 	//然后用 yawpitchroll的逆阵 转到view空间
-	tmpMatrixRotation = Matrix_YawPitchRoll(mRotateY_Yaw, mRotateX_Pitch, mRotateZ_Roll);
+	tmpMatrixRotation = Matrix_YawPitchRoll(mRotateY_Yaw,mRotateX_Pitch, mRotateZ_Roll);
 	//正交矩阵的转置是逆
 	tmpMatrixRotation=Matrix_Transpose(tmpMatrixRotation);
-	//先平移，再旋转
-	mMatrixView= Matrix_Multiply(tmpMatrixTranslation,tmpMatrixRotation);
+	//先平移，再旋转 (column vector)
+	mMatrixView= Matrix_Multiply(tmpMatrixRotation, tmpMatrixTranslation);
 
+
+	//!!!!!!!!!!!怎么原来Noise3D一直用着行向量吗尼玛！连shader也跟着行向量了
 };
 
 void	ICamera::mFunction_UpdateRotation()
@@ -286,7 +304,7 @@ void	ICamera::mFunction_UpdateRotation()
 	tmpDirection=mLookat-mPosition;
 	float mLength = Vec3_Length(tmpDirection);
 	//注意浮点数误差，视点和位置不能重合
-	if (mLength<0.001)
+	if (mLength<0.001f)
 	{
 		//重置摄像机啊 尼玛 这样都set得出来不如去死啊
 		mRotateX_Pitch = 0;

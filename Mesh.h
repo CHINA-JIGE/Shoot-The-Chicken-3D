@@ -27,7 +27,7 @@
 
 		BOOL	LoadFile_OBJ(std::string pFilePath);
 
-		void		SetColor(COLOR3 color);
+		void		SetColor(const VECTOR4& color);
 
 		void		SetPosition(float x, float y, float z);
 
@@ -40,6 +40,8 @@
 		void		SetRotationZ_Roll(float angleZ);
 
 	//In order to avoid directly compute inverse of Matrix
+
+		void		GetWorldMatrix(MATRIX4x4& outMat);
 
 		UINT		GetVertexCount();
 
@@ -85,7 +87,6 @@
 		std::vector<UINT>*			m_pIB_Mem;//index in CPU memory
 		
 		//graphic attribute
-		COLOR3							mColor;
 		IPicture								mTexture;
 
 };

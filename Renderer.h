@@ -15,11 +15,15 @@ public:
 
 	void		Clear(COLOR3 clearColor=COLOR3(0,0,0),BOOL clearZBuff=TRUE);
 
-	BOOL	RenderMesh(IMesh& mesh);
+	void		SetCamera(ICamera& cam);
+
+	void		RenderMesh(IMesh& mesh);
 
 	BOOL	DrawPicture(IPicture& pic, UINT x1, UINT y1, UINT x2, UINT y2);
 
 	void		DrawLine(COLOR3 color, UINT x1, UINT y1, UINT x2, UINT y2);
+
+	void		DrawTriangle(COLOR3 color, const VECTOR2& v1_pixel, const VECTOR2& v2_pixel, const VECTOR2& v3_pixel);
 
 	void		Present();
 
@@ -37,14 +41,13 @@ private:
 
 	void			mFunction_UpdateCharAndTextAttrBuffer();
 
-	const short c_ConsoleCharSize = 3;//size of one char (in pixels)
-
-
 	DWORD	mBufferWidth;
 	DWORD	mBufferHeight;
 
 	HANDLE	m_hScreenOutput;
 	HANDLE	m_hScreenBuffer;
+
+	ICamera*						m_pCamera;
 
 	std::vector<float>*		m_pZBuffer;
 	std::vector<char>*		m_pCharBuffer;

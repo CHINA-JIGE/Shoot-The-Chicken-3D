@@ -121,13 +121,13 @@ BOOL IFileManager::ImportFile_OBJ(std::string pFilePath, std::vector<Vertex>& re
 				//non-existed element will be created
 				BOOL IsVertexExist = FALSE;
 				UINT  existedVertexIndex = 0;
-				for (UINT i = 0;i <vertexInfoList.size();i++)
+				for (UINT j = 0;j<vertexInfoList.size();j++)
 				{
 					//in DEBUG mode ,[] operator will be a big performance overhead
-					if (vertexInfoList[i] == currVertex)
+					if (vertexInfoList[j] == currVertex)
 					{
 						IsVertexExist = TRUE;
-						existedVertexIndex = i;
+						existedVertexIndex =j;
 						break;
 					}
 				}
@@ -194,7 +194,7 @@ BOOL IFileManager::ImportFile_PPM(std::string filePath, UINT & outWidth, UINT & 
 	for (UINT i = 0;i < outWidth*outHeight;++i)
 	{
 		COLOR3 tmpColor;
-		tmpColor = { colorBuff[3 * i],colorBuff[3 * i+1],colorBuff[3 * i+2] };
+		tmpColor = { colorBuff[3 * i]/255.0f,colorBuff[3 * i+1] / 255.0f,colorBuff[3 * i+2] / 255.0f };
 		outColorBuffer.at(i) = tmpColor;
 	}
 
@@ -225,7 +225,11 @@ BOOL IFileManager::ExportFile_PPM(std::string filePath, UINT width, UINT height,
 	fileOut << width << std::endl;
 	fileOut << height << std::endl;
 	fileOut << 255 << std::endl;
-	fileOut.write((char*)&colorBuffer.at(0), colorBuffer.size());
+	for (auto& c : colorBuffer)
+	{
+		unsigned char tmpByteColor[3] = { BYTE(c.x * 255),BYTE(c.y * 255), BYTE(c.z * 255) };
+		fileOut.write((char*)&tmpByteColor[0], 3);
+	}
 	fileOut.close();
 
 	return TRUE;

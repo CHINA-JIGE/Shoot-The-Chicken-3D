@@ -12,7 +12,6 @@ using namespace Math;
 	class ICamera 
 	{
 	public:
-		friend  class IRenderer;
 
 		ICamera();
 
@@ -63,6 +62,10 @@ using namespace Math;
 		void				fps_MoveRight(float fSignedDistance, BOOL enableYAxisMovement = FALSE);
 
 		void				fps_MoveUp(float fSignedDistance);
+
+		void				GetViewMatrix(MATRIX4x4& outMat);
+
+		void				GetProjMatrix(MATRIX4x4& outMat);
 
 	private:
 

@@ -2,6 +2,11 @@
 
 using namespace Math;
 
+
+const short c_ConsoleCharSize = 3;//size of one char (in pixels)
+
+const float c_ConsoleCharAspectRatio = 3.0f / 5.0f;//used to correct pixel scale
+
 enum TIMER_TIMEUINT
 {
 	TIMER_TIMEUNIT_MILLISECOND = 0,
@@ -9,10 +14,16 @@ enum TIMER_TIMEUINT
 };
 
 
-struct COLOR3
+/*struct COLOR3
 {
 	COLOR3() { r = g = b = 255U; }
 	COLOR3(BYTE R, BYTE G, BYTE B) { r = R;g = G;b = B; }
+	COLOR3(const VECTOR3& color255)
+	{
+		r = BYTE(Clamp(color255.x,  0, 255.01f));
+		g = BYTE(Clamp(color255.y, 0, 255.01f));
+		b = BYTE(Clamp(color255.z, 0, 255.01f));
+	}
 
 	COLOR3& operator*=(float scale)
 	{
@@ -24,18 +35,20 @@ struct COLOR3
 
 	COLOR3 operator *(float scale)
 	{
-		return COLOR3(scale*r, scale*g, scale*b);
+		return COLOR3(BYTE(scale*r), BYTE(scale*g), BYTE(scale*b));
 	}
 
 	friend COLOR3 operator*(float scale, const COLOR3& color)
 	{
-		return COLOR3(color.r*scale, color.g*scale, color.b*scale);
+		return COLOR3(BYTE(color.r*scale), BYTE(color.g*scale), BYTE(color.b*scale));
 	}
 
 	BYTE r;
 	BYTE g;
 	BYTE b;
-};
+};*/
+
+typedef VECTOR3 COLOR3;
 
 struct Material
 {
@@ -56,18 +69,19 @@ struct VertexShaderOutput_Vertex
 {
 	VECTOR4 posH;//homogenous position
 	VECTOR4 color;
-	VECTOR3 normalW;//world coord normal
 	VECTOR2 texcoord;
+
+	//Gouraud shading don't need to pass down the posW and normalW to pixel shader
+	//while Phong shading (per-pixel) need it
 };
 
-struct RasterizedVertex
+struct RasterizedFragment
 {
 	UINT pixelX;
 	UINT pixelY;
-	VECTOR3 pos;
-	VECTOR3 color;
-	VECTOR3 normal;
+	VECTOR4 color;
 	VECTOR2 texcoord;
+	//VECTOR3 normal;
 };
 
 struct RenderPipeline_InitData
@@ -76,7 +90,7 @@ struct RenderPipeline_InitData
 	UINT bufferHeight;
 
 	std::vector<float>*		pZBuffer;//depth buffer
-	std::vector<COLOR3>*	pOutColorBuffer;//output color buffer
+	std::vector<VECTOR3>*	pOutColorBuffer;//output color buffer
 };
 
 struct RenderPipeline_DrawCallData

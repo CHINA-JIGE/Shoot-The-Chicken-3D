@@ -53,15 +53,19 @@ private:
 
 	std::vector<VertexShaderOutput_Vertex>*	m_pVB_HomoSpace;//vertices in homogeous clipping space
 
+	void	HomoSpaceClipping();//polygon clipping in homo space
+
 	void Rasterize(UINT idx1,UINT idx2,UINT idx3);//rasterize triangles to get discrete pixels
 
-	std::vector<RasterizedVertex>*		m_pVB_Rasterized;//vertices attribute have been interpolated
+	std::vector<RasterizedFragment>*		m_pVB_Rasterized;//vertices attribute have been interpolated
 
-	void PixelShader(RasterizedVertex& inVertex);//compute colors of each rasterized "pixel"
+	void PixelShader(RasterizedFragment& inVertex);//compute colors of each rasterized "pixel"
 
 	std::vector<COLOR3>*		m_pOutColorBuffer;//output color buffer
 
 	//----------------------Helper function-----------------
 	BOOL		mFunction_HorizontalIntersect(float y,const VECTOR2& v1, const VECTOR2& v2, const VECTOR2& v3, UINT& outX1,UINT& outX2);
+
+	BOOL		mFunction_DepthTest(UINT x,UINT y,float testZ);
 
 };

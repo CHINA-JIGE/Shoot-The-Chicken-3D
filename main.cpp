@@ -13,7 +13,7 @@ int main()
 	{
 		GamePlay::UpdateWindowTitle();
 		GamePlay::UpdateTimer();
-		GamePlay::InputProcess();
+		GamePlay::MouseAndKeyBoradProcess();
 		GamePlay::Render();
 	}
 }

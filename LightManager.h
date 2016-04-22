@@ -35,7 +35,7 @@ public:
 	VECTOR3 mDirection;			 
 };
 
-	class _declspec(dllexport) ILightManager
+	class  ILightManager
 	{
 	public:
 		friend class  IRenderer;

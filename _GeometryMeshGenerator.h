@@ -1,6 +1,6 @@
 #pragma once
 
-	class _declspec(dllexport)  IGeometryMeshGenerator
+	class  IGeometryMeshGenerator
 	{
 	public:
 

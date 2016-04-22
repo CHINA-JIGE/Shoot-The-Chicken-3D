@@ -14,7 +14,7 @@ namespace GamePlay
 
 	void UpdateWindowTitle();
 
-	void InputProcess();
+	void MouseAndKeyBoradProcess();
 
 	void	Render();
 
