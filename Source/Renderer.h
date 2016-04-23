@@ -33,6 +33,8 @@ public:
 
 private:
 
+	void			mFunction_GeneratePalette();
+
 	void			mFunction_BlendPixel(UINT x, UINT y,float blendFactor, const COLOR3& newColor);
 
 	void			mFunction_SetPixel(UINT x, UINT y, const COLOR3& color);
@@ -56,4 +58,7 @@ private:
 	std::vector<COLOR3>*	m_pColorBuffer;//using 0~255 color
 	std::vector<WORD>*	m_pTextAttrBuffer;
 
+	//store preset color that could be expressed with console
+	//each palette for one 0.5x0.5x0.5 block (for optimization)
+	std::vector<Renderer_Color3ToConsolePixel>*		m_pPalette[8];
 };

@@ -176,6 +176,11 @@ void IMesh::SetMaterial(const Material & mat)
 	mMaterial = mat;
 }
 
+void IMesh::SetTexture(IPicture * pTex)
+{
+	m_pTexture = pTex;
+}
+
 void IMesh::SetPosition(float x,float y,float z)
 {
 	mPosition.x = x;

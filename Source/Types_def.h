@@ -165,3 +165,10 @@ struct OBJ_vertexInfoIndex
 	UINT vertexNormalID;
 };
 
+struct Renderer_Color3ToConsolePixel
+{
+	COLOR3	color;
+	BYTE			asciiChar;
+	WORD		textAttr;
+};
+

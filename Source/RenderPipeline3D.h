@@ -27,6 +27,8 @@ public:
 
 	void		SetMaterial(const Material& mat);
 
+	void		SetTexture(IPicture* pTex);
+
 private:
 
 	UINT mBufferWidth;
@@ -44,6 +46,7 @@ private:
 	static const UINT	c_maxLightCount = 8;
 	DirectionalLight	mDirLight[c_maxLightCount];//"IsEnabled"control whether to enable a light in one draw call
 	Material				mMaterial;//current using material
+	IPicture*				m_pTexture;//current using texture
 	VECTOR3				mCameraPos;
 
 	//------------------pipeline stage-----------------
@@ -70,5 +73,7 @@ private:
 	BOOL		mFunction_DepthTest(UINT x,UINT y,float testZ);
 
 	VECTOR4	mFunction_VertexLighting(const VECTOR3& vPosW,const VECTOR3& vNormalW);
+
+	VECTOR3	mFunction_SampleTexture(float x, float y);
 
 };

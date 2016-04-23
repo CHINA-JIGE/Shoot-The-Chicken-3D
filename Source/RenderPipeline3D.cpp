@@ -15,6 +15,7 @@ IRenderPipeline3D::IRenderPipeline3D()
 {
 	m_pVB_HomoSpace = new std::vector<VertexShaderOutput_Vertex>;
 	m_pVB_Rasterized = new std::vector<RasterizedFragment>;
+	m_pTexture = nullptr;//wait for user to set
 	mWorldMatrix.Identity();
 	mViewMatrix.Identity();
 	mProjMatrix.Identity();
@@ -134,6 +135,11 @@ void IRenderPipeline3D::SetTexcoordTransform(float dx, float dy, float scale)
 void IRenderPipeline3D::SetMaterial(const Material & mat)
 {
 	mMaterial = mat;
+}
+
+void IRenderPipeline3D::SetTexture(IPicture * pTex)
+{
+	m_pTexture = pTex;
 }
 
 
@@ -259,8 +265,17 @@ void IRenderPipeline3D::Rasterize(UINT idx1, UINT idx2, UINT idx3)
 				//I will use normal bilinear interpolation to see the result first
 				outVertex.pixelX = i;
 				outVertex.pixelY = j;
-				outVertex.color = s * v2.color + t*v3.color + (1-s - t)*v1.color;
-				outVertex.texcoord = s*v2.texcoord + t*v3.texcoord + (1-s - t)*v1.texcoord;
+
+				//perspective correct interpolation
+				outVertex.color = 
+					(s / v2.posH.z* v2.color + 
+					t / v3.posH.z *v3.color +
+					(1-s - t) / v1.posH.z *v1.color)*depth;
+
+				outVertex.texcoord = 
+					(s / v2.posH.z * v2.texcoord + 
+					t / v3.posH.z * v3.texcoord + 
+					(1-s - t) / v1.posH.z * v1.texcoord)*depth;
 
 
 				m_pVB_Rasterized->push_back(outVertex);
@@ -275,7 +290,9 @@ void IRenderPipeline3D::Rasterize(UINT idx1, UINT idx2, UINT idx3)
 void IRenderPipeline3D::PixelShader(RasterizedFragment& inVertex)
 {
 	COLOR3 outColor;
-	outColor =COLOR3(inVertex.color.x, inVertex.color.y, inVertex.color.z);
+	//if texture mapping is disabled, (1,1,1) will be returned to apply multiplication
+	COLOR3 texSampleColor = mFunction_SampleTexture(inVertex.texcoord.x, inVertex.texcoord.y);
+	outColor =COLOR3(inVertex.color.x, inVertex.color.y, inVertex.color.z) * texSampleColor;
 	m_pOutColorBuffer->at(inVertex.pixelY*mBufferWidth + inVertex.pixelX) = outColor;
 }
 
@@ -457,12 +474,20 @@ VECTOR4 IRenderPipeline3D::mFunction_VertexLighting(const VECTOR3& vPosW, const 
 			if (diffuseFactor > 0.0f)
 			{
 				//diffuse color (eye pos independent)
-				currentDiffuse = diffuseFactor * mMaterial.diffuse*mDirLight[i].mDiffuseColor;
+				currentDiffuse = diffuseFactor * mDirLight[i].mDiffuseColor;
+
+				//if Texture Mapping is disabled, then use pure diffuse color of material
+				if (m_pTexture == nullptr)
+				{
+					//component-wise
+					currentDiffuse = currentDiffuse* mMaterial.diffuse;
+				}
+				//else the color will be passed down to pixel shader to multiply by 
+				//per-pixel sample diffuse color
 
 
 				//Specular color - eye position dependent
-				/*
-				VECTOR3 unitOutgoingLightVec = Vec3_Reflect(unitIncomingLightVec, unitNormal);
+				/*VECTOR3 unitOutgoingLightVec = Vec3_Reflect(unitIncomingLightVec, unitNormal);
 				float specFactor =
 					mDirLight[i].mSpecularIntensity *
 					pow(max(Vec3_Dot(unitOutgoingLightVec, toEye), 0.0f), mMaterial.specularSmoothLevel);
@@ -478,4 +503,17 @@ VECTOR4 IRenderPipeline3D::mFunction_VertexLighting(const VECTOR3& vPosW, const 
 	}
 
 	return outColor;
+}
+
+inline VECTOR3 IRenderPipeline3D::mFunction_SampleTexture(float x, float y)
+{
+	//texture mapping disabled, diffuse color will be taken from material
+	if (m_pTexture == nullptr)return VECTOR3(1.0f, 1.0f, 1.0f);
+
+	//wrap-mode
+	UINT width = m_pTexture->GetWidth();
+	UINT height = m_pTexture->GetHeight();
+	x = abs(width * float(x - UINT(x)));
+	y = abs(height * float(y - UINT(y)));
+	return m_pTexture->GetPixel(UINT(x), UINT(y));
 }

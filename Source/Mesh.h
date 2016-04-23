@@ -31,6 +31,8 @@
 
 		void		SetMaterial(const Material& mat);
 
+		void		SetTexture(IPicture* pTex);
+
 		void		SetPosition(float x, float y, float z);
 
 		void		SetRotation(float angleX, float angleY, float angleZ);

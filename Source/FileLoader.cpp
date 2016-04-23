@@ -171,22 +171,27 @@ BOOL IFileManager::ImportFile_OBJ(std::string pFilePath, std::vector<Vertex>& re
 
 BOOL IFileManager::ImportFile_PPM(std::string filePath, UINT & outWidth, UINT & outHeight, std::vector<COLOR3>& outColorBuffer)
 {
-	std::ifstream fileIn(filePath);
+	std::ifstream fileIn(filePath,std::ios::binary);
 	if (fileIn.good() == FALSE)
 	{
 		DEBUG_MSG1("Load PPM : File Open Failed!!");
 		return FALSE;
 	}
 
-	//file head 
-	std::string fileFormat;
+	//file head (some fxxking ascii string)
 	UINT maxColorIntensity;
-	fileIn >> fileFormat >> outWidth >> outHeight>> maxColorIntensity;
-	fileIn.seekg(1, std::ios::cur);//skip '/n'
 
-	//read the main color chunk
-	unsigned char* colorBuff=new unsigned char[outWidth*outHeight*3];
-	fileIn.read((char*)colorBuff, outWidth*outHeight * 3);
+	//skip the file Format "P6/n"
+	fileIn.seekg(3);
+	std::streampos filePos = fileIn.tellg();
+	fileIn >> outWidth>> outHeight>> maxColorIntensity;
+
+	//skip the '/r'
+	fileIn.seekg(1, std::ios::cur);
+
+	//read the main color chunk (binary)
+	unsigned char* byteBuff=new unsigned char[outWidth*outHeight*3];
+	fileIn.read((char*)byteBuff, 3 * outWidth*outHeight);
 	outColorBuffer.resize(outWidth*outHeight);
 	fileIn.close();
 
@@ -194,7 +199,7 @@ BOOL IFileManager::ImportFile_PPM(std::string filePath, UINT & outWidth, UINT & 
 	for (UINT i = 0;i < outWidth*outHeight;++i)
 	{
 		COLOR3 tmpColor;
-		tmpColor = { colorBuff[3 * i]/255.0f,colorBuff[3 * i+1] / 255.0f,colorBuff[3 * i+2] / 255.0f };
+		tmpColor = { byteBuff[3 * i]/255.0f,byteBuff[3 * i+1] / 255.0f,byteBuff[3 * i+2] / 255.0f };
 		outColorBuffer.at(i) = tmpColor;
 	}
 
@@ -237,7 +242,7 @@ BOOL IFileManager::ExportFile_PPM(std::string filePath, UINT width, UINT height,
 
 
 /*******************************************************************
-									PRIVATE
+										PRIVATE
 *********************************************************************/
 BOOL IFileManager::mFunction_ImportFile_STL_Binary(std::string pFilePath, std::vector<VECTOR3>& refVertexBuffer,
 	std::vector<UINT>& refIndexBuffer, std::vector<VECTOR3>& refNormalBuffer, std::string& refFileInfo)

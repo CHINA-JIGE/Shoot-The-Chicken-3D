@@ -41,20 +41,21 @@ void GamePlay::Init()
 	myCamera.SetViewFrustumPlane(1.0f, 500.0f);
 
 	//------------------Init Art Resources------------------
-	Res::myDefaultMaterial.ambient = { 0.2f,0.2f,0.2f };
-	Res::myDefaultMaterial.diffuse = { 0.0f,1.0f,1.0f };
+	Res::myDefaultMaterial.ambient = { 0.5f,0.5f,0.5f };
+	Res::myDefaultMaterial.diffuse = { 1.0f,1.0f,1.0f };
 	Res::myDefaultMaterial.specular = { 1.0f,1.0f,1.0f };
 	Res::myDefaultMaterial.specularSmoothLevel = 20;
-	Res::myTestPic.LoadPPM("Media/beautiful_scene.ppm");
-	Res::myModel1.LoadFile_OBJ("Media/teapot.obj");
-	//Res::myModel1.CreateSphere(100.0f);
+	Res::myTestPic.LoadPPM("Media/earth.ppm");
+	//Res::myModel1.LoadFile_OBJ("Media/teapot.obj");
+	Res::myModel1.CreateSphere(100.0f);
 	Res::myModel1.SetPosition(0, 0, 0);
 	Res::myModel1.SetMaterial(Res::myDefaultMaterial);
+	Res::myModel1.SetTexture(&Res::myTestPic);
 
 	//-----------------Lights----------------------
 	Res::myLight1.mAmbientColor = { 1.0f,1.0f,1.0f };
 	Res::myLight1.mDiffuseColor = { 1.0f,1.0f,1.0f };
-	Res::myLight1.mDiffuseIntensity = 0.8f;
+	Res::myLight1.mDiffuseIntensity =1.0f;
 	Res::myLight1.mDirection = { 1.0f,-1.0f,1.0f };
 	Res::myLight1.mIsEnabled = TRUE;
 	Res::myLight1.mSpecularColor = { 1.0f,1.0f,1.0f };

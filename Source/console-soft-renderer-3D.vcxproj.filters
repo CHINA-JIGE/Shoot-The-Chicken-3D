@@ -72,9 +72,6 @@
     <ClInclude Include="Timer.h">
       <Filter>源文件\Engine\_Core</Filter>
     </ClInclude>
-    <ClInclude Include="MyConsoleEngine.h">
-      <Filter>源文件\Engine\_Core</Filter>
-    </ClInclude>
     <ClInclude Include="Game.h">
       <Filter>源文件\Game</Filter>
     </ClInclude>
@@ -95,6 +92,9 @@
     </ClInclude>
     <ClInclude Include="_GeometryMeshGenerator.h">
       <Filter>源文件\Engine\_Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="MyConsoleEngine.h">
+      <Filter>源文件\Engine</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

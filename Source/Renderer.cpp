@@ -9,7 +9,8 @@
 
 IRenderer::IRenderer()
 {
-
+	for (UINT i = 0;i < 8;i++)m_pPalette[i] = new std::vector<Renderer_Color3ToConsolePixel>;
+	mFunction_GeneratePalette();
 }
 
 IRenderer::~IRenderer()
@@ -18,6 +19,12 @@ IRenderer::~IRenderer()
 	CloseHandle(m_hScreenOutput);
 	delete m_pCharBuffer;
 	delete m_pZBuffer;
+	for (UINT i = 0;i < 8;i++)
+	{
+		m_pPalette[i]->clear();
+		delete m_pPalette[i];
+	}
+
 }
 
 void IRenderer::Init(UINT bufferWidth, UINT bufferHeight)
@@ -278,6 +285,7 @@ void IRenderer::RenderMesh(IMesh& mesh)
 	IRenderPipeline3D::SetViewMatrix(matV);
 	IRenderPipeline3D::SetCameraPos(m_pCamera->GetPosition());
 	IRenderPipeline3D::SetMaterial(mesh.mMaterial);
+	IRenderPipeline3D::SetTexture(mesh.m_pTexture);//nullptr is OK
 
 	RenderPipeline_DrawCallData drawCallData;
 	drawCallData.offset = 0;
@@ -328,6 +336,113 @@ void IRenderer::SetWindowTitle(const char * titleStr)
 							P R I V A T E
 *****************************************************/
 
+void IRenderer::mFunction_GeneratePalette()
+{
+	//I think I should make full use of the foreGround and BackGround color,
+	//control the percentage of foreground coverage, 
+	//to simulate linear interpolation between foreground and background color,
+	//in order to "GENERATE" more preset color sample in color space
+	//if I only use console's color , I'll only got 15 colors in total, which is a severe shortage.
+
+	//-Generate Palette (generate more console "pixel", extension of color space)
+	constexpr UINT c_ConsoleTotalColorCount = 8;
+
+
+	/*
+	FOREGROUND_BLUE 蓝色
+	FOREGROUND_GREEN 绿色
+	FOREGROUND_RED 红色
+	FOREGROUND_INTENSITY 加强
+	BACKGROUND_BLUE 蓝色背景
+	BACKGROUND_GREEN 绿色背景
+	BACKGROUND_RED 红色背景
+	BACKGROUND_INTENSITY 背景色加强
+	COMMON_LVB_REVERSE_VIDEO 反色
+	*/
+
+	//foreGround Text Attribute
+	std::pair<COLOR3, WORD>  fgrTextAttr[c_ConsoleTotalColorCount] =
+	{
+		{ COLOR3(0,0,0),				NULL },
+		/*{ COLOR3(0.5f,0,0),			FOREGROUND_RED },
+		{ COLOR3(0,0.5f,0),			FOREGROUND_GREEN },
+		{ COLOR3(0,0,0.5f),			FOREGROUND_BLUE },
+		{ COLOR3(0.5f,0.5f,0),		FOREGROUND_RED | FOREGROUND_GREEN },
+		{ COLOR3(0,0.5f,0.5f),		FOREGROUND_GREEN | FOREGROUND_BLUE },
+		{ COLOR3(0.5f,0,0.5f),		FOREGROUND_RED | FOREGROUND_BLUE },
+		{ COLOR3(0.5f,0.5f,0.5f),	FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE },*/
+		{ COLOR3(1.0f,0,0),			FOREGROUND_RED | FOREGROUND_INTENSITY },
+		{ COLOR3(0,1.0f,0),			FOREGROUND_GREEN | FOREGROUND_INTENSITY },
+		{ COLOR3(0,0,1.0f),			FOREGROUND_BLUE | FOREGROUND_INTENSITY },
+		{ COLOR3(0,1.0f,1.0f),		FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY },
+		{ COLOR3(1.0f,0,1.0f),		FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_INTENSITY },
+		{ COLOR3(1.0f,1.0f,0),		FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_INTENSITY },
+		{ COLOR3(1.0f,1.0f,1.0f),	FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY },
+	};
+
+	//BackGround Text Attribute
+	 std::pair<COLOR3, WORD>  bgrTextAttr[c_ConsoleTotalColorCount] =
+	{
+		{ COLOR3(0,0,0),				NULL },
+		/*{ COLOR3(0.5f,0,0),			BACKGROUND_RED },
+		{ COLOR3(0,0.5f,0),			BACKGROUND_GREEN },
+		{ COLOR3(0,0,0.5f),			BACKGROUND_BLUE },
+		{ COLOR3(0.5f,0.5f,0),		BACKGROUND_RED | BACKGROUND_GREEN },
+		{ COLOR3(0,0.5f,0.5f),		BACKGROUND_GREEN | BACKGROUND_BLUE },
+		{ COLOR3(0.5f,0,0.5f),		BACKGROUND_RED | BACKGROUND_BLUE },
+		{ COLOR3(0.5f,0.5f,0.5f),	BACKGROUND_RED | BACKGROUND_GREEN | BACKGROUND_BLUE },*/
+		{ COLOR3(1.0f,0,0),			BACKGROUND_RED | BACKGROUND_INTENSITY },
+		{ COLOR3(0,1.0f,0),			BACKGROUND_GREEN | BACKGROUND_INTENSITY },
+		{ COLOR3(0,0,1.0f),			BACKGROUND_BLUE | BACKGROUND_INTENSITY },
+		{ COLOR3(0,1.0f,1.0f),		BACKGROUND_GREEN | BACKGROUND_BLUE | BACKGROUND_INTENSITY },
+		{ COLOR3(1.0f,0,1.0f),		BACKGROUND_RED | BACKGROUND_BLUE | BACKGROUND_INTENSITY },
+		{ COLOR3(1.0f,1.0f,0),		BACKGROUND_RED | BACKGROUND_GREEN | BACKGROUND_INTENSITY },
+		{ COLOR3(1.0f,1.0f,1.0f),	BACKGROUND_RED | BACKGROUND_GREEN | BACKGROUND_BLUE | BACKGROUND_INTENSITY },
+	};
+
+	constexpr UINT c_steps = 6;
+	constexpr BYTE c_LerpChar[c_steps] = { ' ',	  '.' ,  '='  ,'&'  ,'#'	,'#'};
+	//constexpr BYTE c_LerpChar[c_steps] = { ' ',	  '.' , '='  ,'#' };
+
+	for (UINT i = 0;i < c_ConsoleTotalColorCount;++i)
+	{
+		for (UINT j = i+1;j < c_ConsoleTotalColorCount;++j)
+		{
+			//for example,(0,0,0)->(0.5,0,0) and (0,0,0)->(1,0,0) will generate some overlap colors
+			//and could also generate discontinuous colors in one axis
+			//those whose Euclidean Distance less than one should not perform Lerp.
+			COLOR3 colorVec = fgrTextAttr[i].first - bgrTextAttr[j].first;
+			if (colorVec.Length() < 0.9f)goto label_nextLerp;
+
+			//to generate new color , perform linear interpolation
+			//between preset colors, and use adequate ascii char(dependent on the 
+			//pixel coverage) as Lerp ratio factor
+
+			//lerp from bgr color to fgr color
+			for (UINT k =0;k < c_steps-1;k++)
+			{
+				COLOR3 newColor = Lerp(bgrTextAttr[i].first, fgrTextAttr[j].first, float(k) *1.0f / float(c_steps-1));
+				
+				//put the color in corresponding palette (classfied by block similar to octant)
+				//determined by 3 bit , each one for x/y/z
+				UINT paletteID = 0;
+				if (newColor.x >= 0.5)paletteID += 0x0004;
+				if (newColor.y >= 0.5)paletteID += 0x0002;
+				if (newColor.z >= 0.5)paletteID += 0x0001;
+				
+				//new color
+				Renderer_Color3ToConsolePixel tmpObj;
+				tmpObj.asciiChar = c_LerpChar[k];
+				tmpObj.color = newColor;
+				tmpObj.textAttr = bgrTextAttr[i].second | fgrTextAttr[j].second;
+				m_pPalette[paletteID]->push_back(tmpObj);
+			}
+
+		label_nextLerp:;
+		}
+	}
+}
+
 void IRenderer::mFunction_BlendPixel(UINT x, UINT y, float blendFactor, const COLOR3 & newColor)
 {
 	if (x < mBufferWidth && y < mBufferHeight)
@@ -372,130 +487,36 @@ void IRenderer::mFunction_AdjustWindowSize()
 
 }
 
-/*void IRenderer::mFunction_UpdateCharAndTextAttrBuffer()
+inline void IRenderer::mFunction_UpdateCharAndTextAttrBuffer()
 {
-	//Update Char And Text Attr Buffer according to Color Buffer,
-	//almost the last operation before using Win API to draw colored chars
-	//to screen
-
-
-	/*
-	FOREGROUND_BLUE 蓝色
-	FOREGROUND_GREEN 绿色
-	FOREGROUND_RED 红色
-	FOREGROUND_INTENSITY 加强
-	BACKGROUND_BLUE 蓝色背景
-	BACKGROUND_GREEN 绿色背景
-	BACKGROUND_RED 红色背景
-	BACKGROUND_INTENSITY 背景色加强
-	COMMON_LVB_REVERSE_VIDEO 反色
-	
-
-	//define colors...
-	const WORD lowR = FOREGROUND_RED;
-	const WORD highR = FOREGROUND_RED | FOREGROUND_INTENSITY;
-	const WORD lowG = FOREGROUND_GREEN;
-	const WORD highG = FOREGROUND_GREEN | FOREGROUND_INTENSITY;
-	const WORD lowB = FOREGROUND_BLUE;
-	const WORD highB = FOREGROUND_BLUE | FOREGROUND_INTENSITY;
-
-
-	//define what char & color & textAttr it will present of each color level
-	const UINT c_color_level_Count = 9;
-
-	/*const char color_level_to_char[c_color_level_Count] = {
-	' ',	'.',';','s','@'		,'i','s', '@'
-	};
-	const char color_level_to_char[c_color_level_Count] = {
-		' ',	'.',';','s','#'		,'i','s','&','#'
-	};
-	const WORD color_level_R_to_textAttr[c_color_level_Count] = {
-		0,lowR,lowR,lowR,lowR,highR,highR,highR,highR
-	};
-
-	const WORD color_level_G_to_textAttr[c_color_level_Count] = {
-		0,lowG,lowG,lowG,lowG,highG,highG,highG,highG
-	};
-
-	const WORD color_level_B_to_textAttr[c_color_level_Count] = {
-		0,lowB,lowB,lowB,lowB,highB,highB,highB,highB
-	};
 
 	for (UINT i = 0;i < mBufferWidth*mBufferHeight;++i)
 	{
 		COLOR3& color = m_pColorBuffer->at(i);
 
-		//quantization
-		//the .01 is in case the r/g/b=1.0f, I want the rLevel = [0,7]
-		UINT rLevel = Clamp(UINT(c_color_level_Count* (color.x)),0, c_color_level_Count);
-		UINT gLevel = Clamp(UINT(c_color_level_Count * (color.y)),0,c_color_level_Count);
-		UINT bLevel = Clamp(UINT(c_color_level_Count * (color.z)),0,c_color_level_Count);
-		UINT maxLevel = max(max(rLevel, gLevel), bLevel);
+		//Please refer to Generation of Palettes
+		//determined by 3 bit , each one for x/y/z
+		UINT paletteID = 0;
+		if (color.x >= 0.5)paletteID += 0x0004;
+		if (color.y >= 0.5)paletteID += 0x0002;
+		if (color.z >= 0.5)paletteID += 0x0001;
 
-		m_pCharBuffer->at(i) = color_level_to_char[maxLevel];
-		WORD textAttr = (color_level_R_to_textAttr[rLevel] |
-			color_level_G_to_textAttr[gLevel] |
-			color_level_B_to_textAttr[bLevel]);
-		m_pTextAttrBuffer->at(i) = textAttr;
-	}
-}*/
-
-inline void IRenderer::mFunction_UpdateCharAndTextAttrBuffer()
-{
-	/*
-	FOREGROUND_BLUE 蓝色
-	FOREGROUND_GREEN 绿色
-	FOREGROUND_RED 红色
-	FOREGROUND_INTENSITY 加强
-	BACKGROUND_BLUE 蓝色背景
-	BACKGROUND_GREEN 绿色背景
-	BACKGROUND_RED 红色背景
-	BACKGROUND_INTENSITY 背景色加强
-	COMMON_LVB_REVERSE_VIDEO 反色
-	*/
-
-	//I think I should make full use of the foreGround and BackGround color,
-	//control the percentage of foreground coverage, 
-	//to simulate linear interpolation between foreground and background color,
-	//in order to "GENERATE" more preset color sample in color space
-	//if I only use console's color , I'll only got 15 colors in total, which is a severe shortage.
-	const WORD lowR = FOREGROUND_RED;
-	const WORD highR = FOREGROUND_RED | FOREGROUND_INTENSITY;
-	const WORD lowG = FOREGROUND_GREEN;
-	const WORD highG = FOREGROUND_GREEN | FOREGROUND_INTENSITY;
-	const WORD lowB = FOREGROUND_BLUE;
-	const WORD highB = FOREGROUND_BLUE | FOREGROUND_INTENSITY;
-
-
-	//define what char & color & textAttr it will present of each color level
-	const UINT c_color_level_Count = 8;
-
-	const char color_level_to_char[c_color_level_Count] = {
-	' ',	'.',';','s','@'		,'i','s', '@'
-	};
-
-	const WORD color_level_R_to_textAttr[c_color_level_Count] = {
-		lowR,lowR,lowR,lowR,lowR,highR,highR,highR
-	};
-
-	const WORD color_level_G_to_textAttr[c_color_level_Count] = {
-		lowR,lowG,lowG,lowG,lowG,highG,highG,highG
-	};
-
-	const WORD color_level_B_to_textAttr[c_color_level_Count] = {
-		lowR,lowB,lowB,lowB,lowB,highB,highB,highB
-	};
-
-	//quantization
-	//the .01 is in case the r/g/b=255, I want the rLevel = [0,7]
-	UINT rLevel = c_color_level_Count	 * (color.r) / 255.01f;
-	UINT gLevel = c_color_level_Count * (color.g) / 255.01f;
-	UINT bLevel = c_color_level_Count * (color.b) / 255.01f;
-	UINT maxLevel = max(max(rLevel, gLevel), bLevel);
-
-	for (UINT i = 0;i < mBufferWidth*mBufferHeight;++i)
-	{
-		m_pCharBuffer->at(offset) = color_level_to_char[maxLevel];
-		m_pTextAttrBuffer->at(offset) = ;
+		float minLength = 1.0f;
+		UINT paletteColorID = 0;
+		for (UINT j = 0;j < m_pPalette[paletteID]->size();++j)
+		{
+			//find the nearest preset color (Euclidean distance)
+			VECTOR3 deltaVec = color - m_pPalette[paletteID]->at(j).color;
+			float len = deltaVec.Length();
+			if (len < minLength)
+			{
+				minLength = len;
+				paletteColorID = j;
+			}
+		}
+		
+		//finally convert to console char
+		m_pCharBuffer->at(i) = m_pPalette[paletteID]->at(paletteColorID).asciiChar;
+		m_pTextAttrBuffer->at(i) = m_pPalette[paletteID]->at(paletteColorID).textAttr;
 	}
 }

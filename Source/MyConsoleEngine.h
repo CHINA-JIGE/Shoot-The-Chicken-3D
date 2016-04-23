@@ -7,6 +7,7 @@
 #include <cmath>
 #include <fstream>
 #include <sstream>
+#include <unordered_map>
 
 #include "Math.h"
 #include "Types_def.h"
