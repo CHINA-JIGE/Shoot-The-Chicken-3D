@@ -1,0 +1,44 @@
+#midblock {
+  overflow: visible; }
+  #midblock .__avira__search_block {
+    left: -40px;
+    top: -36px; }
+  #midblock .abstract[style='position: relative;'] .__avira__search_block {
+    left: -22px; }
+  #midblock #qna .__avira__search_block {
+    left: -42px;
+    top: -2px; }
+
+.results-wrapper #links .__avira__search_block {
+  position: relative;
+  left: 0;
+  margin-right: 5px;
+  margin-bottom: 2px; }
+
+#res h3.r {
+  overflow: visible !important; }
+
+*:hover > .__avira__search_block {
+  opacity: 1.0; }
+
+.__avira__search_block {
+  position: absolute;
+  left: -25px;
+  display: inline-block !important;
+  width: 15px;
+  height: 20px;
+  opacity: .5;
+  background-repeat: no-repeat;
+  background-position: 80% 50%;
+  background-size: cover;
+  background-size: 100% 75%;
+  cursor: pointer;
+  transition: opacity .4s;
+  vertical-align: middle; }
+
+.__avira__search_block {
+  background-image: url("../../img/serp_info_safe.svg"); }
+  .__avira__search_block.__avira__info-danger {
+    background-image: url("../../img/serp_info_unsafe.svg"); }
+  .__avira__search_block.__avira__info-pua {
+    background-image: url("../../img/serp_info_warning.svg"); }

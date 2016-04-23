@@ -1,0 +1,579 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!-- <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-hans" lang="zh-hans" dir="ltr"> -->
+<html class="js" xmlns:wb="http://open.weibo.com/wb"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="shortcut icon" href="http://imgtec.eetrend.com/sites/imgtec.eetrend.com/files/corolla_favicon.png" type="image/x-icon">
+  <title>【GPU技术】透视校正插值 | Imagination中文技术社区</title>
+  <link rel="alternate" type="application/rss+xml" title="xilinx中文社区" href="http://xilinx.eetrend.com/rss">
+  <link type="text/css" rel="stylesheet" media="all" href="%E3%80%90GPU%E6%8A%80%E6%9C%AF%E3%80%91%E9%80%8F%E8%A7%86%E6%A0%A1%E6%AD%A3%E6%8F%92%E5%80%BC%20_%20Imagination%E4%B8%AD%E6%96%87%E6%8A%80%E6%9C%AF%E7%A4%BE%E5%8C%BA_files/reset.css">
+  <link type="text/css" rel="stylesheet" media="all" href="%E3%80%90GPU%E6%8A%80%E6%9C%AF%E3%80%91%E9%80%8F%E8%A7%86%E6%A0%A1%E6%AD%A3%E6%8F%92%E5%80%BC%20_%20Imagination%E4%B8%AD%E6%96%87%E6%8A%80%E6%9C%AF%E7%A4%BE%E5%8C%BA_files/node.css">
+<link type="text/css" rel="stylesheet" media="all" href="%E3%80%90GPU%E6%8A%80%E6%9C%AF%E3%80%91%E9%80%8F%E8%A7%86%E6%A0%A1%E6%AD%A3%E6%8F%92%E5%80%BC%20_%20Imagination%E4%B8%AD%E6%96%87%E6%8A%80%E6%9C%AF%E7%A4%BE%E5%8C%BA_files/defaults.css">
+<link type="text/css" rel="stylesheet" media="all" href="%E3%80%90GPU%E6%8A%80%E6%9C%AF%E3%80%91%E9%80%8F%E8%A7%86%E6%A0%A1%E6%AD%A3%E6%8F%92%E5%80%BC%20_%20Imagination%E4%B8%AD%E6%96%87%E6%8A%80%E6%9C%AF%E7%A4%BE%E5%8C%BA_files/system.css">
+<link type="text/css" rel="stylesheet" media="all" href="%E3%80%90GPU%E6%8A%80%E6%9C%AF%E3%80%91%E9%80%8F%E8%A7%86%E6%A0%A1%E6%AD%A3%E6%8F%92%E5%80%BC%20_%20Imagination%E4%B8%AD%E6%96%87%E6%8A%80%E6%9C%AF%E7%A4%BE%E5%8C%BA_files/system-menus.css">
+<link type="text/css" rel="stylesheet" media="all" href="%E3%80%90GPU%E6%8A%80%E6%9C%AF%E3%80%91%E9%80%8F%E8%A7%86%E6%A0%A1%E6%AD%A3%E6%8F%92%E5%80%BC%20_%20Imagination%E4%B8%AD%E6%96%87%E6%8A%80%E6%9C%AF%E7%A4%BE%E5%8C%BA_files/user.css">
+<link type="text/css" rel="stylesheet" media="all" href="%E3%80%90GPU%E6%8A%80%E6%9C%AF%E3%80%91%E9%80%8F%E8%A7%86%E6%A0%A1%E6%AD%A3%E6%8F%92%E5%80%BC%20_%20Imagination%E4%B8%AD%E6%96%87%E6%8A%80%E6%9C%AF%E7%A4%BE%E5%8C%BA_files/content-module.css">
+<link type="text/css" rel="stylesheet" media="all" href="%E3%80%90GPU%E6%8A%80%E6%9C%AF%E3%80%91%E9%80%8F%E8%A7%86%E6%A0%A1%E6%AD%A3%E6%8F%92%E5%80%BC%20_%20Imagination%E4%B8%AD%E6%96%87%E6%8A%80%E6%9C%AF%E7%A4%BE%E5%8C%BA_files/ctools.css">
+<link type="text/css" rel="stylesheet" media="all" href="%E3%80%90GPU%E6%8A%80%E6%9C%AF%E3%80%91%E9%80%8F%E8%A7%86%E6%A0%A1%E6%AD%A3%E6%8F%92%E5%80%BC%20_%20Imagination%E4%B8%AD%E6%96%87%E6%8A%80%E6%9C%AF%E7%A4%BE%E5%8C%BA_files/date.css">
+<link type="text/css" rel="stylesheet" media="all" href="%E3%80%90GPU%E6%8A%80%E6%9C%AF%E3%80%91%E9%80%8F%E8%A7%86%E6%A0%A1%E6%AD%A3%E6%8F%92%E5%80%BC%20_%20Imagination%E4%B8%AD%E6%96%87%E6%8A%80%E6%9C%AF%E7%A4%BE%E5%8C%BA_files/filefield.css">
+<link type="text/css" rel="stylesheet" media="all" href="%E3%80%90GPU%E6%8A%80%E6%9C%AF%E3%80%91%E9%80%8F%E8%A7%86%E6%A0%A1%E6%AD%A3%E6%8F%92%E5%80%BC%20_%20Imagination%E4%B8%AD%E6%96%87%E6%8A%80%E6%9C%AF%E7%A4%BE%E5%8C%BA_files/forum.css">
+<link type="text/css" rel="stylesheet" media="all" href="%E3%80%90GPU%E6%8A%80%E6%9C%AF%E3%80%91%E9%80%8F%E8%A7%86%E6%A0%A1%E6%AD%A3%E6%8F%92%E5%80%BC%20_%20Imagination%E4%B8%AD%E6%96%87%E6%8A%80%E6%9C%AF%E7%A4%BE%E5%8C%BA_files/fieldgroup.css">
+<link type="text/css" rel="stylesheet" media="all" href="%E3%80%90GPU%E6%8A%80%E6%9C%AF%E3%80%91%E9%80%8F%E8%A7%86%E6%A0%A1%E6%AD%A3%E6%8F%92%E5%80%BC%20_%20Imagination%E4%B8%AD%E6%96%87%E6%8A%80%E6%9C%AF%E7%A4%BE%E5%8C%BA_files/views.css">
+<link type="text/css" rel="stylesheet" media="all" href="%E3%80%90GPU%E6%8A%80%E6%9C%AF%E3%80%91%E9%80%8F%E8%A7%86%E6%A0%A1%E6%AD%A3%E6%8F%92%E5%80%BC%20_%20Imagination%E4%B8%AD%E6%96%87%E6%8A%80%E6%9C%AF%E7%A4%BE%E5%8C%BA_files/comment.css">
+<link type="text/css" rel="stylesheet" media="all" href="%E3%80%90GPU%E6%8A%80%E6%9C%AF%E3%80%91%E9%80%8F%E8%A7%86%E6%A0%A1%E6%AD%A3%E6%8F%92%E5%80%BC%20_%20Imagination%E4%B8%AD%E6%96%87%E6%8A%80%E6%9C%AF%E7%A4%BE%E5%8C%BA_files/reset_002.css">
+<link type="text/css" rel="stylesheet" media="all" href="%E3%80%90GPU%E6%8A%80%E6%9C%AF%E3%80%91%E9%80%8F%E8%A7%86%E6%A0%A1%E6%AD%A3%E6%8F%92%E5%80%BC%20_%20Imagination%E4%B8%AD%E6%96%87%E6%8A%80%E6%9C%AF%E7%A4%BE%E5%8C%BA_files/base.css">
+<link type="text/css" rel="stylesheet" media="all" href="%E3%80%90GPU%E6%8A%80%E6%9C%AF%E3%80%91%E9%80%8F%E8%A7%86%E6%A0%A1%E6%AD%A3%E6%8F%92%E5%80%BC%20_%20Imagination%E4%B8%AD%E6%96%87%E6%8A%80%E6%9C%AF%E7%A4%BE%E5%8C%BA_files/style.css">
+<link type="text/css" rel="stylesheet" media="all" href="%E3%80%90GPU%E6%8A%80%E6%9C%AF%E3%80%91%E9%80%8F%E8%A7%86%E6%A0%A1%E6%AD%A3%E6%8F%92%E5%80%BC%20_%20Imagination%E4%B8%AD%E6%96%87%E6%8A%80%E6%9C%AF%E7%A4%BE%E5%8C%BA_files/drupal-6.css">
+<link type="text/css" rel="stylesheet" media="all" href="%E3%80%90GPU%E6%8A%80%E6%9C%AF%E3%80%91%E9%80%8F%E8%A7%86%E6%A0%A1%E6%AD%A3%E6%8F%92%E5%80%BC%20_%20Imagination%E4%B8%AD%E6%96%87%E6%8A%80%E6%9C%AF%E7%A4%BE%E5%8C%BA_files/colors.css">
+<link type="text/css" rel="stylesheet" media="print" href="%E3%80%90GPU%E6%8A%80%E6%9C%AF%E3%80%91%E9%80%8F%E8%A7%86%E6%A0%A1%E6%AD%A3%E6%8F%92%E5%80%BC%20_%20Imagination%E4%B8%AD%E6%96%87%E6%8A%80%E6%9C%AF%E7%A4%BE%E5%8C%BA_files/print.css">
+  <style type="text/css" media="all">/* Base font size */
+html {
+  font-size: 14px;
+}
+
+/* Layout width */
+body.two-sidebars #header-menu,
+body.two-sidebars #header,
+body.two-sidebars #main-columns {
+  width: ;
+  min-width:800px;
+  max-width: 1220px;
+}
+body.one-sidebar #header-menu,
+body.one-sidebar #header,
+body.one-sidebar #main-columns {
+  width: ;
+  min-width: 980px;
+  max-width: 1020px;
+}
+body.no-sidebars #header-menu,
+body.no-sidebars #header,
+body.no-sidebars #main-columns {
+  width: ;
+  min-width: 550px;
+  max-width: 800px;
+}
+
+/**
+ * Color schemes
+ */
+
+/* Background */
+body {
+  background-color: #f8f8f8;
+}
+#header-menu .content > ul > li.active-trail {
+  background-color: #f8f8f8;
+}
+/* Text (black) */
+body,
+#site-name a,
+#header-menu .content li.active a,
+h1.page-title,
+.node h2.node-title,
+.node h1.node-title a,
+.node h2.node-title a,
+.comment h3.title a,
+.tabs ul.tabs li a,
+pre,
+code,
+samp,
+var,
+table.update tr,
+table.system-status-report tr {
+  color: #2e2e2e;
+}
+#site-name a::-moz-selection {
+  background-color: #2e2e2e;
+}
+#site-name a::selection {
+  background-color: #2e2e2e;
+}
+.node-title a::-moz-selection {
+  background-color: #2e2e2e;
+}
+.node-title a::selection {
+  background-color: #2e2e2e;
+}
+/* Link (blue) */
+a,
+a.active,
+li a.active {
+  color: #086782;
+}
+legend {
+  background-color: #086782;
+}
+/* Link hovered (orange) */
+a:hover,
+a:focus,
+a.active:hover,
+a.active:focus,
+li a.active:hover,
+li a.active:focus {
+  color: #e25401;
+}
+.node h1.node-title a:hover,
+.node h2.node-title a:hover {
+  color: #e25401;
+}
+/* Link underline (light blue) */
+a {
+  border-bottom: 0px solid #cfdde5;
+}
+/* Header menu (black) */
+#header-menu-wrapper {
+  background-color: #2e2e2d;
+}
+/* Header menu hovered (orange) */
+#header-menu .content li a:hover,
+#header-menu .content li a:active,
+#header-menu .content li a:focus {
+  background-color: #e25402;
+}
+/* Slogan (orange) */
+#site-slogan {
+  color: #e25400;
+}
+#site-slogan::selection {
+  background-color: #e25402;
+}
+#site-slogan::-moz-selection {
+  background-color: #e25402;
+}
+.poll .bar .foreground {
+  background-color: #e25402;
+}
+/* Border (gray) */
+#page {
+  border: 0px solid #e1e1e1;
+}
+/* Border strong (dark gray) */
+#sidebar-first input,
+#sidebar-second input {
+  border: 1px solid #c4c4c4;
+}
+.tabs ul.tabs li a {
+  border: 1px solid #c4c4c4;
+}
+/* Tab */
+.tabs ul.tabs li a {
+  background-color: #f5f4f3;
+}
+ul.vertical-tabs-list li a {
+  background-color: #f5f4f3;
+}
+/* Block title (green) */
+.block h2,
+h2 {
+  color: #779125;
+}
+.block h2::selection {
+  color: #fff;
+  background-color: #779125;
+}
+.block h2::-moz-selection {
+  background-color: #779125;
+  color: #fff;
+}
+/* Fieldset (gray) */
+fieldset {
+  background-color: #fbfbfb;
+}
+/* Fieldset border (dark gray) */
+fieldset {
+  border: 1px solid #e1e1e2;
+}
+
+</style> 
+
+  <!--[if lte IE 8]>
+  <link type="text/css" rel="stylesheet" href="/sites/imgtec.eetrend.com/themes/corolla/ie8.css" media="all" />
+  <![endif]-->
+
+  <!--[if lte IE 7]>
+  <link type="text/css" rel="stylesheet" href="/sites/imgtec.eetrend.com/themes/corolla/ie7.css" media="all" />
+  <![endif]-->
+
+  <script type="text/javascript" src="%E3%80%90GPU%E6%8A%80%E6%9C%AF%E3%80%91%E9%80%8F%E8%A7%86%E6%A0%A1%E6%AD%A3%E6%8F%92%E5%80%BC%20_%20Imagination%E4%B8%AD%E6%96%87%E6%8A%80%E6%9C%AF%E7%A4%BE%E5%8C%BA_files/jquery.js"></script>
+<script type="text/javascript" src="%E3%80%90GPU%E6%8A%80%E6%9C%AF%E3%80%91%E9%80%8F%E8%A7%86%E6%A0%A1%E6%AD%A3%E6%8F%92%E5%80%BC%20_%20Imagination%E4%B8%AD%E6%96%87%E6%8A%80%E6%9C%AF%E7%A4%BE%E5%8C%BA_files/drupal.js"></script>
+<script type="text/javascript" src="%E3%80%90GPU%E6%8A%80%E6%9C%AF%E3%80%91%E9%80%8F%E8%A7%86%E6%A0%A1%E6%AD%A3%E6%8F%92%E5%80%BC%20_%20Imagination%E4%B8%AD%E6%96%87%E6%8A%80%E6%9C%AF%E7%A4%BE%E5%8C%BA_files/zh-hans_b3bb5f78861f3dc094d62c099c02aa55.js"></script>
+<script type="text/javascript">
+<!--//--><![CDATA[//><!--
+jQuery.extend(Drupal.settings, { "basePath": "/", "CToolsUrlIsAjaxTrusted": { "/article/1940": true } });
+//--><!]]>
+</script>
+  <meta property="wb:webmaster" content="805bfea205ee31b3">
+ <script src="%E3%80%90GPU%E6%8A%80%E6%9C%AF%E3%80%91%E9%80%8F%E8%A7%86%E6%A0%A1%E6%AD%A3%E6%8F%92%E5%80%BC%20_%20Imagination%E4%B8%AD%E6%96%87%E6%8A%80%E6%9C%AF%E7%A4%BE%E5%8C%BA_files/wb.js" type="text/javascript" charset="utf-8"></script><script src="%E3%80%90GPU%E6%8A%80%E6%9C%AF%E3%80%91%E9%80%8F%E8%A7%86%E6%A0%A1%E6%AD%A3%E6%8F%92%E5%80%BC%20_%20Imagination%E4%B8%AD%E6%96%87%E6%8A%80%E6%9C%AF%E7%A4%BE%E5%8C%BA_files/query.txt" charset="UTF-8"></script>
+ </head>
+
+<body class="not-front not-logged-in page-node node-type-article  one-sidebar">
+
+<div id="header-container">
+<header class="col-full" id="header">
+<div id="logo">
+	<a title="Imagination中文技术社区" href="http://imgtec.eetrend.com/"><img src="%E3%80%90GPU%E6%8A%80%E6%9C%AF%E3%80%91%E9%80%8F%E8%A7%86%E6%A0%A1%E6%AD%A3%E6%8F%92%E5%80%BC%20_%20Imagination%E4%B8%AD%E6%96%87%E6%8A%80%E6%9C%AF%E7%A4%BE%E5%8C%BA_files/img-logo.png"></a>
+</div>
+</header>
+</div>
+
+      <div id="header-menu-wrapper">
+      <div id="header-menu">
+        <div id="block-menu-primary-links" class="block block-menu">
+  <div class="inner">
+  
+    <div class="content">
+      <ul class="menu"><li class="leaf first"><a href="http://imgtec.eetrend.com/" title="">首页</a></li>
+<li class="leaf"><a href="http://imgtec.eetrend.com/news">新闻</a></li>
+<li class="leaf"><a href="http://imgtec.eetrend.com/article">技术文章</a></li>
+<li class="leaf"><a href="http://imgtec.eetrend.com/download">下载中心</a></li>
+<li class="leaf"><a href="http://imgtec.eetrend.com/blog" title="">博客</a></li>
+<li class="leaf"><a href="http://imgtec.eetrend.com/forum" title="">互动专区</a></li>
+<li class="leaf"><a href="http://imgtec.eetrend.com/video">视频</a></li>
+<li class="leaf"><a href="http://imgtec.eetrend.com/activity">活动</a></li>
+<li class="leaf last"><a href="http://community.imgtec.com/developers/platforms/" title="http://community.imgtec.com/developers/platforms/">商城</a></li>
+</ul>    </div>
+  </div>
+</div>
+      </div>
+    </div>
+  
+
+  <div id="header-wrapper">
+    <div id="header" class="clear-block with-blocks">
+
+      
+              <div class="region region-header">
+          <div id="block-block-28" class="block block-block">
+  <div class="inner">
+  
+    <div class="content">
+      <div id="my-user-bar"><div class="item-list"><ul><li class="first"><a href="http://imgtec.eetrend.com/rss.xml"><img src="%E3%80%90GPU%E6%8A%80%E6%9C%AF%E3%80%91%E9%80%8F%E8%A7%86%E6%A0%A1%E6%AD%A3%E6%8F%92%E5%80%BC%20_%20Imagination%E4%B8%AD%E6%96%87%E6%8A%80%E6%9C%AF%E7%A4%BE%E5%8C%BA_files/feed.htm" border="0"></a></li>
+<li><a href="http://imgtec.eetrend.com/user/register?destination=node%2F1940" rel="nofollow">注册</a></li>
+<li class="last"><a href="http://imgtec.eetrend.com/user/login?destination=node%2F1940" rel="nofollow">登录</a></li>
+</ul></div></div>    </div>
+  </div>
+</div>
+<div id="block-block-34" class="block block-block">
+  <div class="inner">
+  
+    <div class="content">
+      <div><iframe scrolling="no" marginheight="0" marginwidth="0" src="%E3%80%90GPU%E6%8A%80%E6%9C%AF%E3%80%91%E9%80%8F%E8%A7%86%E6%A0%A1%E6%AD%A3%E6%8F%92%E5%80%BC%20_%20Imagination%E4%B8%AD%E6%96%87%E6%8A%80%E6%9C%AF%E7%A4%BE%E5%8C%BA_files/imgtec-600X150.htm" frameborder="0" height="200" width="1024"></iframe></div>    </div>
+  </div>
+</div>
+        </div>
+      
+    </div> <!-- /#header -->
+  </div> <!-- /#header-wrapper -->
+
+  <div id="main-columns-wrapper">
+    <div id="main-columns">
+      
+      <div id="main-wrapper" class=" first">
+  <div id="main">
+    <div id="page" class="clear-block">
+      <!--<div id="breadcrumb"><div class="breadcrumb"><a href="/">首页</a></div></div>-->
+      
+      
+      
+      
+      <a id="main-content"></a>
+              <h1 class="page-title"><div style="padding:10px;">【GPU技术】透视校正插值</div></h1>
+      
+      
+              <div class="region region-content">
+          <div id="node-1940" class="node">
+
+  <div class="node-header">
+
+          <span class="submitted">由 创新网小编 于 星期六, 2014-04-19 14:10 发表</span>
+  
+
+  </div> <!-- /.node-header -->
+
+  <div class="content">
+        <div class="field field-type-filefield field-field-images">
+    <div class="field-items">
+            <div class="field-item odd">
+                    <img class="imagefield imagefield-field_images" alt="" src="%E3%80%90GPU%E6%8A%80%E6%9C%AF%E3%80%91%E9%80%8F%E8%A7%86%E6%A0%A1%E6%AD%A3%E6%8F%92%E5%80%BC%20_%20Imagination%E4%B8%AD%E6%96%87%E6%8A%80%E6%9C%AF%E7%A4%BE%E5%8C%BA_files/1940-3644-science_screen.jpg" height="338" width="600">        </div>
+        </div>
+</div>
+<p> 
+在3D渲染中，输入数据是一些primitive信息，包括顶点位置、颜色、纹理坐标等等。在光栅化阶段，primitive(一般为三角形)被转化成一
+系列的fragment(或者称为像素),这些fragment接下来要做ps操作，此时每个fragment都有位置、颜色、纹理坐标这些属性信息，这
+些属性信息通过顶点属性用插值方法得到的。比如下面的primtive，输入数据中只有a,b,c三个顶点的信息，则三角形内部经过扫描转化得到的像素f
+的颜色则是通过插值得到，d是a、b的差值，e是a、c的差值，然后f又是d、e的插值。<br>
+</p><center><img src="%E3%80%90GPU%E6%8A%80%E6%9C%AF%E3%80%91%E9%80%8F%E8%A7%86%E6%A0%A1%E6%AD%A3%E6%8F%92%E5%80%BC%20_%20Imagination%E4%B8%AD%E6%96%87%E6%8A%80%E6%9C%AF%E7%A4%BE%E5%8C%BA_files/1940-3638-01.jpg" alt="1"></center><p></p>
+<p>下图是clip裁剪锥体的xz平面，从图中可以看出，在投影平面的均匀插值(一系列蓝色的标记)，它们实际位置距离并不是均匀的，距离投影平面越远，实际位置距离越长，所以这是我们采用线性插值的话，可能最终的结果并不是我们所想要的。<br>
+</p><center><img src="%E3%80%90GPU%E6%8A%80%E6%9C%AF%E3%80%91%E9%80%8F%E8%A7%86%E6%A0%A1%E6%AD%A3%E6%8F%92%E5%80%BC%20_%20Imagination%E4%B8%AD%E6%96%87%E6%8A%80%E6%9C%AF%E7%A4%BE%E5%8C%BA_files/1940-3639-2.jpg" alt="2"></center><p></p>
+<p> 那么如何得到均匀的顶点属性插值呢？稍等一下，我们先看看深度插值：</p>
+<p>     
+点O是视点位置，从视点观察物体的投射线和投影平面相交的点即为物体在投影平面上的投射点，比如(x1,z1)在投影平面上的投射点为(p1,-e)，投
+射线的方程为ax+bx =c ， 其中c不能等于0，假设点(x,z)的和O在投影平面的交点为(p,-e)(注意z坐标总是-e)，则有<img src="%E3%80%90GPU%E6%8A%80%E6%9C%AF%E3%80%91%E9%80%8F%E8%A7%86%E6%A0%A1%E6%AD%A3%E6%8F%92%E5%80%BC%20_%20Imagination%E4%B8%AD%E6%96%87%E6%8A%80%E6%9C%AF%E7%A4%BE%E5%8C%BA_files/1940-3640-3fuben.jpg" alt="3"></p>
+<p>解出x，并把它带入到ax+b=c中，得到<br>
+</p><center><img src="%E3%80%90GPU%E6%8A%80%E6%9C%AF%E3%80%91%E9%80%8F%E8%A7%86%E6%A0%A1%E6%AD%A3%E6%8F%92%E5%80%BC%20_%20Imagination%E4%B8%AD%E6%96%87%E6%8A%80%E6%9C%AF%E7%A4%BE%E5%8C%BA_files/1940-3641-4.jpg" alt="4"></center><p></p>
+<p>已知端点<x1,z1>,<x2,z2>的投影坐标为<br>
+<p1,-e>,<br>
+<p2,-e>，假定p3=(1-t)p1+tp2 (0&lt;=t&lt;=1)，即p3是投影平面上2个端点的线性差值的x分量，则有下面的推导公式：<br>
+</p2,-e></p1,-e></x2,z2></x1,z1></p><center><img src="%E3%80%90GPU%E6%8A%80%E6%9C%AF%E3%80%91%E9%80%8F%E8%A7%86%E6%A0%A1%E6%AD%A3%E6%8F%92%E5%80%BC%20_%20Imagination%E4%B8%AD%E6%96%87%E6%8A%80%E6%9C%AF%E7%A4%BE%E5%8C%BA_files/1940-3642-5fuben.jpg" alt="5"></center><p></p>
+<p>   可见，z的倒数是线性插值，所以我们可以用顶点的z值来插值求得primitive内部fragment的属性值，比如颜色等等。假定<x1,z1>的颜色为b1, <x2,z2>的颜色为把b2，则<x,z>的颜色为b3为：<br>
+</x,z></x2,z2></x1,z1></p><center><img src="%E3%80%90GPU%E6%8A%80%E6%9C%AF%E3%80%91%E9%80%8F%E8%A7%86%E6%A0%A1%E6%AD%A3%E6%8F%92%E5%80%BC%20_%20Imagination%E4%B8%AD%E6%96%87%E6%8A%80%E6%9C%AF%E7%A4%BE%E5%8C%BA_files/1940-3643-6.jpg" alt="6"></center><p></p>
+<p>可见用深度导数来插值顶点属性是合适的。</p>
+  </div>
+
+  <div class="links-wrapper">
+          <div class="terms terms-inline"><ul class="links inline"><li class="taxonomy_term_1453 first"><a href="http://imgtec.eetrend.com/tag/1453" rel="tag" title="">GPU</a></li>
+<li class="taxonomy_term_2092"><a href="http://imgtec.eetrend.com/tag/2092" rel="tag" title="">OpenGL-ES</a></li>
+<li class="taxonomy_term_5960"><a href="http://imgtec.eetrend.com/article/tag/5960" rel="tag" title="">其他资源</a></li>
+<li class="taxonomy_term_2174 last"><a href="http://imgtec.eetrend.com/tag/2174" rel="tag" title="">透视校正</a></li>
+</ul></div>
+        <ul class="links inline"><li class="comment_forbidden first"><span>要发表评论，请先<a href="http://imgtec.eetrend.com/user/login?destination=comment%2Freply%2F1940%23comment-form">登录</a> 或 <a href="http://imgtec.eetrend.com/user/register?destination=comment%2Freply%2F1940%23comment-form">注册</a></span></li>
+<li class="statistics_counter last"><span>1736 围观</span></li>
+</ul>  </div>
+
+</div>
+
+<div id="block-relevant_content-relate" class=" block-relevant_content">
+  <div class="inner">
+      <div class="hd"><h2>相关文章</h2></div>
+  
+    <div class="content">
+      <div class="item-list"><ul><li class="first"><a href="http://imgtec.eetrend.com/article/6582">Vulkan:让手机变的更高效</a></li>
+<li><a href="http://imgtec.eetrend.com/article/1976">【连载】现代OpenGL介绍(五)</a></li>
+<li><a href="http://imgtec.eetrend.com/article/1971">【连载】现代OpenGL介绍(三)</a></li>
+<li><a href="http://imgtec.eetrend.com/article/1965">【连载】现代OpenGL介绍（二）</a></li>
+<li><a href="http://imgtec.eetrend.com/article/1964">【连载】现代OpenGL介绍（一）</a></li>
+<li><a href="http://imgtec.eetrend.com/article/1955">浅谈多节点CPU+GPU协同计算负载均衡性设计</a></li>
+<li><a href="http://imgtec.eetrend.com/article/1946"> 【体绘制】基于统一划分的多分辨率体绘制</a></li>
+<li><a href="http://imgtec.eetrend.com/article/1939">【GPU技术】视图矩阵的推导</a></li>
+<li><a href="http://imgtec.eetrend.com/article/1848">详解如何利用最新OpenGL ES 3.0技术演示生动猫咪</a></li>
+<li class="last"><a href="http://imgtec.eetrend.com/blog/7509">如此精美绝伦的图片怎么来的？</a></li>
+</ul></div>    </div>
+  </div>
+</div>
+        </div>
+      
+                </div> <!-- /#page -->
+
+    <div id="closure">
+      <div id="info">
+        --电子创新网--<br>
+<a href="http://www.miibeian.gov.cn/">粤ICP备12070055号</a> 
+      </div>
+
+          </div> <!-- /#closure -->
+
+  </div> <!-- /#main -->
+</div> <!-- /#main-wrapper -->
+
+
+    <div id="sidebar-second" class="clear-block last">
+    <div class="region region-sidebar-second">
+      <div id="block-search-0" class="block block-search">
+  <div class="inner">
+      <div class="hd"><h2>全站搜索</h2></div>
+  
+    <div class="content">
+      <form action="/article/1940" accept-charset="UTF-8" method="post" id="search-block-form">
+<div><div class="container-inline">
+  <div class="form-item" id="edit-search-block-form-1-wrapper">
+ <label for="edit-search-block-form-1">站内搜索:</label>
+ <input maxlength="128" name="search_block_form" id="edit-search-block-form-1" size="15" title="请输入您想搜索的关键词。" class="form-text" type="text">
+</div>
+<input name="op" id="edit-submit" value="搜索" class="form-submit" type="submit">
+<input name="form_build_id" id="form-HmnlKZxww1Pogva15C4oUjnqmYwWmWr6LsxJsgaf1Dc" value="form-HmnlKZxww1Pogva15C4oUjnqmYwWmWr6LsxJsgaf1Dc" type="hidden">
+<input name="form_id" id="edit-search-block-form" value="search_block_form" type="hidden">
+</div>
+
+</div></form>
+    </div>
+  </div>
+</div>
+<div id="block-block-35" class="block block-block">
+  <div class="inner">
+      <div class="hd"><h2>扫一扫，分享此文章</h2></div>
+  
+    <div class="content">
+      <div><img src="%E3%80%90GPU%E6%8A%80%E6%9C%AF%E3%80%91%E9%80%8F%E8%A7%86%E6%A0%A1%E6%AD%A3%E6%8F%92%E5%80%BC%20_%20Imagination%E4%B8%AD%E6%96%87%E6%8A%80%E6%9C%AF%E7%A4%BE%E5%8C%BA_files/a.png"></div>    </div>
+  </div>
+</div>
+<div id="block-block-33" class="block block-block">
+  <div class="inner">
+      <div class="hd"><h2>近期热门活动</h2></div>
+  
+    <div class="content">
+      <p><a href="http://imgtec.eetrend.com/news/7239"><img src="%E3%80%90GPU%E6%8A%80%E6%9C%AF%E3%80%91%E9%80%8F%E8%A7%86%E6%A0%A1%E6%AD%A3%E6%8F%92%E5%80%BC%20_%20Imagination%E4%B8%AD%E6%96%87%E6%8A%80%E6%9C%AF%E7%A4%BE%E5%8C%BA_files/7239-17518-idc2016-0.jpg" alt="GDC 2016盛会来袭，欢迎报名参会idc2016，交流PowerVR开发！" width="237"></a><br>
+<a href="http://imgtec.eetrend.com/activity/6995"><img src="%E3%80%90GPU%E6%8A%80%E6%9C%AF%E3%80%91%E9%80%8F%E8%A7%86%E6%A0%A1%E6%AD%A3%E6%8F%92%E5%80%BC%20_%20Imagination%E4%B8%AD%E6%96%87%E6%8A%80%E6%9C%AF%E7%A4%BE%E5%8C%BA_files/6985-16726-img-uk1.jpg" alt="Imagination大学计划走进高校" width="237"></a><br>
+<a href="https://www.kickstarter.com/projects/imgtec/creator-ci40-the-ultimate-iot-in-a-box-dev-kit"><img src="%E3%80%90GPU%E6%8A%80%E6%9C%AF%E3%80%91%E9%80%8F%E8%A7%86%E6%A0%A1%E6%AD%A3%E6%8F%92%E5%80%BC%20_%20Imagination%E4%B8%AD%E6%96%87%E6%8A%80%E6%9C%AF%E7%A4%BE%E5%8C%BA_files/6566-15723-1.png" alt="Ci 40火爆众筹中" width="237"></a></p>
+    </div>
+  </div>
+</div>
+<div id="block-block-36" class="block block-block">
+  <div class="inner">
+      <div class="hd"><h2>精彩专辑</h2></div>
+  
+    <div class="content">
+      <p><strong>应用领域</strong><br>
+1.<a href="http://imgtec.eetrend.com/forum/6991">汽车</a><br>
+2.<a href="http://imgtec.eetrend.com/forum/6880">物联网</a><br>
+3.<a href="http://imgtec.eetrend.com/forum/6992">家庭娱乐多媒体</a><br>
+4.<a href="http://imgtec.eetrend.com/forum/6993">服务器超级运算</a></p>
+<p><strong>产品</strong><br>
+1.<a href="http://imgtec.eetrend.com/forum/6884">MIPS处理器</a><br>
+2.<a href="http://imgtec.eetrend.com/forum/6885">PowerVR多媒体处理器</a><br>
+3.<a href="http://imgtec.eetrend.com/forum/6989">Ensigma无线通信处理器</a><br>
+4.<a href="http://imgtec.eetrend.com/forum/6990">FlowCould云计算</a></p>
+    </div>
+  </div>
+</div>
+<div id="block-block-37" class="block block-block">
+  <div class="inner">
+      <div class="hd"><h2>社区互动有奖活动</h2></div>
+  
+    <div class="content">
+      <p>1.<a href="http://imgtec.eetrend.com/forum/7025">MIPSCPU 在2016年会引领新的嵌入式创新变革吗?</a><br>
+2.<a href="http://imgtec.eetrend.com/activity/6423">吐槽物联网时代的安全</a><br>
+3.<a href="http://imgtec.eetrend.com/activity/5309">免费试用chipKIT Wi-Fire开发平台活动</a></p>
+    </div>
+  </div>
+</div>
+<div id="block-block-29" class="block block-block">
+  <div class="inner">
+      <div class="hd"><h2>精彩推荐</h2></div>
+  
+    <div class="content">
+      <table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tbody><tr>
+<td width="50"><a href="http://community.imgtec.com/developers/powervr/installers/?"><img src="%E3%80%90GPU%E6%8A%80%E6%9C%AF%E3%80%91%E9%80%8F%E8%A7%86%E6%A0%A1%E6%AD%A3%E6%8F%92%E5%80%BC%20_%20Imagination%E4%B8%AD%E6%96%87%E6%8A%80%E6%9C%AF%E7%A4%BE%E5%8C%BA_files/1557-2519-sdk00.png" height="50" width="50"></a></td>
+<td>&nbsp;</td>
+<td><a href="http://community.imgtec.com/developers/powervr/installers/?"> 免费注册即刻下载官方SDK</a></td>
+</tr>
+<tr>
+<td width="50"><a href="http://www.imgtec.com/mips/developers/mips-tools.asp"><img src="%E3%80%90GPU%E6%8A%80%E6%9C%AF%E3%80%91%E9%80%8F%E8%A7%86%E6%A0%A1%E6%AD%A3%E6%8F%92%E5%80%BC%20_%20Imagination%E4%B8%AD%E6%96%87%E6%8A%80%E6%9C%AF%E7%A4%BE%E5%8C%BA_files/1557-2518-add0ab24-b1ee-4055-9b17-ce5bd63c4865.png" height="50" width="50"></a></td>
+<td>&nbsp;</td>
+<td><a href="http://www.imgtec.com/mips/developers/mips-tools.asp"> MIPS开发工具大全</a></td>
+</tr>
+<tr>
+<td width="50"><a href="http://blog.imgtec.com/"><img src="%E3%80%90GPU%E6%8A%80%E6%9C%AF%E3%80%91%E9%80%8F%E8%A7%86%E6%A0%A1%E6%AD%A3%E6%8F%92%E5%80%BC%20_%20Imagination%E4%B8%AD%E6%96%87%E6%8A%80%E6%9C%AF%E7%A4%BE%E5%8C%BA_files/1557-2520-blogiconfuben.png" height="50" width="50"></a></td>
+<td>&nbsp;</td>
+<td><a href="http://blog.imgtec.com/"> CPU/GPU专家博客群</a></td>
+</tr>
+<tr>
+<td width="50"><a href="http://forum.imgtec.com/"><img src="%E3%80%90GPU%E6%8A%80%E6%9C%AF%E3%80%91%E9%80%8F%E8%A7%86%E6%A0%A1%E6%AD%A3%E6%8F%92%E5%80%BC%20_%20Imagination%E4%B8%AD%E6%96%87%E6%8A%80%E6%9C%AF%E7%A4%BE%E5%8C%BA_files/1557-2521-forum00.png" height="50" width="50"></a></td>
+<td>&nbsp;</td>
+<td><a href="http://forum.imgtec.com/">IMG全球开发者论坛！</a></td>
+</tr>
+<tr>
+<td><a href="http://imgtec.com/prpl/"><img src="%E3%80%90GPU%E6%8A%80%E6%9C%AF%E3%80%91%E9%80%8F%E8%A7%86%E6%A0%A1%E6%AD%A3%E6%8F%92%E5%80%BC%20_%20Imagination%E4%B8%AD%E6%96%87%E6%8A%80%E6%9C%AF%E7%A4%BE%E5%8C%BA_files/6146-14341-title966997504.png" height="50" width="50"></a></td>
+<td>&nbsp;</td>
+<td><a href="http://imgtec.com/prpl/">prpl基金会</a></td>
+</tr>
+<tr>
+<td width="50"><a href="http://community.imgtec.com/university/"><img src="%E3%80%90GPU%E6%8A%80%E6%9C%AF%E3%80%91%E9%80%8F%E8%A7%86%E6%A0%A1%E6%AD%A3%E6%8F%92%E5%80%BC%20_%20Imagination%E4%B8%AD%E6%96%87%E6%8A%80%E6%9C%AF%E7%A4%BE%E5%8C%BA_files/6119-14307-daxujiaochen.png" height="50" width="50"></a></td>
+<td>&nbsp;</td>
+<td><a href="http://community.imgtec.com/university/">Imagination大学项目</a></td>
+</tr>
+</tbody></table>
+    </div>
+  </div>
+</div>
+<div id="block-block-30" class="block block-block">
+  <div class="inner">
+      <div class="hd"><h2>官方权威教程</h2></div>
+  
+    <div class="content">
+      <p><a href="http://www.imgtec.com/mips/training/video-training/">官方权威培训视频大全</a></p>
+    </div>
+  </div>
+</div>
+<div id="block-block-25" class="block block-block">
+  <div class="inner">
+      <div class="hd"><h2>技术文章分类</h2></div>
+  
+    <div class="content">
+      <div class="taxonomy_tree">
+<ul>
+<li>  <a href="http://imgtec.eetrend.com/article/tag/6676">Basemark PAT</a> (0)</li>
+<li>  <a href="http://imgtec.eetrend.com/article/tag/6043">Ensigma</a> (5)</li>
+<li>  <a href="http://imgtec.eetrend.com/article/tag/3238">FlowCloud</a> (7)</li>
+<li>  <a href="http://imgtec.eetrend.com/article/tag/6041">Imagination大学计划</a> (1)</li>
+<li>  <a href="http://imgtec.eetrend.com/article/tag/5917">Imagination峰会</a> (8)</li>
+<li>  <a href="http://imgtec.eetrend.com/article/tag/5947">Imagination资讯</a> (15)</li>
+<li>  <a href="http://imgtec.eetrend.com/article/tag/6056">Microchip PIC32开发资源</a> (10)</li>
+<li>  <a href="http://imgtec.eetrend.com/article/tag/2071">MIPS</a> (147)</li>
+<li>  <a href="http://imgtec.eetrend.com/article/tag/6048">MIPS可穿戴</a> (17)</li>
+<li>  <a href="http://imgtec.eetrend.com/article/tag/2397">PowerVR GPU</a> (68)</li>
+<li>  <a href="http://imgtec.eetrend.com/article/tag/1784">PowerVR SDK</a> (27)</li>
+<li>  <a href="http://imgtec.eetrend.com/article/tag/6681">PowerVR多媒体处理器</a> (2)</li>
+<li>  <a href="http://imgtec.eetrend.com/article/tag/5960">其他资源</a> (51)</li>
+<li>  <a href="http://imgtec.eetrend.com/article/tag/6713">巴黎</a> (1)</li>
+<li>  <a href="http://imgtec.eetrend.com/article/tag/6677">服务器超级运算</a> (1)</li>
+<li>  <a href="http://imgtec.eetrend.com/article/tag/6327">物联网</a> (4)</li>
+</ul>
+
+
+</div>    </div>
+  </div>
+</div>
+<div id="block-block-17" class="block block-block">
+  <div class="inner">
+  
+    <div class="content">
+      <img src="%E3%80%90GPU%E6%8A%80%E6%9C%AF%E3%80%91%E9%80%8F%E8%A7%86%E6%A0%A1%E6%AD%A3%E6%8F%92%E5%80%BC%20_%20Imagination%E4%B8%AD%E6%96%87%E6%8A%80%E6%9C%AF%E7%A4%BE%E5%8C%BA_files/code.jpg">    </div>
+  </div>
+</div>
+<div id="block-block-31" class="block block-block">
+  <div class="inner">
+  
+    <div class="content">
+      <p><a href="http://i.youku.com/imgtec"><img src="%E3%80%90GPU%E6%8A%80%E6%9C%AF%E3%80%91%E9%80%8F%E8%A7%86%E6%A0%A1%E6%AD%A3%E6%8F%92%E5%80%BC%20_%20Imagination%E4%B8%AD%E6%96%87%E6%8A%80%E6%9C%AF%E7%A4%BE%E5%8C%BA_files/youku.png"></a></p>
+    </div>
+  </div>
+</div>
+<div id="block-block-18" class="block block-block">
+  <div class="inner">
+  
+    <div class="content">
+      <iframe class="share_self" scrolling="no" src="%E3%80%90GPU%E6%8A%80%E6%9C%AF%E3%80%91%E9%80%8F%E8%A7%86%E6%A0%A1%E6%AD%A3%E6%8F%92%E5%80%BC%20_%20Imagination%E4%B8%AD%E6%96%87%E6%8A%80%E6%9C%AF%E7%A4%BE%E5%8C%BA_files/index.htm" frameborder="0" height="550" width="100%"></iframe>    </div>
+  </div>
+</div>
+<div id="block-comment-0" class="block block-comment">
+  <div class="inner">
+      <div class="hd"><h2>最新评论</h2></div>
+  
+    <div class="content">
+      <div class="item-list"><ul><li class="first"><a href="http://imgtec.eetrend.com/blog/7612#comment-994">这不就是 metal 和 dx12 么</a><br>1 周 1 天之前</li>
+<li><a href="http://imgtec.eetrend.com/forum/7633#comment-993">网友jianggh问：pic32MZ2048ech SPI通讯问题？</a><br>1 周 3 天之前</li>
+<li><a href="http://imgtec.eetrend.com/forum/7633#comment-992">网友jianggh问：pic32MZ2048ech SPI通讯问题？</a><br>1 周 3 天之前</li>
+<li><a href="http://imgtec.eetrend.com/forum/7633#comment-991">网友jianggh问：pic32MZ2048ech SPI通讯问题？</a><br>1 周 3 天之前</li>
+<li><a href="http://imgtec.eetrend.com/forum/4534#comment-990">楼主，你好，最近也在学pic32mz,用的是pic32mz</a><br>1 周 3 天之前</li>
+<li><a href="http://imgtec.eetrend.com/forum/7585#comment-989">我也在看这个</a><br>1 周 5 天之前</li>
+<li><a href="http://imgtec.eetrend.com/forum/7273#comment-988">“参与微信投票送平板”的活动开奖了！！！</a><br>2 周 6 天之前</li>
+<li><a href="http://imgtec.eetrend.com/forum/7499#comment-987">网友aspire.l问：pic32mz0512eff064外部时钟配置？</a><br>4 周 3 天之前</li>
+<li><a href="http://imgtec.eetrend.com/forum/7464#comment-986">PIC32MZ 关于SPI 时序操作EEPROM例程</a><br>4 周 5 天之前</li>
+<li class="last"><a href="http://imgtec.eetrend.com/forum/7452#comment-985">网友fpga答：适合的RTOS你可以看这里：</a><br>4 周 6 天之前</li>
+</ul></div>    </div>
+  </div>
+</div>
+    </div>
+  </div> <!-- /#sidebar-second -->
+
+
+    </div> <!-- /#main-columns -->
+  </div> <!-- /#main-columns-wrapper -->
+  
+
+
+  
+<div style="display:none">
+<script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F513d000ca91d82653d0868dcc63cc8da' type='text/javascript'%3E%3C/script%3E"));
+</script><script src="%E3%80%90GPU%E6%8A%80%E6%9C%AF%E3%80%91%E9%80%8F%E8%A7%86%E6%A0%A1%E6%AD%A3%E6%8F%92%E5%80%BC%20_%20Imagination%E4%B8%AD%E6%96%87%E6%8A%80%E6%9C%AF%E7%A4%BE%E5%8C%BA_files/h.js" type="text/javascript"></script><a href="http://tongji.baidu.com/hm-web/welcome/ico?s=513d000ca91d82653d0868dcc63cc8da" target="_blank"><img src="%E3%80%90GPU%E6%8A%80%E6%9C%AF%E3%80%91%E9%80%8F%E8%A7%86%E6%A0%A1%E6%AD%A3%E6%8F%92%E5%80%BC%20_%20Imagination%E4%B8%AD%E6%96%87%E6%8A%80%E6%9C%AF%E7%A4%BE%E5%8C%BA_files/21.gif" height="20" border="0" width="20"></a>
+</div>
+<!-- JiaThis Button BEGIN -->
+<!-- <script type="text/javascript" src="http://v3.jiathis.com/code/jiathis_r.js?uid=1357485142326395&move=0" charset="utf-8"></script> -->
+<!-- JiaThis Button END -->
+
+
+</body></html>

@@ -1,0 +1,128 @@
+/* $Id: drupal-6.css,v 1.1.2.5 2011/01/01 13:24:54 jarek Exp $ */
+
+.element-hidden {
+  display: none;
+}
+.element-invisible,
+form#search-block-form label {
+  display: block !important;
+  position: absolute !important;
+  top: -999em !important;
+  width: 1px !important;
+  height: 1px !important;
+  overflow: hidden !important;
+  border: none !important;
+  padding: 0 !important;
+  background-color: transparent !important;
+  background-image: none !important;
+}
+#navigation li {
+  display: inline;
+}
+#info {
+  float: left; /* LTR */
+  margin: 0 0 7px 7px; /* LTR */
+}
+#user-login-form {
+  text-align: left;
+}
+.node ul.links {
+  display: block;
+  margin: 2px 0;
+}
+ul.tips  {
+  margin: 0 0 0 5px; /* LTR */
+}
+input.form-checkbox, input.form-radio {
+  margin: -1px 4px 1px 0; /* LTR */
+}
+html.js fieldset.collapsed legend a,
+html.js fieldset.collapsible legend a {
+  background-position: right 6px; /* LTR */
+}
+#forum ul.links li {
+  margin: 5px 0 10px 0;
+  display: block;
+}
+tr.region-header {
+  float: none;
+}
+tr.region-highlight {
+  background: none;
+  border-left: none;
+  border-right: none;
+}
+body.page-admin .block-region,
+body.page-admin div.region-highlight {
+  display: none;
+}
+div.warning {
+  margin: 14px 0;
+}
+form#node-form div.admin {
+  padding-top: 0;
+}
+.block-profile .user-picture  {
+  float: left; /* LTR */
+  margin: 0 15px 15px 0; /* LTR */
+}
+.comment ul.links li {
+  margin: 0 8px 0 0; /* LTR */
+}
+.forum-topic-navigation {
+  display: none;
+}
+/* Messages */
+div.messages {
+  background-position: 8px 8px; /* LTR */
+  background-repeat: no-repeat;
+  border: 1px solid;
+  margin: 6px 0;
+  padding: 10px 10px 10px 40px; /* LTR */
+}
+div.status {
+  background-image: url(images/message-ok.png);
+  border-color: #be7;
+}
+div.status,
+.ok {
+  color: #234600;
+}
+div.status,
+table tr.ok {
+  background-color: #f8fff0;
+}
+div.warning {
+  background-image: url(images/message-warning.png);
+  border-color: #ed5;
+}
+div.warning,
+.warning {
+  color: #840;
+}
+div.warning,
+table tr.warning {
+  background-color: #fffce5;
+}
+div.error {
+  background-image: url(images/message-error.png);
+  border-color: #ed541d;
+}
+div.error,
+.error {
+  color: #8c2e0b;
+}
+div.error,
+table tr.error {
+  background-color: #fef5f1;
+}
+div.error p.error {
+  color: #333;
+}
+div.messages ul {
+  margin: 0 0 0 1em; /* LTR */
+  padding: 0;
+}
+div.messages ul li {
+  list-style-image: none;
+}

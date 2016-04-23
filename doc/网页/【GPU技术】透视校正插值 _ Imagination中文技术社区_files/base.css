@@ -1,0 +1,465 @@
+/* $Id: base.css,v 1.24.2.4 2011/01/01 13:24:54 jarek Exp $ */
+
+/**
+ * Properties inherited by all elements
+ */
+html {
+  line-height: 1.5;
+  word-wrap: break-word;
+}
+
+/**
+ * Font stacks
+ */
+html,
+#wrapper-p * {
+  font-family: Arial, FreeSans, sans-serif;
+}
+h1,
+h2,
+h3,
+#site-name a,
+#site-slogan,
+.block h2,
+#forum td.container .name a,
+tr.region-title td,
+table#permissions td.module {
+  font-family: "Trebuchet MS", "Myriad Pro", "Bitstream Vera Sans", FreeSans, sans-serif;
+}
+h6 {
+  font-family: Verdana, Helvetica, Arial, FreeSans, sans-serif;
+}
+pre,
+tt {
+  font-family: "Courier New", Monaco, "Nimbus Mono L", monospace;
+}
+
+/**
+ * Headings
+ */
+h1 {
+  margin: 9px 0 9px;
+  font-size: 2em;
+  line-height: 1.1;
+}
+h1 em {
+  font-weight: 300;
+}
+h2 {
+  margin: 7px 0 7px;
+  font-size: 1.9em;
+  font-weight: 700;
+  line-height: 1.3;
+}
+h3 {
+  margin: 12px 0 10px;
+  font-size: 1.333em;
+}
+h4 {
+  margin: 10px 0 8px 0;
+  font-size: 1.167em;
+}
+h5 {
+  font-size: 1em;
+  margin: 12px 0 8px 0;
+  font-weight: 700;
+}
+h6 {
+  margin: 12px 0 8px 0;
+  font-size: 0.833em;
+  font-weight: 700;
+}
+
+/**
+ * Block elements
+ */
+p {
+  margin: 14px 0;
+}
+p:first-child {
+  margin-top: 0;
+}
+p:last-child {
+  margin-bottom: 0;
+}
+pre {
+  margin: 10px 0;
+  padding: 15px;
+  background-color: #fafafa;
+  border: 1px solid #e5e5e5;
+  white-space: pre-wrap;
+  overflow: hidden;
+}
+blockquote {
+  margin: 20px 0 20px 20px; /* LTR */
+  padding: 0 0 0 15px; /* LTR */
+  color: #808080;
+  border-left: 7px solid #e25401; /* LTR */
+  quotes: none;
+}
+blockquote:before,
+blockquote:after {
+  content: '';
+  content: none;
+}
+.block-system-main .img {
+  float: left;
+}
+hr {
+  height: 1px;
+  border: 1px solid #808080;
+}
+
+/**
+ * Inline elements
+ */
+strong {
+  font-weight: 700;
+}
+em {
+  font-style: italic;
+}
+kbd {
+  background-color: #f1eed4;
+  border: 1px outset #575757;
+  color: #333;
+  padding: 2px 7px;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -khtml-border-radius: 5px;
+  border-radius: 5px;
+}
+abbr[title],
+dfn[title],
+acronym[title] {
+  border-bottom: 1px solid #bf8060;
+}
+samp,
+var,
+code {
+  background-color: #efefef;
+}
+ins {
+  text-decoration: underline;
+}
+del {
+  text-decoration: line-through;
+}
+sub {
+  vertical-align: sub;
+}
+sup {
+  vertical-align: super
+}
+q {
+  quotes: none;
+}
+q:before,
+q:after {
+  content: '';
+  content: none;
+}
+b {
+  font-weight: 700;
+}
+i {
+  font-style: italic;
+}
+*::selection {
+  background-color: #2e2e2e;
+  color: #fff;
+}
+*::-moz-selection {
+  background-color: #2e2e2e;
+  color: #fff;
+}
+
+/**
+ * Lists
+ */
+ul,
+ol,
+dl {
+  list-style-position: inside;
+}
+p + ul {
+  margin-top: 5px;
+}
+ul {
+  list-style: disc inside none;
+  margin: 0 0 0 15px; /* LTR */
+}
+li > ul {
+  margin-top: 1px;
+  margin-bottom: 1px;
+}
+ul.inline li {
+  display: inline;
+  margin: 0 10px 0 0; /* LTR */
+}
+ul.links li {
+  padding: 0;
+}
+ol {
+  list-style: decimal inside none;
+  margin: 0 0 0 15px; /* LTR */
+}
+dt {
+  margin-top: 5px;
+  font-weight: 900;
+}
+
+/**
+ * Links
+ */
+a {
+  text-decoration: none;
+}
+a::selection {
+  background-color: #086782;
+  color: #fff;
+}
+a::-moz-selection {
+  background-color: #086782;
+  color: #fff;
+}
+
+/**
+ * Tables
+ */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+th,
+td {
+  padding: 10px 14px;
+  text-align: left; /* LTR */
+  vertical-align: middle;
+}
+td.help,
+td.permissions,
+td.configure {
+  padding-left: 8px;
+  padding-right: 8px;
+}
+td.active {
+  background-color: #eee;
+}
+td.empty {
+  background: none;
+}
+th.checkbox {
+  padding-left: 14px;
+  padding-right: 7px;
+}
+th,
+thead,
+thead th {
+  background-color: #333;
+  color: #fcfcf8;
+  border: none;
+}
+tr,
+tr.even,
+tr.odd {
+  border-bottom: 1px solid #ccc;
+  background: none;
+}
+caption {
+  margin-bottom: 5px;
+  text-align: left; /* LTR */
+}
+
+/**
+ * Forms
+ */
+fieldset {
+  margin: 15px 0;
+  padding: 13px 20px;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  -khtml-border-radius: 3px;
+  border-radius: 3px;
+}
+legend {
+  margin-left: -8px;
+  padding: 1px 8px 1px 9px;
+  color: #fff;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -khtml-border-radius: 4px;
+  border-radius: 4px;
+}
+.form-item {
+  margin: 10px 0;
+}
+legend + .form-item {
+  margin-top: 0;
+}
+fieldset .form-item:first-child {
+  margin-top: 0;
+}
+.form-item:last-child {
+  margin-bottom: 0px;
+}
+.form-item .description {
+  background-color: #f5f9fa;
+  border: 1px solid #deeaec;
+  font-size: 0.917em;
+  margin: 9px 0 21px;
+  padding: 2px 6px;
+}
+.form-item label {
+  vertical-align: middle;
+  font-size: 0.9em;
+  font-weight: 300;
+}
+label.option {
+  display: inline;
+  font-weight: normal;
+  color: inherit;
+  margin-left: 3px;
+}
+span.form-required {
+  font-weight: 700;
+  color: #e25401;
+}
+.container-inline div,
+.container-inline label {
+  display: block;
+}
+input.form-text,
+input.form-password,
+input.form-file,
+textarea {
+  padding: 6px;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  background-color: #fafafa;
+  border: 1px solid #ccc;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -khtml-box-sizing: border-box;
+  box-sizing: border-box;
+}
+fieldset input.form-text,
+fieldset input.form-password,
+input.form-file,
+textarea {
+  background-color: #fdfdfd;
+}
+input.form-text:focus,
+input.form-password:focus,
+input.form-file:focus,
+textarea:focus {
+  border: 1px solid #a5a5a5!important;
+  background-color: #fff;
+}
+input.form-text,
+input.form-password,
+input.form-file {
+  width: auto;
+}
+textarea {
+  resize: none;
+  height: 200px;
+}
+select {
+  padding: 4px;
+  width: 100%!important;
+  max-width: 230px;
+}
+.form-radios,
+.form-checkboxes {
+  margin: 3px 0;
+}
+.form-item-choice {
+  padding: 3px 0;
+}
+.form-radios label,
+.form-checkboxes label,
+.form-item-choice label {
+  font-size: 1em;
+}
+.form-item.form-type-radio,
+.form-item.form-type-checkbox {
+  margin: 4px 0;
+}
+input.form-checkbox,
+input.form-radio {
+  display: inline;
+  vertical-align: middle;
+}
+input.form-button,
+input.form-submit {
+  margin: 0 5px 0 0; /* LTR */
+  padding: 5px 11px;
+  background: url(images/button.png) repeat-x top left;
+  border: 1px solid #ccc;
+  -moz-border-radius: 8px;
+  -webkit-border-radius: 8px;
+  -khtml-border-radius: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+input.form-button:hover,
+input.form-submit:hover,
+input.form-button:focus,
+input.form-submit:focus {
+   border-color: #666!important;
+}
+input[disabled="disabled"] {
+  background-color: #eaeaea;
+}
+input.error,
+textarea.error,
+select.error {
+  background-color: #fefaf8;
+  border: 1px solid #f4b09e;
+}
+input.error:focus,
+textarea.error:focus,
+select.error:focus {
+  background-color: #fef7f5;
+  border: 1px solid #d43308!important;
+}
+
+/**
+ * Selectively remove border-bottom from anchors.
+ */
+body.page-admin a,
+#skip-link a,
+#logo a,
+#site-name a,
+#main-links li a,
+#navigation li a,
+#sidebar-first a,
+#sidebar-second a,
+.node h1.node-title a,
+.node h2.node-title a,
+ul.pager li a,
+.block ul li a,
+.node .meta a,
+.element-invisible,
+a.feed-icon,
+.comment h3.title a,
+.user-picture a,
+ul.action-links li a,
+legend a,
+th a,
+thead a,
+#forum td.container .name a,
+a.tabledrag-handle,
+ul.contextual-links li a,
+a.contextual-links-trigger:hover,
+.overlay .ui-dialog-titlebar a,
+a.contextual-links-trigger,
+.book-navigation .page-links a {
+  border-bottom: none;
+}

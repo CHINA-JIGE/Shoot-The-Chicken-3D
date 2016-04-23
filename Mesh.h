@@ -29,6 +29,8 @@
 
 		void		SetColor(const VECTOR4& color);
 
+		void		SetMaterial(const Material& mat);
+
 		void		SetPosition(float x, float y, float z);
 
 		void		SetRotation(float angleX, float angleY, float angleZ);
@@ -86,7 +88,8 @@
 		std::vector<Vertex>*			m_pVB_Mem;//vertex in CPU memory
 		std::vector<UINT>*			m_pIB_Mem;//index in CPU memory
 		
+		Material							mMaterial;
 		//graphic attribute
-		IPicture								mTexture;
+		IPicture*							m_pTexture;
 
 };

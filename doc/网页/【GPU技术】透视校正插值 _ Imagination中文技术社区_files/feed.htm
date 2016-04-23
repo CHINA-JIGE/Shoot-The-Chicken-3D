@@ -1,0 +1,782 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!-- <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-hans" lang="zh-hans" dir="ltr"> -->
+<html xmlns:wb="http://open.weibo.com/wb">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="shortcut icon" href="/sites/imgtec.eetrend.com/files/corolla_favicon.png" type="image/x-icon" />
+  <title>Imagination中文技术社区 | Imagination Technologies第一中文互动社区，提供最快的CPU/GPU资讯</title>
+  <link rel="alternate" type="application/rss+xml" title="xilinx中文社区" href="http://xilinx.eetrend.com/rss" />
+  <link type="text/css" rel="stylesheet" media="all" href="/sites/imgtec.eetrend.com/themes/corolla/reset.css" />
+  <link type="text/css" rel="stylesheet" media="all" href="/modules/node/node.css?M" />
+<link type="text/css" rel="stylesheet" media="all" href="/modules/system/defaults.css?M" />
+<link type="text/css" rel="stylesheet" media="all" href="/modules/system/system.css?M" />
+<link type="text/css" rel="stylesheet" media="all" href="/modules/system/system-menus.css?M" />
+<link type="text/css" rel="stylesheet" media="all" href="/modules/user/user.css?M" />
+<link type="text/css" rel="stylesheet" media="all" href="/sites/all/modules/cck/theme/content-module.css?M" />
+<link type="text/css" rel="stylesheet" media="all" href="/sites/all/modules/ctools/css/ctools.css?M" />
+<link type="text/css" rel="stylesheet" media="all" href="/sites/all/modules/date/date.css?M" />
+<link type="text/css" rel="stylesheet" media="all" href="/sites/all/modules/filefield/filefield.css?M" />
+<link type="text/css" rel="stylesheet" media="all" href="/modules/forum/forum.css?M" />
+<link type="text/css" rel="stylesheet" media="all" href="/sites/all/modules/cck/modules/fieldgroup/fieldgroup.css?M" />
+<link type="text/css" rel="stylesheet" media="all" href="/sites/all/modules/views/css/views.css?M" />
+<link type="text/css" rel="stylesheet" media="all" href="/sites/imgtec.eetrend.com/themes/corolla/reset.css?M" />
+<link type="text/css" rel="stylesheet" media="all" href="/sites/imgtec.eetrend.com/themes/corolla/base.css?M" />
+<link type="text/css" rel="stylesheet" media="all" href="/sites/imgtec.eetrend.com/themes/corolla/style.css?M" />
+<link type="text/css" rel="stylesheet" media="all" href="/sites/imgtec.eetrend.com/themes/corolla/drupal-6.css?M" />
+<link type="text/css" rel="stylesheet" media="all" href="/sites/imgtec.eetrend.com/themes/corolla/colors.css?M" />
+<link type="text/css" rel="stylesheet" media="print" href="/sites/imgtec.eetrend.com/themes/corolla/print.css?M" />
+  <style type="text/css" media="all">/* Base font size */
+html {
+  font-size: 14px;
+}
+
+/* Layout width */
+body.two-sidebars #header-menu,
+body.two-sidebars #header,
+body.two-sidebars #main-columns {
+  width: ;
+  min-width:800px;
+  max-width: 1220px;
+}
+body.one-sidebar #header-menu,
+body.one-sidebar #header,
+body.one-sidebar #main-columns {
+  width: ;
+  min-width: 980px;
+  max-width: 1020px;
+}
+body.no-sidebars #header-menu,
+body.no-sidebars #header,
+body.no-sidebars #main-columns {
+  width: ;
+  min-width: 550px;
+  max-width: 800px;
+}
+
+/**
+ * Color schemes
+ */
+
+/* Background */
+body {
+  background-color: #f8f8f8;
+}
+#header-menu .content > ul > li.active-trail {
+  background-color: #f8f8f8;
+}
+/* Text (black) */
+body,
+#site-name a,
+#header-menu .content li.active a,
+h1.page-title,
+.node h2.node-title,
+.node h1.node-title a,
+.node h2.node-title a,
+.comment h3.title a,
+.tabs ul.tabs li a,
+pre,
+code,
+samp,
+var,
+table.update tr,
+table.system-status-report tr {
+  color: #2e2e2e;
+}
+#site-name a::-moz-selection {
+  background-color: #2e2e2e;
+}
+#site-name a::selection {
+  background-color: #2e2e2e;
+}
+.node-title a::-moz-selection {
+  background-color: #2e2e2e;
+}
+.node-title a::selection {
+  background-color: #2e2e2e;
+}
+/* Link (blue) */
+a,
+a.active,
+li a.active {
+  color: #086782;
+}
+legend {
+  background-color: #086782;
+}
+/* Link hovered (orange) */
+a:hover,
+a:focus,
+a.active:hover,
+a.active:focus,
+li a.active:hover,
+li a.active:focus {
+  color: #e25401;
+}
+.node h1.node-title a:hover,
+.node h2.node-title a:hover {
+  color: #e25401;
+}
+/* Link underline (light blue) */
+a {
+  border-bottom: 0px solid #cfdde5;
+}
+/* Header menu (black) */
+#header-menu-wrapper {
+  background-color: #2e2e2d;
+}
+/* Header menu hovered (orange) */
+#header-menu .content li a:hover,
+#header-menu .content li a:active,
+#header-menu .content li a:focus {
+  background-color: #e25402;
+}
+/* Slogan (orange) */
+#site-slogan {
+  color: #e25400;
+}
+#site-slogan::selection {
+  background-color: #e25402;
+}
+#site-slogan::-moz-selection {
+  background-color: #e25402;
+}
+.poll .bar .foreground {
+  background-color: #e25402;
+}
+/* Border (gray) */
+#page {
+  border: 0px solid #e1e1e1;
+}
+/* Border strong (dark gray) */
+#sidebar-first input,
+#sidebar-second input {
+  border: 1px solid #c4c4c4;
+}
+.tabs ul.tabs li a {
+  border: 1px solid #c4c4c4;
+}
+/* Tab */
+.tabs ul.tabs li a {
+  background-color: #f5f4f3;
+}
+ul.vertical-tabs-list li a {
+  background-color: #f5f4f3;
+}
+/* Block title (green) */
+.block h2,
+h2 {
+  color: #779125;
+}
+.block h2::selection {
+  color: #fff;
+  background-color: #779125;
+}
+.block h2::-moz-selection {
+  background-color: #779125;
+  color: #fff;
+}
+/* Fieldset (gray) */
+fieldset {
+  background-color: #fbfbfb;
+}
+/* Fieldset border (dark gray) */
+fieldset {
+  border: 1px solid #e1e1e2;
+}
+
+</style> 
+
+  <!--[if lte IE 8]>
+  <link type="text/css" rel="stylesheet" href="/sites/imgtec.eetrend.com/themes/corolla/ie8.css" media="all" />
+  <![endif]-->
+
+  <!--[if lte IE 7]>
+  <link type="text/css" rel="stylesheet" href="/sites/imgtec.eetrend.com/themes/corolla/ie7.css" media="all" />
+  <![endif]-->
+
+  <script type="text/javascript" src="/sites/all/modules/jquery_update/replace/jquery.min.js?M"></script>
+<script type="text/javascript" src="/misc/drupal.js?M"></script>
+<script type="text/javascript" src="/sites/imgtec.eetrend.com/files/languages/zh-hans_b3bb5f78861f3dc094d62c099c02aa55.js?M"></script>
+<script type="text/javascript">
+<!--//--><![CDATA[//><!--
+jQuery.extend(Drupal.settings, { "basePath": "/", "CToolsUrlIsAjaxTrusted": { "/article/misc/feed.png": true } });
+//--><!]]>
+</script>
+  <meta property="wb:webmaster" content="805bfea205ee31b3" />
+ <script src="http://tjs.sjs.sinajs.cn/open/api/js/wb.js?appkey=3939014814" type="text/javascript" charset="utf-8"></script>
+ </head>
+
+<body class="not-front not-logged-in page-article  one-sidebar">
+
+<div id="header-container">
+<header class="col-full" id="header">
+<div id="logo">
+	<a title="Imagination中文技术社区" href="http://imgtec.eetrend.com"><img src="http://imgtec.eetrend.com/sites/imgtec.eetrend.com/files/images/img-logo.png"></a>
+</div>
+</header>
+</div>
+
+      <div id="header-menu-wrapper">
+      <div id="header-menu">
+        <div id="block-menu-primary-links" class="block block-menu">
+  <div class="inner">
+  
+    <div class="content">
+      <ul class="menu"><li class="leaf first"><a href="/" title="">首页</a></li>
+<li class="leaf"><a href="/news">新闻</a></li>
+<li class="leaf active-trail"><a href="/article">技术文章</a></li>
+<li class="leaf"><a href="/download">下载中心</a></li>
+<li class="leaf"><a href="/blog" title="">博客</a></li>
+<li class="leaf"><a href="/forum" title="">互动专区</a></li>
+<li class="leaf"><a href="/video">视频</a></li>
+<li class="leaf"><a href="/activity">活动</a></li>
+<li class="leaf last"><a href="http://community.imgtec.com/developers/platforms/" title="http://community.imgtec.com/developers/platforms/">商城</a></li>
+</ul>    </div>
+  </div>
+</div>
+      </div>
+    </div>
+  
+
+  <div id="header-wrapper">
+    <div id="header" class="clear-block with-blocks">
+
+      
+              <div class="region region-header">
+          <div id="block-block-28" class="block block-block">
+  <div class="inner">
+  
+    <div class="content">
+      <div id="my-user-bar"><div class="item-list"><ul><li class="first"><a href='/rss.xml'><img src='misc/feed.png' border='0'></a></li>
+<li><a href='/user/register?destination=article%2Fmisc%2Ffeed.png' rel='nofollow'>注册</a></li>
+<li class="last"><a href='/user/login?destination=article%2Fmisc%2Ffeed.png' rel='nofollow'>登录</a></li>
+</ul></div></div>    </div>
+  </div>
+</div>
+<div id="block-block-34" class="block block-block">
+  <div class="inner">
+  
+    <div class="content">
+      <div><iframe scrolling="no" marginheight="0" marginwidth="0" frameborder="0" height="200" width="1024" src="http://www.eetrend.com/imgtec-600X150"></iframe></div>    </div>
+  </div>
+</div>
+        </div>
+      
+    </div> <!-- /#header -->
+  </div> <!-- /#header-wrapper -->
+
+  <div id="main-columns-wrapper">
+    <div id="main-columns">
+      
+      <div id="main-wrapper" class=" first">
+  <div id="main">
+    <div id="page" class="clear-block">
+      <!--<div id="breadcrumb"><div class="breadcrumb"><a href="/">首页</a></div></div>-->
+      
+      
+      
+      
+      <a id="main-content"></a>
+      
+      
+              <div class="region region-content">
+          <div class="view view-content view-id-content view-display-id-article view-dom-id-1">
+    
+  
+  
+      <div class="view-content">
+        <div class="views-row views-row-1 views-row-odd views-row-first">
+      
+  <div class="views-field-nothing">
+                <span class="field-content"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td align="left" valign="top"><span class="post-content-title"><a href="/article/7675">图形专家小组齐聚Khronos巴黎分部交流讨论下一代图形API：Vulkan</a></span></td>
+  </tr>
+  <tr>
+    <td align="left" valign="top"><span class="post-content-created"><span>2016-04-13 15:13</span> <span><a href="/tag/2166">API</a>, <a href="/tag/1473">PowerVR</a>, <a href="/article/tag/1784">PowerVR SDK</a>, <a href="/tag/4508">Vulkan</a>, <a href="/article/tag/6713">巴黎</a></span> <span>围观: 72</span></span></td>
+  </tr>
+  <tr>
+    <td align="left" valign="top"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td width="310" align="left" valign="top"><span class="post-content-img"><a href="/article/7675" class="imagecache imagecache-image300X169 imagecache-linked imagecache-image300X169_linked"><img src="http://imgtec.eetrend.com/sites/imgtec.eetrend.com/files/imagecache/image300X169/article/201604/7675-19017-7675-18991-3.jpg" alt="" title="" width="300" height="169" class="imagecache imagecache-image300X169"/></a></span></td>
+        <td align="left" valign="top"><span class="post-content-teaser">一月底的时候我在巴黎的ISART Digital（视频游戏和3D动画学校）参加了一个座谈讨论会:“新一代图形API座谈会：关于早期的Vulkan”。这次会议是由来自Unity的Christophe Riccio组织和主持的，这次会议的主题是关于Khronos Group新一代图形与计算API：...</span></td>
+      </tr>
+      <tr>
+        <td colspan="2" align="left" valign="top"></td>
+        </tr>
+    </table></td>
+  </tr>
+</table></span>
+  </div>
+  </div>
+  <div class="views-row views-row-2 views-row-even">
+      
+  <div class="views-field-nothing">
+                <span class="field-content"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td align="left" valign="top"><span class="post-content-title"><a href="/article/7666">Spellwrath实时光线追踪软阴影（二）</a></span></td>
+  </tr>
+  <tr>
+    <td align="left" valign="top"><span class="post-content-created"><span>2016-04-12 14:33</span> <span><a href="/tag/3119">PowerVR GPU</a>, <a href="/article/tag/2397">PowerVR GPU</a>, <a href="/tag/1957">光线追踪</a>, <a href="/tag/6423">软阴影</a></span> <span>围观: 43</span></span></td>
+  </tr>
+  <tr>
+    <td align="left" valign="top"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td width="310" align="left" valign="top"><span class="post-content-img"><a href="/article/7666" class="imagecache imagecache-image300X169 imagecache-linked imagecache-image300X169_linked"><img src="http://imgtec.eetrend.com/sites/imgtec.eetrend.com/files/imagecache/image300X169/article/201604/7666-18962-13.png" alt="" title="" width="300" height="169" class="imagecache imagecache-image300X169"/></a></span></td>
+        <td align="left" valign="top"><span class="post-content-teaser">光线追踪器追踪目标之后，采取以下步骤来追踪阴影：
+对于场景中的每个像素(2D)，我们从它实际在世界空间中的3D位置处向光源投射射线
+如果像素是被遮挡的，存储遮挡值
+  
+如果像素没有被遮挡，在缓冲区的存储值为1.0
+  
+这非常直观。对于硬阴影而言，这足以对所有被遮挡部分着色。...</span></td>
+      </tr>
+      <tr>
+        <td colspan="2" align="left" valign="top"></td>
+        </tr>
+    </table></td>
+  </tr>
+</table></span>
+  </div>
+  </div>
+  <div class="views-row views-row-3 views-row-odd">
+      
+  <div class="views-field-nothing">
+                <span class="field-content"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td align="left" valign="top"><span class="post-content-title"><a href="/article/7655">Spellwrath实时光线追踪软阴影（一）</a></span></td>
+  </tr>
+  <tr>
+    <td align="left" valign="top"><span class="post-content-created"><span>2016-04-11 11:56</span> <span><a href="/article/tag/2397">PowerVR GPU</a>, <a href="/tag/1957">光线追踪</a>, <a href="/tag/6423">软阴影</a></span> <span>围观: 110</span></span></td>
+  </tr>
+  <tr>
+    <td align="left" valign="top"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td width="310" align="left" valign="top"><span class="post-content-img"><a href="/article/7655" class="imagecache imagecache-image300X169 imagecache-linked imagecache-image300X169_linked"><img src="http://imgtec.eetrend.com/sites/imgtec.eetrend.com/files/imagecache/image300X169/article/201604/7655-18928-7372-18033-1.png" alt="" title="" width="300" height="169" class="imagecache imagecache-image300X169"/></a></span></td>
+        <td align="left" valign="top"><span class="post-content-teaser">直延续至计算机图像上。他希望有一天能完全实时模拟光的所有方面。从事电脑游戏便是兴趣使然。在Spellwrath游戏中,他创建了一个实时的光线追踪引擎。目前，Michael是德国武装部队的一名军官。
+现代实时图像非常依赖光栅化技术来实现高帧速率和可信的场景。这个过程通常非常简单：取一个多边形，...</span></td>
+      </tr>
+      <tr>
+        <td colspan="2" align="left" valign="top"></td>
+        </tr>
+    </table></td>
+  </tr>
+</table></span>
+  </div>
+  </div>
+  <div class="views-row views-row-4 views-row-even">
+      
+  <div class="views-field-nothing">
+                <span class="field-content"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td align="left" valign="top"><span class="post-content-title"><a href="/article/7637">从无名之辈到英雄的逆袭之路：Unity 5 plus混合渲染</a></span></td>
+  </tr>
+  <tr>
+    <td align="left" valign="top"><span class="post-content-created"><span>2016-04-07 11:43</span> <span><a href="/tag/1473">PowerVR</a>, <a href="/article/tag/1784">PowerVR SDK</a>, <a href="/tag/2004">Unity</a></span> <span>围观: 96</span></span></td>
+  </tr>
+  <tr>
+    <td align="left" valign="top"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td width="310" align="left" valign="top"><span class="post-content-img"><a href="/article/7637" class="imagecache imagecache-image300X169 imagecache-linked imagecache-image300X169_linked"><img src="http://imgtec.eetrend.com/sites/imgtec.eetrend.com/files/imagecache/image300X169/article/201604/7637-18851-2.png" alt="" title="" width="300" height="169" class="imagecache imagecache-image300X169"/></a></span></td>
+        <td align="left" valign="top"><span class="post-content-teaser">本文的焦点是向Unity的艺术家展示如何使用混合渲染技术轻松将真实的反射和阴影添加至图像中。PowerVR OverDrive实时运行，通过Linux驱动的计算机上安装的PowerVR光线追踪GPU进行渲染。
+使用Xbox 360控制器，玩家便可以开着巨型卡车横扫一切，尽情地享受真实的画质体验。...</span></td>
+      </tr>
+      <tr>
+        <td colspan="2" align="left" valign="top"></td>
+        </tr>
+    </table></td>
+  </tr>
+</table></span>
+  </div>
+  </div>
+  <div class="views-row views-row-5 views-row-odd">
+      
+  <div class="views-field-nothing">
+                <span class="field-content"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td align="left" valign="top"><span class="post-content-title"><a href="/article/7629">PowerVR在GDC 2016:移动设备的光线追踪和高端图像</a></span></td>
+  </tr>
+  <tr>
+    <td align="left" valign="top"><span class="post-content-created"><span>2016-04-06 14:50</span> <span><a href="/tag/6696">GDC 2016</a>, <a href="/tag/1473">PowerVR</a>, <a href="/article/tag/2397">PowerVR GPU</a>, <a href="/tag/1957">光线追踪</a></span> <span>围观: 110</span></span></td>
+  </tr>
+  <tr>
+    <td align="left" valign="top"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td width="310" align="left" valign="top"><span class="post-content-img"><a href="/article/7629" class="imagecache imagecache-image300X169 imagecache-linked imagecache-image300X169_linked"><img src="http://imgtec.eetrend.com/sites/imgtec.eetrend.com/files/imagecache/image300X169/article/201604/7629-18820-3.jpg" alt="" title="" width="300" height="169" class="imagecache imagecache-image300X169"/></a></span></td>
+        <td align="left" valign="top"><span class="post-content-teaser">在2016年游戏开发者大会（GDC）上，出于Rogue架构的高效性，PowerVR继续成为移动设备高端图形的标准。本文展示的是预览版。
+移动设备和控制台的实时光线追踪
+大会上第一个演示的产品来自PowerVR光线追踪团队。对于那些不熟悉最新光线追踪技术的人来说， PowerVR...</span></td>
+      </tr>
+      <tr>
+        <td colspan="2" align="left" valign="top"></td>
+        </tr>
+    </table></td>
+  </tr>
+</table></span>
+  </div>
+  </div>
+  <div class="views-row views-row-6 views-row-even">
+      
+  <div class="views-field-nothing">
+                <span class="field-content"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td align="left" valign="top"><span class="post-content-title"><a href="/article/7620">Dwarf Hall：PowerVR GPU上基于物理的渲染</a></span></td>
+  </tr>
+  <tr>
+    <td align="left" valign="top"><span class="post-content-created"><span>2016-04-05 14:49</span> <span><a href="/tag/6691">Dwarf Hall</a>, <a href="/tag/1453">GPU</a>, <a href="/tag/2089">OpenGL ES</a>, <a href="/article/tag/2397">PowerVR GPU</a></span> <span>围观: 210</span></span></td>
+  </tr>
+  <tr>
+    <td align="left" valign="top"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td width="310" align="left" valign="top"><span class="post-content-img"><a href="/article/7620" class="imagecache imagecache-image300X169 imagecache-linked imagecache-image300X169_linked"><img src="http://imgtec.eetrend.com/sites/imgtec.eetrend.com/files/imagecache/image300X169/article/201604/7620-18783-08464157.jpg" alt="" title="" width="300" height="169" class="imagecache imagecache-image300X169"/></a></span></td>
+        <td align="left" valign="top"><span class="post-content-teaser">基于物理的渲染(PBR)在移动类GPU中变得越来越盛行。在本文中，我将简要阐述PBR的概念和优缺点，并就如何使用PBR和延迟渲染在PowerVR GPU上运行提供相关建议。我还将展示如何在我们最新发布的OpenGL ES演示产品Dwarf Hall上使用PBR。
+
+基于物理的渲染没有精确的定义，...</span></td>
+      </tr>
+      <tr>
+        <td colspan="2" align="left" valign="top"></td>
+        </tr>
+    </table></td>
+  </tr>
+</table></span>
+  </div>
+  </div>
+  <div class="views-row views-row-7 views-row-odd">
+      
+  <div class="views-field-nothing">
+                <span class="field-content"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td align="left" valign="top"><span class="post-content-title"><a href="/article/7593">【深度原创】正面密铺或Vulkan如何映射至PowerVR GPU</a></span></td>
+  </tr>
+  <tr>
+    <td align="left" valign="top"><span class="post-content-created"><span>2016-03-30 10:35</span> <span><a href="/tag/1453">GPU</a>, <a href="/tag/1473">PowerVR</a>, <a href="/article/tag/6681">PowerVR多媒体处理器</a>, <a href="/tag/4508">Vulkan</a></span> <span>围观: 111</span></span></td>
+  </tr>
+  <tr>
+    <td align="left" valign="top"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td width="310" align="left" valign="top"><span class="post-content-img"><a href="/article/7593" class="imagecache imagecache-image300X169 imagecache-linked imagecache-image300X169_linked"><img src="http://imgtec.eetrend.com/sites/imgtec.eetrend.com/files/imagecache/image300X169/article/201603/7593-18712-2.png" alt="" title="" width="300" height="169" class="imagecache imagecache-image300X169"/></a></span></td>
+        <td align="left" valign="top"><span class="post-content-teaser">本文是该系列的最后一篇文章。该系列文章在我的网页上已载有数月，由于Vulkan产品的发布占用了我很多时间，最后收官之作的发表可能有些晚，希望大家还能关注它。本文中，我将阐述为何Vulkan比上一代API更适合硬件，同时，我还将深入PowerVR GPU的一些细节，并援引具体案例。
+OpenGL...</span></td>
+      </tr>
+      <tr>
+        <td colspan="2" align="left" valign="top"></td>
+        </tr>
+    </table></td>
+  </tr>
+</table></span>
+  </div>
+  </div>
+  <div class="views-row views-row-8 views-row-even">
+      
+  <div class="views-field-nothing">
+                <span class="field-content"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td align="left" valign="top"><span class="post-content-title"><a href="/article/7582">高级性能分析：使用PVRTune 的Fantasy Warrior 3D</a></span></td>
+  </tr>
+  <tr>
+    <td align="left" valign="top"><span class="post-content-created"><span>2016-03-29 11:59</span> <span><a href="/tag/6645">Fantasy Warrior 3D</a>, <a href="/tag/3119">PowerVR GPU</a>, <a href="/article/tag/6681">PowerVR多媒体处理器</a>, <a href="/tag/1481">PVRTune</a></span> <span>围观: 86</span></span></td>
+  </tr>
+  <tr>
+    <td align="left" valign="top"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td width="310" align="left" valign="top"><span class="post-content-img"><a href="/article/7582" class="imagecache imagecache-image300X169 imagecache-linked imagecache-image300X169_linked"><img src="http://imgtec.eetrend.com/sites/imgtec.eetrend.com/files/imagecache/image300X169/article/201603/7582-18667-176408.jpg" alt="" title="" width="300" height="169" class="imagecache imagecache-image300X169"/></a></span></td>
+        <td align="left" valign="top"><span class="post-content-teaser">在上一篇文章中，我阐述了如何使用PVRTune GPU性能记录工具中的时间数据和高级计数器识别Fantasy Warrior 3D演示在基于PowerVR的目标设备上运行时是否受CPU限制。
+本文中，我将描述一些PVRTune的高级分析计数器，并阐述如何使用这些计数器更好地分析GPU工作负载。...</span></td>
+      </tr>
+      <tr>
+        <td colspan="2" align="left" valign="top"></td>
+        </tr>
+    </table></td>
+  </tr>
+</table></span>
+  </div>
+  </div>
+  <div class="views-row views-row-9 views-row-odd">
+      
+  <div class="views-field-nothing">
+                <span class="field-content"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td align="left" valign="top"><span class="post-content-title"><a href="/article/7570">使用Basemark PAT优化功耗应用程序</a></span></td>
+  </tr>
+  <tr>
+    <td align="left" valign="top"><span class="post-content-created"><span>2016-03-28 09:34</span> <span><a href="/tag/6675">Basemark PAT</a>, <a href="/tag/1453">GPU</a>, <a href="/article/tag/6677">服务器超级运算</a></span> <span>围观: 93</span></span></td>
+  </tr>
+  <tr>
+    <td align="left" valign="top"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td width="310" align="left" valign="top"><span class="post-content-img"><a href="/article/7570" class="imagecache imagecache-image300X169 imagecache-linked imagecache-image300X169_linked"><img src="http://imgtec.eetrend.com/sites/imgtec.eetrend.com/files/imagecache/image300X169/article/201603/7570-18613-reflex-1.jpg" alt="" title="" width="300" height="169" class="imagecache imagecache-image300X169"/></a></span></td>
+        <td align="left" valign="top"><span class="post-content-teaser">Teemu Virolainen 是Basemark的高级软件工程师。Basemark专门为全球领先的半导体和OEM公司如AMD、Imagination Technologies、Intel、NVIDIA、Renesas和Qualcomm开发行业领先的系统性能和功耗分析工具。...</span></td>
+      </tr>
+      <tr>
+        <td colspan="2" align="left" valign="top"></td>
+        </tr>
+    </table></td>
+  </tr>
+</table></span>
+  </div>
+  </div>
+  <div class="views-row views-row-10 views-row-even views-row-last">
+      
+  <div class="views-field-nothing">
+                <span class="field-content"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td align="left" valign="top"><span class="post-content-title"><a href="/article/7541">Ensigma Whisper RPU和物联网应用程序</a></span></td>
+  </tr>
+  <tr>
+    <td align="left" valign="top"><span class="post-content-created"><span>2016-03-23 09:55</span> <span><a href="/tag/3291">RPU</a>, <a href="/tag/6666">智能蓝牙</a>, <a href="/tag/1118">物联网</a>, <a href="/article/tag/6327">物联网</a></span> <span>围观: 99</span></span></td>
+  </tr>
+  <tr>
+    <td align="left" valign="top"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td width="310" align="left" valign="top"><span class="post-content-img"><a href="/article/7541" class="imagecache imagecache-image300X169 imagecache-linked imagecache-image300X169_linked"><img src="http://imgtec.eetrend.com/sites/imgtec.eetrend.com/files/imagecache/image300X169/article/201603/7541-18524-20150827091612_805.jpg" alt="" title="" width="300" height="169" class="imagecache imagecache-image300X169"/></a></span></td>
+        <td align="left" valign="top"><span class="post-content-teaser">在上一篇文章中，我的同事Kevin McDermott介绍了物联网设备的处理需求，同时，他还对物联网的数据速率需求进行了阐述。
+今天，我将着重介绍Ensigma Whisper RPU架构，这是一款为物联网应用程序设计优化的硬件连接引擎。...</span></td>
+      </tr>
+      <tr>
+        <td colspan="2" align="left" valign="top"></td>
+        </tr>
+    </table></td>
+  </tr>
+</table></span>
+  </div>
+  </div>
+    </div>
+  
+      <div class="item-list"><ul class="pager"><li class="pager-current first">1</li>
+<li class="pager-item"><a href="/article/misc/feed.png?page=1" title="到第 2 页" class="active">2</a></li>
+<li class="pager-item"><a href="/article/misc/feed.png?page=2" title="到第 3 页" class="active">3</a></li>
+<li class="pager-item"><a href="/article/misc/feed.png?page=3" title="到第 4 页" class="active">4</a></li>
+<li class="pager-item"><a href="/article/misc/feed.png?page=4" title="到第 5 页" class="active">5</a></li>
+<li class="pager-item"><a href="/article/misc/feed.png?page=5" title="到第 6 页" class="active">6</a></li>
+<li class="pager-item"><a href="/article/misc/feed.png?page=6" title="到第 7 页" class="active">7</a></li>
+<li class="pager-item"><a href="/article/misc/feed.png?page=7" title="到第 8 页" class="active">8</a></li>
+<li class="pager-item"><a href="/article/misc/feed.png?page=8" title="到第 9 页" class="active">9</a></li>
+<li class="pager-ellipsis">…</li>
+<li class="pager-next"><a href="/article/misc/feed.png?page=1" title="去下一个页面" class="active">下一页 ›</a></li>
+<li class="pager-last last"><a href="/article/misc/feed.png?page=38" title="到最后一页" class="active">末页 »</a></li>
+</ul></div>  
+  
+  
+  
+  
+</div>         </div>
+      
+                </div> <!-- /#page -->
+
+    <div id="closure">
+      <div id="info">
+        --电子创新网--<br />
+<a href="http://www.miibeian.gov.cn/">粤ICP备12070055号</a> 
+      </div>
+
+          </div> <!-- /#closure -->
+
+  </div> <!-- /#main -->
+</div> <!-- /#main-wrapper -->
+
+
+    <div id="sidebar-second" class="clear-block last">
+    <div class="region region-sidebar-second">
+      <div id="block-search-0" class="block block-search">
+  <div class="inner">
+      <div class="hd"><h2>全站搜索</h2></div>
+  
+    <div class="content">
+      <form action="/article/misc/feed.png"  accept-charset="UTF-8" method="post" id="search-block-form">
+<div><div class="container-inline">
+  <div class="form-item" id="edit-search-block-form-1-wrapper">
+ <label for="edit-search-block-form-1">站内搜索:</label>
+ <input type="text" maxlength="128" name="search_block_form" id="edit-search-block-form-1" size="15" value="" title="请输入您想搜索的关键词。" class="form-text" />
+</div>
+<input type="submit" name="op" id="edit-submit" value="搜索"  class="form-submit" />
+<input type="hidden" name="form_build_id" id="form-JPzcdRPeq8_SRcd3He_pZ70cUN8_DCbG9TMcIn8ph90" value="form-JPzcdRPeq8_SRcd3He_pZ70cUN8_DCbG9TMcIn8ph90"  />
+<input type="hidden" name="form_id" id="edit-search-block-form" value="search_block_form"  />
+</div>
+
+</div></form>
+    </div>
+  </div>
+</div>
+<div id="block-block-33" class="block block-block">
+  <div class="inner">
+      <div class="hd"><h2>近期热门活动</h2></div>
+  
+    <div class="content">
+      <p><a href="http://imgtec.eetrend.com/news/7239"><img src="http://imgtec.eetrend.com/sites/imgtec.eetrend.com/files/news/201602/7239-17518-idc2016-0.jpg" alt="GDC 2016盛会来袭，欢迎报名参会idc2016，交流PowerVR开发！" width="237" /></a><br />
+<a href="http://imgtec.eetrend.com/activity/6995"><img src="http://imgtec.eetrend.com/sites/imgtec.eetrend.com/files/download/201601/6985-16726-img-uk1.jpg" alt="Imagination大学计划走进高校" width="237" /></a><br />
+<a href="https://www.kickstarter.com/projects/imgtec/creator-ci40-the-ultimate-iot-in-a-box-dev-kit"><img src="http://imgtec.eetrend.com/sites/imgtec.eetrend.com/files/article/201511/6566-15723-1.png" alt="Ci 40火爆众筹中" width="237" /></a></p>
+    </div>
+  </div>
+</div>
+<div id="block-block-36" class="block block-block">
+  <div class="inner">
+      <div class="hd"><h2>精彩专辑</h2></div>
+  
+    <div class="content">
+      <p><strong>应用领域</strong><br />
+1.<a href="http://imgtec.eetrend.com/forum/6991">汽车</a><br />
+2.<a href="http://imgtec.eetrend.com/forum/6880">物联网</a><br />
+3.<a href="http://imgtec.eetrend.com/forum/6992">家庭娱乐多媒体</a><br />
+4.<a href="http://imgtec.eetrend.com/forum/6993">服务器超级运算</a></p>
+<p><strong>产品</strong><br />
+1.<a href="http://imgtec.eetrend.com/forum/6884">MIPS处理器</a><br />
+2.<a href="http://imgtec.eetrend.com/forum/6885">PowerVR多媒体处理器</a><br />
+3.<a href="http://imgtec.eetrend.com/forum/6989">Ensigma无线通信处理器</a><br />
+4.<a href="http://imgtec.eetrend.com/forum/6990">FlowCould云计算</a></p>
+    </div>
+  </div>
+</div>
+<div id="block-block-37" class="block block-block">
+  <div class="inner">
+      <div class="hd"><h2>社区互动有奖活动</h2></div>
+  
+    <div class="content">
+      <p>1.<a href="http://imgtec.eetrend.com/forum/7025">MIPSCPU 在2016年会引领新的嵌入式创新变革吗?</a><br />
+2.<a href="http://imgtec.eetrend.com/activity/6423">吐槽物联网时代的安全</a><br />
+3.<a href="http://imgtec.eetrend.com/activity/5309">免费试用chipKIT Wi-Fire开发平台活动</a></p>
+    </div>
+  </div>
+</div>
+<div id="block-block-29" class="block block-block">
+  <div class="inner">
+      <div class="hd"><h2>精彩推荐</h2></div>
+  
+    <div class="content">
+      <table width="100%" border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="50"><a href="http://community.imgtec.com/developers/powervr/installers/?"><img src="http://imgtec.eetrend.com/sites/imgtec.eetrend.com/files/news/201402/1557-2519-sdk00.png" width="50" height="50" /></a></td>
+<td>&nbsp;</td>
+<td><a href="http://community.imgtec.com/developers/powervr/installers/?"> 免费注册即刻下载官方SDK</a></td>
+</tr>
+<tr>
+<td width="50"><a href="http://www.imgtec.com/mips/developers/mips-tools.asp"><img src="http://imgtec.eetrend.com/sites/imgtec.eetrend.com/files/news/201402/1557-2518-add0ab24-b1ee-4055-9b17-ce5bd63c4865.png" width="50" height="50" /></a></td>
+<td>&nbsp;</td>
+<td><a href="http://www.imgtec.com/mips/developers/mips-tools.asp"> MIPS开发工具大全</a></td>
+</tr>
+<tr>
+<td width="50"><a href="http://blog.imgtec.com/"><img src="http://imgtec.eetrend.com/sites/imgtec.eetrend.com/files/news/201402/1557-2520-blogiconfuben.png" width="50" height="50" /></a></td>
+<td>&nbsp;</td>
+<td><a href="http://blog.imgtec.com/"> CPU/GPU专家博客群</a></td>
+</tr>
+<tr>
+<td width="50"><a href="http://forum.imgtec.com/"><img src="http://imgtec.eetrend.com/sites/imgtec.eetrend.com/files/news/201402/1557-2521-forum00.png" width="50" height="50" /></a></td>
+<td>&nbsp;</td>
+<td><a href="http://forum.imgtec.com/">IMG全球开发者论坛！</a></td>
+</tr>
+<tr>
+<td><a href="http://imgtec.com/prpl/"><img src="http://imgtec.eetrend.com/sites/imgtec.eetrend.com/files/news/201509/6146-14341-title966997504.png" width="50" height="50" /></a></td>
+<td>&nbsp;</td>
+<td><a href="http://imgtec.com/prpl/">prpl基金会</a></td>
+</tr>
+<tr>
+<td width="50"><a href="http://community.imgtec.com/university/"><img src="http://imgtec.eetrend.com/sites/imgtec.eetrend.com/files/article/201509/6119-14307-daxujiaochen.png" width="50" height="50" /></a></td>
+<td>&nbsp;</td>
+<td><a href="http://community.imgtec.com/university/">Imagination大学项目</a></td>
+</tr>
+</table>
+    </div>
+  </div>
+</div>
+<div id="block-block-30" class="block block-block">
+  <div class="inner">
+      <div class="hd"><h2>官方权威教程</h2></div>
+  
+    <div class="content">
+      <p><a href="http://www.imgtec.com/mips/training/video-training/">官方权威培训视频大全</a></p>
+    </div>
+  </div>
+</div>
+<div id="block-block-25" class="block block-block">
+  <div class="inner">
+      <div class="hd"><h2>技术文章分类</h2></div>
+  
+    <div class="content">
+      <div class='taxonomy_tree'>
+<ul>
+<li>  <a href="/article/tag/6676">Basemark PAT</a> (0)</li>
+<li>  <a href="/article/tag/6043">Ensigma</a> (5)</li>
+<li>  <a href="/article/tag/3238">FlowCloud</a> (7)</li>
+<li>  <a href="/article/tag/6041">Imagination大学计划</a> (1)</li>
+<li>  <a href="/article/tag/5917">Imagination峰会</a> (8)</li>
+<li>  <a href="/article/tag/5947">Imagination资讯</a> (15)</li>
+<li>  <a href="/article/tag/6056">Microchip PIC32开发资源</a> (10)</li>
+<li>  <a href="/article/tag/2071">MIPS</a> (147)</li>
+<li>  <a href="/article/tag/6048">MIPS可穿戴</a> (17)</li>
+<li>  <a href="/article/tag/2397">PowerVR GPU</a> (68)</li>
+<li>  <a href="/article/tag/1784">PowerVR SDK</a> (27)</li>
+<li>  <a href="/article/tag/6681">PowerVR多媒体处理器</a> (2)</li>
+<li>  <a href="/article/tag/5960">其他资源</a> (51)</li>
+<li>  <a href="/article/tag/6713">巴黎</a> (1)</li>
+<li>  <a href="/article/tag/6677">服务器超级运算</a> (1)</li>
+<li>  <a href="/article/tag/6327">物联网</a> (4)</li>
+</ul>
+
+
+</div>    </div>
+  </div>
+</div>
+<div id="block-block-17" class="block block-block">
+  <div class="inner">
+  
+    <div class="content">
+      <img src="http://imgtec.eetrend.com/sites/imgtec.eetrend.com/files/images/code.jpg">    </div>
+  </div>
+</div>
+<div id="block-block-31" class="block block-block">
+  <div class="inner">
+  
+    <div class="content">
+      <p><a href="http://i.youku.com/imgtec"><img src="http://imgtec.eetrend.com/sites/imgtec.eetrend.com/files/images/youku.png" /></a></p>
+    </div>
+  </div>
+</div>
+<div id="block-block-18" class="block block-block">
+  <div class="inner">
+  
+    <div class="content">
+      <iframe width="100%" height="550" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=550&fansRow=2&ptype=1&speed=0&skin=2&isTitle=1&noborder=1&isWeibo=1&isFans=1&uid=3178703462&verifier=c1a65d9b&dpc=1"></iframe>    </div>
+  </div>
+</div>
+<div id="block-comment-0" class="block block-comment">
+  <div class="inner">
+      <div class="hd"><h2>最新评论</h2></div>
+  
+    <div class="content">
+      <div class="item-list"><ul><li class="first"><a href="/blog/7612#comment-994">这不就是 metal 和 dx12 么</a><br />1 周 1 天之前</li>
+<li><a href="/forum/7633#comment-993">网友jianggh问：pic32MZ2048ech SPI通讯问题？</a><br />1 周 3 天之前</li>
+<li><a href="/forum/7633#comment-992">网友jianggh问：pic32MZ2048ech SPI通讯问题？</a><br />1 周 3 天之前</li>
+<li><a href="/forum/7633#comment-991">网友jianggh问：pic32MZ2048ech SPI通讯问题？</a><br />1 周 3 天之前</li>
+<li><a href="/forum/4534#comment-990">楼主，你好，最近也在学pic32mz,用的是pic32mz</a><br />1 周 3 天之前</li>
+<li><a href="/forum/7585#comment-989">我也在看这个</a><br />1 周 5 天之前</li>
+<li><a href="/forum/7273#comment-988">“参与微信投票送平板”的活动开奖了！！！</a><br />2 周 6 天之前</li>
+<li><a href="/forum/7499#comment-987">网友aspire.l问：pic32mz0512eff064外部时钟配置？</a><br />4 周 3 天之前</li>
+<li><a href="/forum/7464#comment-986">PIC32MZ 关于SPI 时序操作EEPROM例程</a><br />4 周 5 天之前</li>
+<li class="last"><a href="/forum/7452#comment-985">网友fpga答：适合的RTOS你可以看这里：</a><br />4 周 6 天之前</li>
+</ul></div>    </div>
+  </div>
+</div>
+    </div>
+  </div> <!-- /#sidebar-second -->
+
+
+    </div> <!-- /#main-columns -->
+  </div> <!-- /#main-columns-wrapper -->
+  
+
+
+  
+<div style="display:none">
+<script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F513d000ca91d82653d0868dcc63cc8da' type='text/javascript'%3E%3C/script%3E"));
+</script>
+</div>
+<!-- JiaThis Button BEGIN -->
+<!-- <script type="text/javascript" src="http://v3.jiathis.com/code/jiathis_r.js?uid=1357485142326395&move=0" charset="utf-8"></script> -->
+<!-- JiaThis Button END -->
+</body>
+</html>

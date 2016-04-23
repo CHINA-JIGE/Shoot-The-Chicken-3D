@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="zh-cn"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<title>PPM / PGM / PBM 图像文件格式 - Leo Chin - 博客园</title>
+<link type="text/css" rel="stylesheet" href="PPM%20_%20PGM%20_%20PBM%20%E5%9B%BE%E5%83%8F%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8F%20-%20Leo%20Chin%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/blog-common.css">
+<link id="MainCss" type="text/css" rel="stylesheet" href="PPM%20_%20PGM%20_%20PBM%20%E5%9B%BE%E5%83%8F%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8F%20-%20Leo%20Chin%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/bundle-ThinkInside.css">
+<link type="text/css" rel="stylesheet" href="PPM%20_%20PGM%20_%20PBM%20%E5%9B%BE%E5%83%8F%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8F%20-%20Leo%20Chin%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/66907.css">
+<link title="RSS" type="application/rss+xml" rel="alternate" href="http://www.cnblogs.com/hnrainll/rss">
+<link title="RSD" type="application/rsd+xml" rel="EditURI" href="http://www.cnblogs.com/hnrainll/rsd.xml">
+<link type="application/wlwmanifest+xml" rel="wlwmanifest" href="http://www.cnblogs.com/hnrainll/wlwmanifest.xml">
+<script src="PPM%20_%20PGM%20_%20PBM%20%E5%9B%BE%E5%83%8F%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8F%20-%20Leo%20Chin%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/jquery.js" type="text/javascript"></script>  
+<script type="text/javascript">var currentBlogApp = 'hnrainll', cb_enable_mathjax=false;</script>
+<script src="PPM%20_%20PGM%20_%20PBM%20%E5%9B%BE%E5%83%8F%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8F%20-%20Leo%20Chin%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/blog-common.js" type="text/javascript"></script>
+<link href="PPM%20_%20PGM%20_%20PBM%20%E5%9B%BE%E5%83%8F%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8F%20-%20Leo%20Chin%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/content.css" type="text/css" rel="stylesheet"><link href="PPM%20_%20PGM%20_%20PBM%20%E5%9B%BE%E5%83%8F%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8F%20-%20Leo%20Chin%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/search.css" type="text/css" rel="stylesheet"></head>
+<body>
+<a name="top"></a>
+
+<!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+	<a id="lnkBlogLogo" href="http://www.cnblogs.com/hnrainll/"><img id="blogLogo" src="PPM%20_%20PGM%20_%20PBM%20%E5%9B%BE%E5%83%8F%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8F%20-%20Leo%20Chin%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/logo.gif" alt="返回主页"></a>			
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle" href="http://www.cnblogs.com/hnrainll/">业精于勤，荒于嬉；行成于思，毁于随</a></h1>
+<h2></h2>
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="MyLinks1_HomeLink" class="menu" href="http://www.cnblogs.com/">博客园</a></li>
+<li><a id="MyLinks1_MyHomeLink" class="menu" href="http://www.cnblogs.com/hnrainll/">首页</a></li>
+<li><a id="MyLinks1_NewPostLink" class="menu" rel="nofollow" href="http://i.cnblogs.com/EditPosts.aspx?opt=1">新随笔</a></li>
+<li><a id="MyLinks1_ContactLink" class="menu" rel="nofollow" href="http://msg.cnblogs.com/send/Leo%20Chin">联系</a></li>
+<li><a id="MyLinks1_Syndication" class="menu" href="http://www.cnblogs.com/hnrainll/rss">订阅</a>
+<!--<a id="MyLinks1_XMLLink" class="aHeaderXML" href="http://www.cnblogs.com/hnrainll/rss"><img src="http://www.cnblogs.com/images/xml.gif" alt="订阅" /></a>--></li>
+<li><a id="MyLinks1_Admin" class="menu" rel="nofollow" href="http://i.cnblogs.com/">管理</a></li>
+</ul>
+		<div class="blogStats">
+			
+			
+<span id="stats_post_count">随笔 - 1404&nbsp; </span>
+<span id="stats_article_count">文章 - 0&nbsp; </span>
+<span id="stats-comment_count">评论 - 244</span>
+
+			
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		
+<div id="post_detail">
+<!--done-->
+<div id="topics">
+	<div class="post">
+		<h1 class="postTitle">
+			<a id="cb_post_title_url" class="postTitle2" href="http://www.cnblogs.com/hnrainll/archive/2011/06/08/2075629.html">PPM / PGM / PBM 图像文件格式</a>
+		</h1>
+		<div class="clear"></div>
+		<div class="postBody">
+			<div id="cnblogs_post_body"><p>下面将详细介绍ppm文件</p>
+<p>ppm文件是一种图像文件，有其自己的文件格式。ppm文件由两个部分组成：第一个部分是三行ASCII码，这个部分决定了图像的存储格式以及图像的特征；第二个部分就是图像的数据部分，图像就是由这个部分组成的。</p>
+<p>　　ppm的第一部分由三行ASCII码组成</p>
+<p>第一行是P2/P3/P6<br>第二行是图像的大小，先是列像素数，后是行像素数，中间有一个空格<br>第三行是一个介于1和65535之间的整数，而且必须是文本的，用来表示每一个像素的一个分量用几个比特表示。</p>
+<p>　　三行之后是图像的数据流，从左到右，从上到下。在进行图像数据存储的时候，需要进行数据的格式，假如需要的像素值在0~255之间，那么在进行
+数据文件保存的时候，所写入文件的值就必须是以%c的形式输入，而且数据之间没有明显的分离字符，图像处理软件会自动地识别这些像素的值，并给予处理。</p>
+<p>PPM-&gt;Portable PixMap<br>PGM-&gt;Portable GreyMap<br>PBM-&gt;Portable BitMap</p>
+<p>PBM支持单色图（1个像素位）<br>PGM支持灰度图形，能够读PBM图形和PGM图形，输出PGM图形<br>PPM支持真彩色图形，可以读上面所有格式，输出PPM图形</p>
+<p>PPM</p>
+<p>　　PPM图形文件格式包括两个部分，头部分和图象数据部分。头部分由三部分组成，这三部分由回车或换行分割，但PPM的标准中是要求空格。第一行
+通常是P3或P6，说明是PPM格式；第二行是图象的宽度和高度，用ASCII来表示；最后一部分是描述像素的最大颜色组成，这里允许描述超过一个字节
+（0-255）的颜色值。另外可以在上面个部分的后面用#来追加注释，注释行是从#到该行末。</p>
+<p>　　下面是PPM头的例子：</p>
+<p>例子1：<br>P6 1024 778 255</p>
+<p>例子2：<br>P6<br>1024 778<br>255</p>
+<p>例子3：<br>P6#PPM文件格式<br>1024 778#宽度和高度<br># 注释<br>255</p>
+<p>　　PPM图象数据的格式依赖于PPM自身的表示，如果是P3格式，数据将以ASCII文本来表示，每个像素的值从0到前面的最大值，每行不应该长于70个字符，如下：</p>
+<p>例子4：<br>P3<br># example from the man page<br>4 4<br>15<br>0 0 0 0 0 0 0 0 0 15 0 15<br>0 0 0 0 15 7 0 0 0 0 0 0<br>0 0 0 0 0 0 0 15 7 0 0 0<br>15 0 15 0 0 0 0 0 0 0 0 0</p>
+<p>　　如果是P6格式，图象数据以字节格式存储，每个色彩成分（R，G，B）一个字节。仅仅在头部的最后一个字段的前面才能有注释，在头部的最后一个字段后面通常是一个回车或换行。P6图象文件比P3文件小，读起来更快。注意，P6文件仅仅用作但字节彩色。</p>
+<p>　　但并没有按照格式规约的要求来，通常的习惯，图象从上到下，从左到右被存储。每个像素以一个字节来存储，0表示黑色，255表示白色。色彩成分按照通常的红-绿-蓝顺序爱存储。</p>
+<p>PGM</p>
+<p>　　该格式文件存储灰度图形，也就是这里每个像素使用一个值来表示而不是3个（R，G，B）。同PPM唯一不同的是头部用P2和P5，分别表示用ASCII和字节码来表示数据。</p>
+<p>例如：<br>P2<br>24 7<br>15<br>0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0<br>0 3 3 3 3 0 0 7 7 7 7 0 0 11 11 11 11 0 0 15 15 15 15 0<br>0 3 0 0 0 0 0 7 0 0 0 0 0 11 0 0 0 0 0 15 0 0 15 0<br>0 3 3 3 0 0 0 7 7 7 0 0 0 11 11 11 0 0 0 15 15 15 15 0<br>0 3 0 0 0 0 0 7 0 0 0 0 0 11 0 0 0 0 0 15 0 0 0 0<br>0 3 0 0 0 0 0 7 7 7 7 0 0 11 11 11 11 0 0 15 0 0 0 0<br>0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0</p>
+<p>PBM</p>
+<p>　　使用ASCII的0或1方式来表示数据，0表示白色，1表示黑色。与PPM、PGM不同的头部是少了第三行，因为第三行的最大色彩值在这个模式下已经没有意义了；如下：</p>
+<p>P1<br># PBM example<br>24 7<br>0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0<br>0 1 1 1 1 0 0 1 1 1 1 0 0 1 1 1 1 0 0 1 1 1 1 0<br>0 1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 1 0<br>0 1 1 1 0 0 0 1 1 1 0 0 0 1 1 1 0 0 0 1 1 1 1 0<br>0 1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0<br>0 1 0 0 0 0 0 1 1 1 1 0 0 1 1 1 1 0 0 1 0 0 0 0<br>0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0</p>
+<p>PPM文件格式分三种：</p>
+<p>1. PPM灰度文件<br>　　文件头由3行文本组成，可由fgets读出<br>　　1）第一行为“P2"，表示文件类型<br>　　2）第二行为图像的宽度和高度<br>　　3）第三行为最大的象素值255<br>　　接下来是图像数据块。按行顺序存储。每个象素占4个字节，灰度通道为4字节ASCII码表示的整数，高字节在前。左上角为坐标原点。</p>
+<p>2. 16位PPM文件（至少适用于读取由DCRAW生成的PPM文件）<br>　　文件头由3行文本组成，可由fgets读出<br>　　1）第一行为“P6"，表示文件类型<br>　　2）第二行为图像的宽度和高度<br>　　3）第三行为最大的象素值<br>　　接下来是图像数据块。按行顺序存储。每个象素占3个字节，依次为红绿蓝通道，每个通道为1字节整数。左上角为坐标原点。</p>
+<p>3. PPM彩色文件<br>　　文件头由3行文本组成，可由fgets读出<br>　　1）第一行为“P3"，表示文件类型<br>　　2）第二行为图像的宽度和高度<br>　　3）第三行为最大的象素值255<br>　　接下来是图像数据块。按行顺序存储。每个象素占12个字节，依次为红绿蓝通道，每个通道为4字节ASCII码表示的整数，高字节在前。左上角为坐标原点。</p>
+<p>　　可移植像素图格式(PPM)，可移植灰度图格式(PGM)和可移植位图格式(PBM)是便于跨平台的图像格式。有时候也被统称为PNM格式。</p>
+<p>历史</p>
+<p>　　PBM格式由Jef Poskanzer在20世纪80年代发明，为了便于通过电子邮件，用ASCII码表示单色位图，能够承受一般的文本格式的变动。</p>
+<p>　　第一个处理PBM格式的工具库是Pbmplus。它由这个格式的发明人Jef 
+Poskanzer开发，在1988年发布。主要包含Jef编写的将PBM转化为已存在的其他图像格式的工具。在1988年末，Jef开发出PGM、
+PPM格式以及相关工具，并加入Pbmplus中。Pbmplus的最终发布日期是1991年12月10日。</p>
+<p>　　在1993年，Netpbm库开始开发，用来替代不再维护的Pbmplus。它是Pbmplus的简单的重新包装，附加全世界开发者提供的额外功能和修订，可能是目前用的最普遍的处理PBM、PGM和PPM格式的工具库。</p>
+<p>文件格式描述</p>
+<p>　　这三种格式在颜色的表示上有差异。PBM是单色，PGM是灰度图，PPM使用RGB颜色。</p>
+<p>　　每个文件的开头两个字节（ASCII码）作为文件描述子，指出具体格式和编码形式。具体见下表：</p>
+<table class="wikitable" border="1">
+<tbody>
+<tr>
+<th>文件描述子</th><th>类型</th><th>编码</th>
+</tr>
+<tr>
+<td><code><span face="新宋体" style="font-family: 新宋体; background-color: #f9f9f9;">P1</span></code></td>
+<td>位图</td>
+<td>ASCII</td>
+</tr>
+<tr>
+<td><code><span face="新宋体" style="font-family: 新宋体; background-color: #f9f9f9;">P2</span></code></td>
+<td>灰度图</td>
+<td>ASCII</td>
+</tr>
+<tr>
+<td><code><span face="新宋体" style="font-family: 新宋体; background-color: #f9f9f9;">P3</span></code></td>
+<td>像素图</td>
+<td>ASCII</td>
+</tr>
+<tr>
+<td><code><span face="新宋体" style="font-family: 新宋体; background-color: #f9f9f9;">P4</span></code></td>
+<td>位图</td>
+<td>二进制</td>
+</tr>
+<tr>
+<td><code><span face="新宋体" style="font-family: 新宋体; background-color: #f9f9f9;">P5</span></code></td>
+<td>灰度图</td>
+<td>二进制</td>
+</tr>
+<tr>
+<td><code><span face="新宋体" style="font-family: 新宋体; background-color: #f9f9f9;">P6</span></code></td>
+<td>像素图</td>
+<td>二进制</td>
+</tr>
+</tbody>
+</table>
+<p>PPM文件的读写源代码：<br>十里平湖　回复于 2005-09-19 14:12:25</p>
+<p>/*pnmfile.h&nbsp;&nbsp; */</p>
+<p>#ifndef&nbsp;&nbsp; PNM_FILE_H<br>#define&nbsp;&nbsp; PNM_FILE_H</p>
+<p>#include&nbsp;&nbsp; &lt;cstdlib&gt;<br>#include&nbsp;&nbsp; &lt;climits&gt;<br>#include&nbsp;&nbsp; &lt;cstring&gt;<br>#include&nbsp;&nbsp; &lt;fstream&gt;<br>#include&nbsp;&nbsp; "image.h"<br>#include&nbsp;&nbsp; "misc.h"<br>#include&nbsp;&nbsp; &lt;iostream.h&gt;//for&nbsp;&nbsp; debug,qiansen</p>
+<p>#define&nbsp;&nbsp; BUF_SIZE&nbsp;&nbsp; 256</p>
+<p>class&nbsp;&nbsp; pnm_error&nbsp;&nbsp; {&nbsp;&nbsp; };</p>
+<p>static&nbsp;&nbsp; void&nbsp;&nbsp; read_packed(unsigned&nbsp;&nbsp; 
+char&nbsp;&nbsp; *data,&nbsp;&nbsp; int&nbsp;&nbsp; size,&nbsp;&nbsp; 
+std::ifstream&nbsp;&nbsp; &amp;f)&nbsp;&nbsp; {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; unsigned&nbsp;&nbsp; char&nbsp;&nbsp; c&nbsp;&nbsp; =&nbsp;&nbsp; 0;</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int&nbsp;&nbsp; bitshift&nbsp;&nbsp; =&nbsp;&nbsp; -1;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ for&nbsp;&nbsp; (int&nbsp;&nbsp; pos&nbsp;&nbsp; =&nbsp;&nbsp; 
+0;&nbsp;&nbsp; pos&nbsp;&nbsp; &lt;&nbsp;&nbsp; size;&nbsp;&nbsp; 
+pos++)&nbsp;&nbsp; {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if&nbsp;&nbsp; (bitshift&nbsp;&nbsp; ==&nbsp;&nbsp; -1)&nbsp;&nbsp; {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; c&nbsp;&nbsp; =&nbsp;&nbsp; f.get();<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; bitshift&nbsp;&nbsp; =&nbsp;&nbsp; 7;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ data[pos]&nbsp;&nbsp; =&nbsp;&nbsp; (c&nbsp;&nbsp; &gt;&gt;&nbsp;&nbsp;
+ bitshift)&nbsp;&nbsp; &amp;&nbsp;&nbsp; 1;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; bitshift--;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>}</p>
+<p>static&nbsp;&nbsp; void&nbsp;&nbsp; write_packed(unsigned&nbsp;&nbsp;
+ char&nbsp;&nbsp; *data,&nbsp;&nbsp; int&nbsp;&nbsp; size,&nbsp;&nbsp; 
+std::ofstream&nbsp;&nbsp; &amp;f)&nbsp;&nbsp; {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; unsigned&nbsp;&nbsp; char&nbsp;&nbsp; c&nbsp;&nbsp; =&nbsp;&nbsp; 0;</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int&nbsp;&nbsp; bitshift&nbsp;&nbsp; =&nbsp;&nbsp; 7;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ for&nbsp;&nbsp; (int&nbsp;&nbsp; pos&nbsp;&nbsp; =&nbsp;&nbsp; 
+0;&nbsp;&nbsp; pos&nbsp;&nbsp; &lt;&nbsp;&nbsp; size;&nbsp;&nbsp; 
+pos++)&nbsp;&nbsp; {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ c&nbsp;&nbsp; =&nbsp;&nbsp; c&nbsp;&nbsp; |&nbsp;&nbsp; 
+(data[pos]&nbsp;&nbsp; &lt;&lt;&nbsp;&nbsp; bitshift);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; bitshift--;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ if&nbsp;&nbsp; ((bitshift&nbsp;&nbsp; ==&nbsp;&nbsp; -1)&nbsp;&nbsp; 
+||&nbsp;&nbsp; (pos&nbsp;&nbsp; ==&nbsp;&nbsp; size-1))&nbsp;&nbsp; {<br>f.put(c);<br>bitshift&nbsp;&nbsp; =&nbsp;&nbsp; 7;<br>c&nbsp;&nbsp; =&nbsp;&nbsp; 0;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>}</p>
+<p>/*&nbsp;&nbsp; read&nbsp;&nbsp; PNM&nbsp;&nbsp; field,&nbsp;&nbsp; skipping&nbsp;&nbsp; comments&nbsp;&nbsp; */<br>static&nbsp;&nbsp;
+ void&nbsp;&nbsp; pnm_read(std::ifstream&nbsp;&nbsp; 
+&amp;file,&nbsp;&nbsp; char&nbsp;&nbsp; *buf)&nbsp;&nbsp; {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; char&nbsp;&nbsp; doc[BUF_SIZE];<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; char&nbsp;&nbsp; c;</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; file&nbsp;&nbsp; &gt;&gt;&nbsp;&nbsp; c;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; while&nbsp;&nbsp; (c&nbsp;&nbsp; ==&nbsp;&nbsp; '#')&nbsp;&nbsp; {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; file.getline(doc,&nbsp;&nbsp; BUF_SIZE);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; file&nbsp;&nbsp; &gt;&gt;&nbsp;&nbsp; c;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; file.putback(c);</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; file.width(BUF_SIZE);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; file&nbsp;&nbsp; &gt;&gt;&nbsp;&nbsp; buf;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; file.ignore();<br>}</p>
+<p>static&nbsp;&nbsp; image&lt;uchar&gt;&nbsp;&nbsp; *loadPBM(const&nbsp;&nbsp; char&nbsp;&nbsp; *name)&nbsp;&nbsp; {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; char&nbsp;&nbsp; buf[BUF_SIZE];</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /*&nbsp;&nbsp; read&nbsp;&nbsp; header&nbsp;&nbsp; */<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ std::ifstream&nbsp;&nbsp; file(name,&nbsp;&nbsp; 
+std::ios::in&nbsp;&nbsp; |&nbsp;&nbsp; std::ios::binary);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; pnm_read(file,&nbsp;&nbsp; buf);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if&nbsp;&nbsp; (strncmp(buf,&nbsp;&nbsp; "P4",&nbsp;&nbsp; 2))<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; throw&nbsp;&nbsp; pnm_error();</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; pnm_read(file,&nbsp;&nbsp; buf);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int&nbsp;&nbsp; width&nbsp;&nbsp; =&nbsp;&nbsp; atoi(buf);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; pnm_read(file,&nbsp;&nbsp; buf);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int&nbsp;&nbsp; height&nbsp;&nbsp; =&nbsp;&nbsp; atoi(buf);</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /*&nbsp;&nbsp; read&nbsp;&nbsp; data&nbsp;&nbsp; */<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ image&lt;uchar&gt;&nbsp;&nbsp; *im&nbsp;&nbsp; =&nbsp;&nbsp; 
+new&nbsp;&nbsp; image&lt;uchar&gt;(width,&nbsp;&nbsp; height);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ for&nbsp;&nbsp; (int&nbsp;&nbsp; i&nbsp;&nbsp; =&nbsp;&nbsp; 
+0;&nbsp;&nbsp; i&nbsp;&nbsp; &lt;&nbsp;&nbsp; height;&nbsp;&nbsp; i++)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ read_packed(imPtr(im,&nbsp;&nbsp; 0,&nbsp;&nbsp; i),&nbsp;&nbsp; 
+width,&nbsp;&nbsp; file);</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return&nbsp;&nbsp; im;<br>}</p>
+<p>static&nbsp;&nbsp; void&nbsp;&nbsp; 
+savePBM(image&lt;uchar&gt;&nbsp;&nbsp; *im,&nbsp;&nbsp; 
+const&nbsp;&nbsp; char&nbsp;&nbsp; *name)&nbsp;&nbsp; {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int&nbsp;&nbsp; width&nbsp;&nbsp; =&nbsp;&nbsp; im-&gt;width();<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int&nbsp;&nbsp; height&nbsp;&nbsp; =&nbsp;&nbsp; im-&gt;height();<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ std::ofstream&nbsp;&nbsp; file(name,&nbsp;&nbsp; 
+std::ios::out&nbsp;&nbsp; |&nbsp;&nbsp; std::ios::binary);</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; file&nbsp;&nbsp; &lt;&lt;&nbsp;&nbsp; 
+"P4\n"&nbsp;&nbsp; &lt;&lt;&nbsp;&nbsp; width&nbsp;&nbsp; 
+&lt;&lt;&nbsp;&nbsp; "&nbsp;&nbsp; "&nbsp;&nbsp; &lt;&lt;&nbsp;&nbsp; 
+height&nbsp;&nbsp; &lt;&lt;&nbsp;&nbsp; "\n";<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ for&nbsp;&nbsp; (int&nbsp;&nbsp; i&nbsp;&nbsp; =&nbsp;&nbsp; 
+0;&nbsp;&nbsp; i&nbsp;&nbsp; &lt;&nbsp;&nbsp; height;&nbsp;&nbsp; i++)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ write_packed(imPtr(im,&nbsp;&nbsp; 0,&nbsp;&nbsp; i),&nbsp;&nbsp; 
+width,&nbsp;&nbsp; file);<br>}</p>
+<p>static&nbsp;&nbsp; image&lt;uchar&gt;&nbsp;&nbsp; *loadPGM(const&nbsp;&nbsp; char&nbsp;&nbsp; *name)&nbsp;&nbsp; {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; char&nbsp;&nbsp; buf[BUF_SIZE];</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /*&nbsp;&nbsp; read&nbsp;&nbsp; header&nbsp;&nbsp; */<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ std::ifstream&nbsp;&nbsp; file(name,&nbsp;&nbsp; 
+std::ios::in&nbsp;&nbsp; |&nbsp;&nbsp; std::ios::binary);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; pnm_read(file,&nbsp;&nbsp; buf);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if&nbsp;&nbsp; (strncmp(buf,&nbsp;&nbsp; "P5",&nbsp;&nbsp; 2))<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; throw&nbsp;&nbsp; pnm_error();</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; pnm_read(file,&nbsp;&nbsp; buf);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int&nbsp;&nbsp; width&nbsp;&nbsp; =&nbsp;&nbsp; atoi(buf);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; pnm_read(file,&nbsp;&nbsp; buf);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int&nbsp;&nbsp; height&nbsp;&nbsp; =&nbsp;&nbsp; atoi(buf);</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; pnm_read(file,&nbsp;&nbsp; buf);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if&nbsp;&nbsp; (atoi(buf)&nbsp;&nbsp; &gt;&nbsp;&nbsp; UCHAR_MAX)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; throw&nbsp;&nbsp; pnm_error();</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /*&nbsp;&nbsp; read&nbsp;&nbsp; data&nbsp;&nbsp; */<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ image&lt;uchar&gt;&nbsp;&nbsp; *im&nbsp;&nbsp; =&nbsp;&nbsp; 
+new&nbsp;&nbsp; image&lt;uchar&gt;(width,&nbsp;&nbsp; height);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ file.read((char&nbsp;&nbsp; *)imPtr(im,&nbsp;&nbsp; 0,&nbsp;&nbsp; 
+0),&nbsp;&nbsp; width&nbsp;&nbsp; *&nbsp;&nbsp; height&nbsp;&nbsp; 
+*&nbsp;&nbsp; sizeof(uchar));</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return&nbsp;&nbsp; im;<br>}</p>
+<p>static&nbsp;&nbsp; void&nbsp;&nbsp; 
+savePGM(image&lt;uchar&gt;&nbsp;&nbsp; *im,&nbsp;&nbsp; 
+const&nbsp;&nbsp; char&nbsp;&nbsp; *name)&nbsp;&nbsp; {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int&nbsp;&nbsp; width&nbsp;&nbsp; =&nbsp;&nbsp; im-&gt;width();<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int&nbsp;&nbsp; height&nbsp;&nbsp; =&nbsp;&nbsp; im-&gt;height();<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ std::ofstream&nbsp;&nbsp; file(name,&nbsp;&nbsp; 
+std::ios::out&nbsp;&nbsp; |&nbsp;&nbsp; std::ios::binary);</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; file&nbsp;&nbsp; &lt;&lt;&nbsp;&nbsp; 
+"P5\n"&nbsp;&nbsp; &lt;&lt;&nbsp;&nbsp; width&nbsp;&nbsp; 
+&lt;&lt;&nbsp;&nbsp; "&nbsp;&nbsp; "&nbsp;&nbsp; &lt;&lt;&nbsp;&nbsp; 
+height&nbsp;&nbsp; &lt;&lt;&nbsp;&nbsp; "\n"&nbsp;&nbsp; 
+&lt;&lt;&nbsp;&nbsp; UCHAR_MAX&nbsp;&nbsp; &lt;&lt;&nbsp;&nbsp; "\n";<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ file.write((char&nbsp;&nbsp; *)imPtr(im,&nbsp;&nbsp; 0,&nbsp;&nbsp; 
+0),&nbsp;&nbsp; width&nbsp;&nbsp; *&nbsp;&nbsp; height&nbsp;&nbsp; 
+*&nbsp;&nbsp; sizeof(uchar));<br>}</p>
+<p>static&nbsp;&nbsp; image&lt;rgb&gt;&nbsp;&nbsp; *loadPPM(const&nbsp;&nbsp; char&nbsp;&nbsp; *name)&nbsp;&nbsp; {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; char&nbsp;&nbsp; buf[BUF_SIZE],&nbsp;&nbsp; doc[BUF_SIZE];</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /*&nbsp;&nbsp; read&nbsp;&nbsp; header&nbsp;&nbsp; */<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ std::ifstream&nbsp;&nbsp; file(name,&nbsp;&nbsp; 
+std::ios::in&nbsp;&nbsp; |&nbsp;&nbsp; std::ios::binary);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; pnm_read(file,&nbsp;&nbsp; buf);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if&nbsp;&nbsp; (strncmp(buf,&nbsp;&nbsp; "P5",&nbsp;&nbsp; 2)){<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //throw&nbsp;&nbsp; pnm_error();<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ cout&lt;&lt;"pnm&nbsp;&nbsp; version&nbsp;&nbsp; is&nbsp;&nbsp; 
+P6,may&nbsp;&nbsp; be&nbsp;&nbsp; not&nbsp;&nbsp; 
+supported."&lt;&lt;endl;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; pnm_read(file,&nbsp;&nbsp; buf);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int&nbsp;&nbsp; width&nbsp;&nbsp; =&nbsp;&nbsp; atoi(buf);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; pnm_read(file,&nbsp;&nbsp; buf);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int&nbsp;&nbsp; height&nbsp;&nbsp; =&nbsp;&nbsp; atoi(buf);</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; pnm_read(file,&nbsp;&nbsp; buf);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if&nbsp;&nbsp; (atoi(buf)&nbsp;&nbsp; &gt;&nbsp;&nbsp; UCHAR_MAX)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; throw&nbsp;&nbsp; pnm_error();</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /*&nbsp;&nbsp; read&nbsp;&nbsp; data&nbsp;&nbsp; */<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ image&lt;rgb&gt;&nbsp;&nbsp; *im&nbsp;&nbsp; =&nbsp;&nbsp; 
+new&nbsp;&nbsp; image&lt;rgb&gt;(width,&nbsp;&nbsp; height);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ file.read((char&nbsp;&nbsp; *)imPtr(im,&nbsp;&nbsp; 0,&nbsp;&nbsp; 
+0),&nbsp;&nbsp; width&nbsp;&nbsp; *&nbsp;&nbsp; height&nbsp;&nbsp; 
+*&nbsp;&nbsp; sizeof(rgb));</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return&nbsp;&nbsp; im;<br>}</p>
+<p>static&nbsp;&nbsp; void&nbsp;&nbsp; 
+savePPM(image&lt;rgb&gt;&nbsp;&nbsp; *im,&nbsp;&nbsp; const&nbsp;&nbsp; 
+char&nbsp;&nbsp; *name)&nbsp;&nbsp; {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int&nbsp;&nbsp; width&nbsp;&nbsp; =&nbsp;&nbsp; im-&gt;width();<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int&nbsp;&nbsp; height&nbsp;&nbsp; =&nbsp;&nbsp; im-&gt;height();<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ std::ofstream&nbsp;&nbsp; file(name,&nbsp;&nbsp; 
+std::ios::out&nbsp;&nbsp; |&nbsp;&nbsp; std::ios::binary);</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; file&nbsp;&nbsp; &lt;&lt;&nbsp;&nbsp; 
+"P6\n"&nbsp;&nbsp; &lt;&lt;&nbsp;&nbsp; width&nbsp;&nbsp; 
+&lt;&lt;&nbsp;&nbsp; "&nbsp;&nbsp; "&nbsp;&nbsp; &lt;&lt;&nbsp;&nbsp; 
+height&nbsp;&nbsp; &lt;&lt;&nbsp;&nbsp; "\n"&nbsp;&nbsp; 
+&lt;&lt;&nbsp;&nbsp; UCHAR_MAX&nbsp;&nbsp; &lt;&lt;&nbsp;&nbsp; "\n";<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ file.write((char&nbsp;&nbsp; *)imPtr(im,&nbsp;&nbsp; 0,&nbsp;&nbsp; 
+0),&nbsp;&nbsp; width&nbsp;&nbsp; *&nbsp;&nbsp; height&nbsp;&nbsp; 
+*&nbsp;&nbsp; sizeof(rgb));<br>}</p>
+<p>template&nbsp;&nbsp; &lt;class&nbsp;&nbsp; T&gt;<br>void&nbsp;&nbsp; load_image(image&lt;T&gt;&nbsp;&nbsp; **im,&nbsp;&nbsp; const&nbsp;&nbsp; char&nbsp;&nbsp; *name)&nbsp;&nbsp; {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; char&nbsp;&nbsp; buf[BUF_SIZE];</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /*&nbsp;&nbsp; read&nbsp;&nbsp; header&nbsp;&nbsp; */<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ std::ifstream&nbsp;&nbsp; file(name,&nbsp;&nbsp; 
+std::ios::in&nbsp;&nbsp; |&nbsp;&nbsp; std::ios::binary);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; pnm_read(file,&nbsp;&nbsp; buf);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if&nbsp;&nbsp; (strncmp(buf,&nbsp;&nbsp; "VLIB",&nbsp;&nbsp; 9))<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; throw&nbsp;&nbsp; pnm_error();</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; pnm_read(file,&nbsp;&nbsp; buf);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int&nbsp;&nbsp; width&nbsp;&nbsp; =&nbsp;&nbsp; atoi(buf);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; pnm_read(file,&nbsp;&nbsp; buf);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int&nbsp;&nbsp; height&nbsp;&nbsp; =&nbsp;&nbsp; atoi(buf);</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /*&nbsp;&nbsp; read&nbsp;&nbsp; data&nbsp;&nbsp; */<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; *im&nbsp;&nbsp; =&nbsp;&nbsp; new&nbsp;&nbsp; image&lt;T&gt;(width,&nbsp;&nbsp; height);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ file.read((char&nbsp;&nbsp; *)imPtr((*im),&nbsp;&nbsp; 0,&nbsp;&nbsp; 
+0),&nbsp;&nbsp; width&nbsp;&nbsp; *&nbsp;&nbsp; height&nbsp;&nbsp; 
+*&nbsp;&nbsp; sizeof(T));<br>}</p>
+<p>template&nbsp;&nbsp; &lt;class&nbsp;&nbsp; T&gt;<br>void&nbsp;&nbsp; save_image(image&lt;T&gt;&nbsp;&nbsp; *im,&nbsp;&nbsp; const&nbsp;&nbsp; char&nbsp;&nbsp; *name)&nbsp;&nbsp; {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int&nbsp;&nbsp; width&nbsp;&nbsp; =&nbsp;&nbsp; im-&gt;width();<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int&nbsp;&nbsp; height&nbsp;&nbsp; =&nbsp;&nbsp; im-&gt;height();<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ std::ofstream&nbsp;&nbsp; file(name,&nbsp;&nbsp; 
+std::ios::out&nbsp;&nbsp; |&nbsp;&nbsp; std::ios::binary);</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; file&nbsp;&nbsp; &lt;&lt;&nbsp;&nbsp; 
+"VLIB\n"&nbsp;&nbsp; &lt;&lt;&nbsp;&nbsp; width&nbsp;&nbsp; 
+&lt;&lt;&nbsp;&nbsp; "&nbsp;&nbsp; "&nbsp;&nbsp; &lt;&lt;&nbsp;&nbsp; 
+height&nbsp;&nbsp; &lt;&lt;&nbsp;&nbsp; "\n";<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ file.write((char&nbsp;&nbsp; *)imPtr(im,&nbsp;&nbsp; 0,&nbsp;&nbsp; 
+0),&nbsp;&nbsp; width&nbsp;&nbsp; *&nbsp;&nbsp; height&nbsp;&nbsp; 
+*&nbsp;&nbsp; sizeof(T));<br>}</p>
+<p>#endif</p>
+<p>/*&nbsp;&nbsp; a&nbsp;&nbsp; simple&nbsp;&nbsp; image&nbsp;&nbsp; class<br>filename:&nbsp;&nbsp; image.h&nbsp;&nbsp; */</p>
+<p>#ifndef&nbsp;&nbsp; IMAGE_H<br>#define&nbsp;&nbsp; IMAGE_H</p>
+<p>#include&nbsp;&nbsp; &lt;cstring&gt;</p>
+<p>template&nbsp;&nbsp; &lt;class&nbsp;&nbsp; T&gt;<br>class&nbsp;&nbsp; image&nbsp;&nbsp; {<br>&nbsp;&nbsp;&nbsp; public:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /*&nbsp;&nbsp; create&nbsp;&nbsp; an&nbsp;&nbsp; image&nbsp;&nbsp; */<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ image(const&nbsp;&nbsp; int&nbsp;&nbsp; width,&nbsp;&nbsp; 
+const&nbsp;&nbsp; int&nbsp;&nbsp; height,&nbsp;&nbsp; const&nbsp;&nbsp; 
+bool&nbsp;&nbsp; init&nbsp;&nbsp; =&nbsp;&nbsp; true);</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /*&nbsp;&nbsp; delete&nbsp;&nbsp; an&nbsp;&nbsp; image&nbsp;&nbsp; */<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ~image();</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /*&nbsp;&nbsp; init&nbsp;&nbsp; an&nbsp;&nbsp; image&nbsp;&nbsp; */<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; void&nbsp;&nbsp; init(const&nbsp;&nbsp; T&nbsp;&nbsp; &amp;val);</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /*&nbsp;&nbsp; copy&nbsp;&nbsp; an&nbsp;&nbsp; image&nbsp;&nbsp; */<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; image&lt;T&gt;&nbsp;&nbsp; *copy()&nbsp;&nbsp; const;</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /*&nbsp;&nbsp; get&nbsp;&nbsp; 
+the&nbsp;&nbsp; width&nbsp;&nbsp; of&nbsp;&nbsp; an&nbsp;&nbsp; 
+image.&nbsp;&nbsp; */<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int&nbsp;&nbsp; 
+width()&nbsp;&nbsp; const&nbsp;&nbsp; {&nbsp;&nbsp; return&nbsp;&nbsp; 
+w;&nbsp;&nbsp; }</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /*&nbsp;&nbsp; get&nbsp;&nbsp; 
+the&nbsp;&nbsp; height&nbsp;&nbsp; of&nbsp;&nbsp; an&nbsp;&nbsp; 
+image.&nbsp;&nbsp; */<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int&nbsp;&nbsp; 
+height()&nbsp;&nbsp; const&nbsp;&nbsp; {&nbsp;&nbsp; return&nbsp;&nbsp; 
+h;&nbsp;&nbsp; }</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /*&nbsp;&nbsp; image&nbsp;&nbsp; data.&nbsp;&nbsp; */<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; T&nbsp;&nbsp; *data;</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /*&nbsp;&nbsp; row&nbsp;&nbsp; pointers.&nbsp;&nbsp; */<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; T&nbsp;&nbsp; **access;</p>
+<p>&nbsp;&nbsp;&nbsp; private:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int&nbsp;&nbsp; w,&nbsp;&nbsp; h;<br>};</p>
+<p>/*&nbsp;&nbsp; use&nbsp;&nbsp; imRef&nbsp;&nbsp; to&nbsp;&nbsp; access&nbsp;&nbsp; image&nbsp;&nbsp; data.&nbsp;&nbsp; */<br>#define&nbsp;&nbsp; imRef(im,&nbsp;&nbsp; x,&nbsp;&nbsp; y)&nbsp;&nbsp; (im-&gt;access[y][x])</p>
+<p>/*&nbsp;&nbsp; use&nbsp;&nbsp; imPtr&nbsp;&nbsp; to&nbsp;&nbsp; 
+get&nbsp;&nbsp; pointer&nbsp;&nbsp; to&nbsp;&nbsp; image&nbsp;&nbsp; 
+data.&nbsp;&nbsp; */<br>#define&nbsp;&nbsp; imPtr(im,&nbsp;&nbsp; x,&nbsp;&nbsp; y)&nbsp;&nbsp; &amp;(im-&gt;access[y][x])</p>
+<p>template&nbsp;&nbsp; &lt;class&nbsp;&nbsp; T&gt;<br>image&lt;T&gt;::image(const&nbsp;&nbsp;
+ int&nbsp;&nbsp; width,&nbsp;&nbsp; const&nbsp;&nbsp; int&nbsp;&nbsp; 
+height,&nbsp;&nbsp; const&nbsp;&nbsp; bool&nbsp;&nbsp; init)&nbsp;&nbsp;
+ {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; w&nbsp;&nbsp; =&nbsp;&nbsp; width;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; h&nbsp;&nbsp; =&nbsp;&nbsp; height;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ data&nbsp;&nbsp; =&nbsp;&nbsp; new&nbsp;&nbsp; T[w&nbsp;&nbsp; 
+*&nbsp;&nbsp; h];&nbsp;&nbsp;&nbsp;&nbsp; //&nbsp;&nbsp; 
+allocate&nbsp;&nbsp; space&nbsp;&nbsp; for&nbsp;&nbsp; image&nbsp;&nbsp;
+ data<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; access&nbsp;&nbsp; =&nbsp;&nbsp;
+ new&nbsp;&nbsp; T*[h];&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+//&nbsp;&nbsp; allocate&nbsp;&nbsp; space&nbsp;&nbsp; for&nbsp;&nbsp; 
+row&nbsp;&nbsp; pointers</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //&nbsp;&nbsp; initialize&nbsp;&nbsp; row&nbsp;&nbsp; pointers<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ for&nbsp;&nbsp; (int&nbsp;&nbsp; i&nbsp;&nbsp; =&nbsp;&nbsp; 
+0;&nbsp;&nbsp; i&nbsp;&nbsp; &lt;&nbsp;&nbsp; h;&nbsp;&nbsp; i++)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ access[i]&nbsp;&nbsp; =&nbsp;&nbsp; data&nbsp;&nbsp; +&nbsp;&nbsp; 
+(i&nbsp;&nbsp; *&nbsp;&nbsp; w);</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if&nbsp;&nbsp; (init)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ memset(data,&nbsp;&nbsp; 0,&nbsp;&nbsp; w&nbsp;&nbsp; *&nbsp;&nbsp; 
+h&nbsp;&nbsp; *&nbsp;&nbsp; sizeof(T));<br>}</p>
+<p>template&nbsp;&nbsp; &lt;class&nbsp;&nbsp; T&gt;<br>image&lt;T&gt;::~image()&nbsp;&nbsp; {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; delete&nbsp;&nbsp; []&nbsp;&nbsp; data;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; delete&nbsp;&nbsp; []&nbsp;&nbsp; access;<br>}</p>
+<p>template&nbsp;&nbsp; &lt;class&nbsp;&nbsp; T&gt;<br>void&nbsp;&nbsp; image&lt;T&gt;::init(const&nbsp;&nbsp; T&nbsp;&nbsp; &amp;val)&nbsp;&nbsp; {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; T&nbsp;&nbsp; *ptr&nbsp;&nbsp; =&nbsp;&nbsp; imPtr(this,&nbsp;&nbsp; 0,&nbsp;&nbsp; 0);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; T&nbsp;&nbsp; *end&nbsp;&nbsp; =&nbsp;&nbsp; imPtr(this,&nbsp;&nbsp; w-1,&nbsp;&nbsp; h-1);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; while&nbsp;&nbsp; (ptr&nbsp;&nbsp; &lt;=&nbsp;&nbsp; end)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; *ptr++&nbsp;&nbsp; =&nbsp;&nbsp; val;<br>}</p>
+<p><br>template&nbsp;&nbsp; &lt;class&nbsp;&nbsp; T&gt;<br>image&lt;T&gt;&nbsp;&nbsp; *image&lt;T&gt;::copy()&nbsp;&nbsp; const&nbsp;&nbsp; {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ image&lt;T&gt;&nbsp;&nbsp; *im&nbsp;&nbsp; =&nbsp;&nbsp; 
+new&nbsp;&nbsp; image&lt;T&gt;(w,&nbsp;&nbsp; h,&nbsp;&nbsp; false);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ memcpy(im-&gt;data,&nbsp;&nbsp; data,&nbsp;&nbsp; w&nbsp;&nbsp; 
+*&nbsp;&nbsp; h&nbsp;&nbsp; *&nbsp;&nbsp; sizeof(T));<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return&nbsp;&nbsp; im;<br>}</p>
+<p>#endif</p></div><div style="display: block;" id="MySignature"><div id="AllanboltSignature">    
+        <div>作者：<a href="http://www.cnblogs.com/hnrainll/" target="_blank">Leo Chin</a></div>
+        <div>出处：<a href="http://www.cnblogs.com/hnrainll/" target="_blank">http://www.cnblogs.com/hnrainll/</a></div>
+        <div>本博客文章,大多系网络中收集,转载请注明出处</div>  
+<div>相关标签：<a href="http://emb.sunplusedu.com/" target="_blank">嵌入式培训</a>、<a href="http://emb.sunplusedu.com/" target="_blank">嵌入式开发</a>、<a href="http://emb.sunplusedu.com/" target="_blank">嵌入式学习</a></div>
+    </div>
+
+<br>
+<div>
+
+ </div></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+<div id="BlogPostCategory">分类: <a href="http://www.cnblogs.com/hnrainll/category/283519.html">Linux</a></div>
+<div id="EntryTag"></div>
+<div id="blog_post_info"><div id="green_channel">
+<a href="javascript:void(0);" id="green_channel_digg" onclick="DiggIt(2075629,cb_blogId,1);green_channel_success(this,'谢谢推荐！');">好文要顶</a>
+<a id="green_channel_follow" onclick="c_follow();" href="javascript:void(0);">关注我</a>
+<a id="green_channel_favorite" onclick="AddToWz(cb_entryId);return false;" href="javascript:void(0);">收藏该文</a><a id="green_channel_contact" href="http://msg.cnblogs.com/send/Leo%20Chin" target="_blank">联系我</a>
+<a id="green_channel_weibo" href="javascript:void(0);" title="分享至新浪微博" onclick="ShareToTsina()"><img src="PPM%20_%20PGM%20_%20PBM%20%E5%9B%BE%E5%83%8F%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8F%20-%20Leo%20Chin%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/icon_weibo_24.png" alt=""></a>
+<a id="green_channel_wechat" href="javascript:void(0);" title="分享至微信" onclick="shareOnWechat()"><img src="PPM%20_%20PGM%20_%20PBM%20%E5%9B%BE%E5%83%8F%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8F%20-%20Leo%20Chin%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/wechat.png" alt=""></a>
+</div>
+<div id="author_profile">
+<div id="author_profile_info" class="author_profile_info">
+<a href="http://home.cnblogs.com/u/hnrainll/" target="_blank"><img src="PPM%20_%20PGM%20_%20PBM%20%E5%9B%BE%E5%83%8F%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8F%20-%20Leo%20Chin%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/u115749.jpg" class="author_avatar" alt=""></a>
+<div id="author_profile_detail" class="author_profile_info">
+<a href="http://home.cnblogs.com/u/hnrainll/">Leo Chin</a><br>
+<a href="http://home.cnblogs.com/u/hnrainll/followees">关注 - 10</a><br>
+<a href="http://home.cnblogs.com/u/hnrainll/followers">粉丝 - 1025</a>
+</div>
+</div>
+<div class="clear"></div>
+<div id="author_profile_honor"></div>
+<div id="author_profile_follow">
+    <a href="javascript:void(0);" onclick="c_follow();return false;">+加关注</a>
+</div>
+</div>
+<div id="div_digg">										
+    <div class="diggit" onclick="votePost(2075629,'Digg')">
+        <span class="diggnum" id="digg_count">0</span>
+    </div>
+	<div class="buryit" onclick="votePost(2075629,'Bury')"> 
+		<span class="burynum" id="bury_count">0</span>
+	</div>
+	<div class="clear"></div>	
+	<div class="diggword" id="digg_tips">
+    (请您对文章做出评价)
+    </div>	
+</div>
+</div>
+<div class="clear"></div>
+<div id="post_next_prev"><a href="http://www.cnblogs.com/hnrainll/archive/2011/06/08/2075602.html" class="p_n_p_prefix">« </a> 上一篇：<a href="http://www.cnblogs.com/hnrainll/archive/2011/06/08/2075602.html" title="发布于2011-06-08 20:11">Linux驱动下的platform总线架构(转)</a><br><a href="http://www.cnblogs.com/hnrainll/archive/2011/06/08/2075725.html" class="p_n_p_prefix">» </a> 下一篇：<a href="http://www.cnblogs.com/hnrainll/archive/2011/06/08/2075725.html" title="发布于2011-06-08 21:18">一生中很值得看的30个故事之一断箭</a><br></div>
+</div>
+
+
+		</div>
+		<div class="postDesc">posted @ <span id="post-date">2011-06-08 20:30</span> <a href="http://www.cnblogs.com/hnrainll/">Leo Chin</a> 阅读(<span id="post_view_count">5336</span>) 评论(<span id="post_comment_count">2</span>)  <a href="http://i.cnblogs.com/EditPosts.aspx?postid=2075629" rel="nofollow">编辑</a> <a href="#" onclick="AddToWz(2075629);return false;">收藏</a></div>
+	</div>
+	<script type="text/javascript">var allowComments=true,isLogined=false,cb_blogId=66907,cb_entryId=2075629,cb_blogApp=currentBlogApp,cb_blogUserGuid='b044ca99-3220-df11-ba8f-001cf0cd104b',cb_entryCreatedDate='2011/6/8 20:30:00';loadViewCount(cb_entryId);</script>
+	
+</div><!--end: topics 文章、评论容器-->
+</div><a name="!comments"></a><div id="blog-comments-placeholder"><div id="comments_pager_top"></div>
+<br>
+<div class="feedback_area_title">评论列表</div>
+<div class="feedbackNoItems"></div>	
+
+		<div class="feedbackItem">
+			<div class="feedbackListSubtitle">
+				<div class="feedbackManage">
+					&nbsp;&nbsp;<span class="comment_actions"></span>
+				</div>
+				<a href="#2474356" class="layer">#1楼</a><a name="2474356" id="comment_anchor_2474356"></a>  <span class="comment_date">2012-09-17 09:28</span> <a id="a_comment_author_2474356" href="http://www.cnblogs.com/ifisay/" target="_blank">ifisay</a> <a href="http://msg.cnblogs.com/send/ifisay" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="feedbackCon">
+				<div id="comment_body_2474356" class="blog_comment_body">misc.h没有</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(2474356,'Digg',this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(2474356,'Bury',this)">反对(0)</a></div><span id="comment_2474356_avatar" style="display:none;">http://pic.cnblogs.com/face/u338219.jpg?id=05233009</span>
+			</div>
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListSubtitle">
+				<div class="feedbackManage">
+					&nbsp;&nbsp;<span class="comment_actions"></span>
+				</div>
+				<a href="#3019985" class="layer">#2楼</a><a name="3019985" id="comment_anchor_3019985"></a><span id="comment-maxId" style="display:none;">3019985</span><span id="comment-maxDate" style="display:none;">2014/8/31 6:09:28</span>  <span class="comment_date">2014-08-31 06:09</span> <a id="a_comment_author_3019985" href="http://www.cnblogs.com/yurenchen/" target="_blank">愚人陈</a> <a href="http://msg.cnblogs.com/send/%E6%84%9A%E4%BA%BA%E9%99%88" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="feedbackCon">
+				<div id="comment_body_3019985" class="blog_comment_body">\(^o^)/~好~<br><br>感谢lz的整理.</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(3019985,'Digg',this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(3019985,'Bury',this)">反对(0)</a></div><span id="comment_3019985_avatar" style="display:none;">http://pic.cnblogs.com/face/u325083.png?id=18212938</span>
+			</div>
+		</div>
+	<div id="comments_pager_bottom"></div></div><script type="text/javascript">var commentManager = new blogCommentManager();commentManager.renderComments(0);</script>
+<div id="comment_form" class="commentform">
+<a name="commentform"></a>
+<div id="divCommentShow"></div>
+<div id="comment_nav"><span id="span_refresh_tips"></span><a href="javascript:void(0);" onclick="return RefreshCommentList();" id="lnk_RefreshComments" runat="server" clientidmode="Static">刷新评论</a><a href="#" onclick="return RefreshPage();">刷新页面</a><a href="#top">返回顶部</a></div>
+<div id="comment_form_container"><div class="login_tips">注册用户登录后才能发表评论，请 <a rel="nofollow" href="javascript:void(0);" class="underline" onclick="return login('commentform');">登录</a> 或 <a rel="nofollow" href="javascript:void(0);" class="underline" onclick="return register();">注册</a>，<a href="http://www.cnblogs.com/">访问</a>网站首页。</div></div>
+<div class="ad_text_commentbox" id="ad_text_under_commentbox"></div>
+<div id="ad_t2"><a href="http://www.ucancode.com/index.htm" target="_blank">【推荐】50万行VC++源码: 大型组态工控、电力仿真CAD与GIS源码库</a><br><a href="http://www.rongcloud.cn/" target="_blank">【推荐】融云即时通讯云－豆果美食、Faceu等亿级APP都在用</a><br><a href="https://bce.baidu.com/event/promotion-march/index.html?t=cp:online-media%7Cpf:pc%7Cpp:mar%7Cpu:244" target="_blank">【推荐】百度开放云－三月超低价促销</a><br></div>
+<div id="opt_under_post"></div>
+<div id="ad_c1" class="c_ad_block"><a href="http://www.gcpowertools.com.cn/products/spreadjs/?utm_source=cnblogs&amp;utm_medium=blogpage&amp;utm_term=bottom&amp;utm_content=SpreadJS&amp;utm_campaign=community" target="_blank"><img src="PPM%20_%20PGM%20_%20PBM%20%E5%9B%BE%E5%83%8F%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8F%20-%20Leo%20Chin%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/24442-20160331135229801-1159021103.png" alt="" height="250" width="300"></a></div>
+<div id="under_post_news"><div class="itnews c_ad_block"><b>最新IT新闻</b>:<br> ·  <a href="http://news.cnblogs.com/n/543217/" target="_blank">Badlock漏洞细节公布</a><br> ·  <a href="http://news.cnblogs.com/n/543216/" target="_blank">微信公众号正在失去营销价值？</a><br> ·  <a href="http://news.cnblogs.com/n/543215/" target="_blank">屌丝程序员创业年入10亿，谋杀4A公司就靠“反着来”</a><br> ·  <a href="http://news.cnblogs.com/n/543214/" target="_blank">手机行业已至“淘汰赛”阶段，节奏比产品更重要</a><br> ·  <a href="http://news.cnblogs.com/n/543213/" target="_blank">猫眼电影独立分拆，未来命运只剩跟投或者贱卖</a><br>» <a href="http://news.cnblogs.com/" title="IT新闻" target="_blank">更多新闻...</a></div></div>
+<div id="ad_c2" class="c_ad_block"><a href="https://www.jpush.cn/?from=cnblogs01" target="_blank"><img src="PPM%20_%20PGM%20_%20PBM%20%E5%9B%BE%E5%83%8F%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8F%20-%20Leo%20Chin%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/24442-20160307140747632-1210035054.jpg" alt="" height="60" width="468"></a></div>
+<div id="under_post_kb"><div class="itnews c_ad_block" id="kb_block"><b>最新知识库文章</b>:<br><div id="kb_recent"> ·  <a href="http://kb.cnblogs.com/page/542462/" target="_blank">我是一个线程</a><br> ·  <a href="http://kb.cnblogs.com/page/541862/" target="_blank">为什么未来是全栈工程师的世界？</a><br> ·  <a href="http://kb.cnblogs.com/page/541805/" target="_blank">程序bug导致了天大的损失，要枪毙程序猿吗？</a><br> ·  <a href="http://kb.cnblogs.com/page/541230/" target="_blank">如何运维千台以上游戏云服务器</a><br> ·  <a href="http://kb.cnblogs.com/page/539160/" target="_blank">架构漫谈（一）：什么是架构？</a><br></div>» <a href="http://kb.cnblogs.com/" target="_blank">更多知识库文章...</a></div></div>
+<div id="HistoryToday" class="c_ad_block"></div>
+<script type="text/javascript">
+$(function () {
+    setTimeout(function () { incrementViewCount(cb_entryId); }, 50);
+    deliverAdT2();
+    deliverAdC1();
+    deliverAdC2();    
+    loadNewsAndKb();
+    loadBlogSignature();
+    LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+    GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate);
+    loadOptUnderPost();
+    GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);    
+});
+</script>
+</div>
+
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			
+<!--done-->
+<div class="newsItem">
+<h3 class="catListTitle">公告</h3>
+	<div id="blog-news"><br>
+<p>
+把每天看过的，有意义的文章发表出来。总结自己！
+<br></p>
+<div id="weibo"><iframe class="share_self" scrolling="no" src="PPM%20_%20PGM%20_%20PBM%20%E5%9B%BE%E5%83%8F%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8F%20-%20Leo%20Chin%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/index.htm" frameborder="0" height="350" width="100%"></iframe></div>
+
+
+<!--
+<div style="display: none" id="__document_write_ajax_div-2"></div><script  language="JavaScript">window['__document_write_ajax_callbacks__']['2']();</script>
+--><div id="profile_block">昵称：<a href="http://home.cnblogs.com/u/hnrainll/">Leo Chin</a><br>园龄：<a href="http://home.cnblogs.com/u/hnrainll/" title="入园时间：2010-02-23">6年1个月</a><br>粉丝：<a href="http://home.cnblogs.com/u/hnrainll/followers/">1025</a><br>关注：<a href="http://home.cnblogs.com/u/hnrainll/followees/">10</a><div id="p_b_follow"><a href="javascript:void(0);" onclick="cnblogs.UserManager.FollowBlogger('b044ca99-3220-df11-ba8f-001cf0cd104b')">+加关注</a></div></div></div><script type="text/javascript">loadBlogNews();</script>
+</div>
+
+			<div id="blog-calendar" style=""><table id="blogCalendar" class="Cal" title="日历" cellpadding="0" cellspacing="0">
+	<tbody><tr><td colspan="7"><table class="CalTitle" cellspacing="0">
+		<tbody><tr><td class="CalNextPrev"><a href="javascript:void(0);" onclick="loadBlogCalendar('2011/05/01');return false;">&lt;</a></td><td align="center">2011年6月</td><td class="CalNextPrev" align="right"><a href="javascript:void(0);" onclick="loadBlogCalendar('2011/07/01');return false;">&gt;</a></td></tr>
+	</tbody></table></td></tr><tr><th class="CalDayHeader" abbr="日" scope="col" align="center">日</th><th class="CalDayHeader" abbr="一" scope="col" align="center">一</th><th class="CalDayHeader" abbr="二" scope="col" align="center">二</th><th class="CalDayHeader" abbr="三" scope="col" align="center">三</th><th class="CalDayHeader" abbr="四" scope="col" align="center">四</th><th class="CalDayHeader" abbr="五" scope="col" align="center">五</th><th class="CalDayHeader" abbr="六" scope="col" align="center">六</th></tr><tr><td class="CalOtherMonthDay" align="center">29</td><td class="CalOtherMonthDay" align="center">30</td><td class="CalOtherMonthDay" align="center">31</td><td align="center"><a href="http://www.cnblogs.com/hnrainll/archive/2011/06/01.html"><u>1</u></a></td><td align="center"><a href="http://www.cnblogs.com/hnrainll/archive/2011/06/02.html"><u>2</u></a></td><td align="center">3</td><td class="CalWeekendDay" align="center"><a href="http://www.cnblogs.com/hnrainll/archive/2011/06/04.html"><u>4</u></a></td></tr><tr><td class="CalWeekendDay" align="center">5</td><td align="center">6</td><td align="center"><a href="http://www.cnblogs.com/hnrainll/archive/2011/06/07.html"><u>7</u></a></td><td align="center"><a href="http://www.cnblogs.com/hnrainll/archive/2011/06/08.html"><u>8</u></a></td><td align="center"><a href="http://www.cnblogs.com/hnrainll/archive/2011/06/09.html"><u>9</u></a></td><td align="center"><a href="http://www.cnblogs.com/hnrainll/archive/2011/06/10.html"><u>10</u></a></td><td class="CalWeekendDay" align="center"><a href="http://www.cnblogs.com/hnrainll/archive/2011/06/11.html"><u>11</u></a></td></tr><tr><td class="CalWeekendDay" align="center">12</td><td align="center"><a href="http://www.cnblogs.com/hnrainll/archive/2011/06/13.html"><u>13</u></a></td><td align="center"><a href="http://www.cnblogs.com/hnrainll/archive/2011/06/14.html"><u>14</u></a></td><td align="center"><a href="http://www.cnblogs.com/hnrainll/archive/2011/06/15.html"><u>15</u></a></td><td align="center">16</td><td align="center">17</td><td class="CalWeekendDay" align="center"><a href="http://www.cnblogs.com/hnrainll/archive/2011/06/18.html"><u>18</u></a></td></tr><tr><td class="CalWeekendDay" align="center">19</td><td align="center">20</td><td align="center"><a href="http://www.cnblogs.com/hnrainll/archive/2011/06/21.html"><u>21</u></a></td><td align="center"><a href="http://www.cnblogs.com/hnrainll/archive/2011/06/22.html"><u>22</u></a></td><td align="center"><a href="http://www.cnblogs.com/hnrainll/archive/2011/06/23.html"><u>23</u></a></td><td align="center"><a href="http://www.cnblogs.com/hnrainll/archive/2011/06/24.html"><u>24</u></a></td><td class="CalWeekendDay" align="center"><a href="http://www.cnblogs.com/hnrainll/archive/2011/06/25.html"><u>25</u></a></td></tr><tr><td class="CalWeekendDay" align="center">26</td><td align="center">27</td><td align="center"><a href="http://www.cnblogs.com/hnrainll/archive/2011/06/28.html"><u>28</u></a></td><td align="center"><a href="http://www.cnblogs.com/hnrainll/archive/2011/06/29.html"><u>29</u></a></td><td align="center">30</td><td class="CalOtherMonthDay" align="center">1</td><td class="CalOtherMonthDay" align="center">2</td></tr><tr><td class="CalOtherMonthDay" align="center">3</td><td class="CalOtherMonthDay" align="center">4</td><td class="CalOtherMonthDay" align="center">5</td><td class="CalOtherMonthDay" align="center">6</td><td class="CalOtherMonthDay" align="center">7</td><td class="CalOtherMonthDay" align="center">8</td><td class="CalOtherMonthDay" align="center">9</td></tr>
+</tbody></table></div><script type="text/javascript">loadBlogDefaultCalendar();</script>
+			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"><div id="sidebar_search" class="sidebar-block">
+<div id="sidebar_search" class="mySearch">
+<h3 class="catListTitle">搜索</h3>
+<div id="sidebar_search_box">
+<div id="widget_my_zzk" class="div_my_zzk"><input id="q" onkeydown="return zzk_go_enter(event);" class="input_my_zzk" type="text">&nbsp;<input onclick="zzk_go()" value="找找看" id="btnZzk" class="btn_my_zzk" type="button"></div>
+
+</div>
+</div>
+
+</div><div id="sidebar_shortcut" class="sidebar-block">
+<div class="catListLink">
+<h3 class="catListTitle">常用链接</h3>
+<ul>
+<li><a href="http://www.cnblogs.com/hnrainll/p/" title="我的博客的随笔列表">我的随笔</a></li><li><a href="http://www.cnblogs.com/hnrainll/MyComments.html" title="我发表过的评论列表">我的评论</a></li><li><a href="http://www.cnblogs.com/hnrainll/OtherPosts.html" title="我评论过的随笔列表">我的参与</a></li><li><a href="http://www.cnblogs.com/hnrainll/RecentComments.html" title="我的博客的评论列表">最新评论</a></li><li><a href="http://www.cnblogs.com/hnrainll/tag/" title="我的博客的标签列表">我的标签</a></li>
+<li><a id="itemListLink" onclick="this.blur();WarpClass('itemListLink', 'itemListLin_con');return false;" href="#">更多链接</a></li>
+</ul>
+<div id="itemListLin_con" style="display:none;">
+<ul>
+
+</ul>
+</div>
+</div></div><div id="sidebar_toptags" class="sidebar-block"></div><div id="sidebar_categories">
+<div id="sidebar_postcategory" class="catListPostCategory sidebar-block">
+<h3 class="catListTitle">随笔分类</h3>
+
+<ul>
+
+<li><a id="CatList_LinkList_0_Link_0" href="http://www.cnblogs.com/hnrainll/category/325748.html">Android(221)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_1" href="http://www.cnblogs.com/hnrainll/category/269785.html">ARM9(113)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_2" href="http://www.cnblogs.com/hnrainll/category/305020.html">BootLoader(4)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_3" href="http://www.cnblogs.com/hnrainll/category/234348.html">C(98)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_4" href="http://www.cnblogs.com/hnrainll/category/234345.html">C++(42)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_5" href="http://www.cnblogs.com/hnrainll/category/337781.html">FreeBSD(2)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_6" href="http://www.cnblogs.com/hnrainll/category/270869.html">IT(13)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_7" href="http://www.cnblogs.com/hnrainll/category/324474.html">Java(94)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_8" href="http://www.cnblogs.com/hnrainll/category/283519.html">Linux(228)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_9" href="http://www.cnblogs.com/hnrainll/category/304463.html">Linux 根文件系统(10)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_10" href="http://www.cnblogs.com/hnrainll/category/304462.html">Linux 内核移植(11)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_11" href="http://www.cnblogs.com/hnrainll/category/295463.html">Linux 驱动开发(10)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_12" href="http://www.cnblogs.com/hnrainll/category/297419.html">Linux 网络编程(140)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_13" href="http://www.cnblogs.com/hnrainll/category/271015.html">MCU(54)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_14" href="http://www.cnblogs.com/hnrainll/category/478190.html">PHP(1)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_15" href="http://www.cnblogs.com/hnrainll/category/382895.html">PPT(2)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_16" href="http://www.cnblogs.com/hnrainll/category/316581.html">Python(9)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_17" href="http://www.cnblogs.com/hnrainll/category/300398.html">QT(35)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_18" href="http://www.cnblogs.com/hnrainll/category/439101.html">Ruby(2)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_19" href="http://www.cnblogs.com/hnrainll/category/276460.html">STM32(50)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_20" href="http://www.cnblogs.com/hnrainll/category/297178.html">UCOS-II(6)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_21" href="http://www.cnblogs.com/hnrainll/category/303144.html">Web(8)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_22" href="http://www.cnblogs.com/hnrainll/category/325747.html">关于职场(4)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_23" href="http://www.cnblogs.com/hnrainll/category/318809.html">路由(38)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_24" href="http://www.cnblogs.com/hnrainll/category/295516.html">数据库(6)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_25" href="http://www.cnblogs.com/hnrainll/category/234344.html">网络文摘(255)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_26" href="http://www.cnblogs.com/hnrainll/category/329138.html">心理学(2)</a> </li>
+
+</ul>
+
+</div>
+
+<div id="sidebar_postarchive" class="catListPostArchive sidebar-block">
+<h3 class="catListTitle">随笔档案</h3>
+
+<ul>
+
+<li><a id="CatList_LinkList_1_Link_0" href="http://www.cnblogs.com/hnrainll/archive/2015/03.html">2015年3月 (1)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_1" href="http://www.cnblogs.com/hnrainll/archive/2015/02.html">2015年2月 (2)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_2" href="http://www.cnblogs.com/hnrainll/archive/2015/01.html">2015年1月 (2)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_3" href="http://www.cnblogs.com/hnrainll/archive/2014/12.html">2014年12月 (2)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_4" href="http://www.cnblogs.com/hnrainll/archive/2014/11.html">2014年11月 (2)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_5" href="http://www.cnblogs.com/hnrainll/archive/2014/07.html">2014年7月 (1)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_6" href="http://www.cnblogs.com/hnrainll/archive/2014/05.html">2014年5月 (3)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_7" href="http://www.cnblogs.com/hnrainll/archive/2014/04.html">2014年4月 (3)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_8" href="http://www.cnblogs.com/hnrainll/archive/2014/03.html">2014年3月 (9)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_9" href="http://www.cnblogs.com/hnrainll/archive/2014/02.html">2014年2月 (1)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_10" href="http://www.cnblogs.com/hnrainll/archive/2014/01.html">2014年1月 (7)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_11" href="http://www.cnblogs.com/hnrainll/archive/2013/12.html">2013年12月 (12)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_12" href="http://www.cnblogs.com/hnrainll/archive/2013/11.html">2013年11月 (8)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_13" href="http://www.cnblogs.com/hnrainll/archive/2013/10.html">2013年10月 (1)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_14" href="http://www.cnblogs.com/hnrainll/archive/2013/09.html">2013年9月 (1)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_15" href="http://www.cnblogs.com/hnrainll/archive/2013/07.html">2013年7月 (5)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_16" href="http://www.cnblogs.com/hnrainll/archive/2013/06.html">2013年6月 (4)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_17" href="http://www.cnblogs.com/hnrainll/archive/2013/05.html">2013年5月 (10)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_18" href="http://www.cnblogs.com/hnrainll/archive/2013/04.html">2013年4月 (14)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_19" href="http://www.cnblogs.com/hnrainll/archive/2013/03.html">2013年3月 (17)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_20" href="http://www.cnblogs.com/hnrainll/archive/2013/02.html">2013年2月 (4)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_21" href="http://www.cnblogs.com/hnrainll/archive/2013/01.html">2013年1月 (8)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_22" href="http://www.cnblogs.com/hnrainll/archive/2012/12.html">2012年12月 (40)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_23" href="http://www.cnblogs.com/hnrainll/archive/2012/11.html">2012年11月 (31)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_24" href="http://www.cnblogs.com/hnrainll/archive/2012/10.html">2012年10月 (17)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_25" href="http://www.cnblogs.com/hnrainll/archive/2012/09.html">2012年9月 (22)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_26" href="http://www.cnblogs.com/hnrainll/archive/2012/08.html">2012年8月 (8)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_27" href="http://www.cnblogs.com/hnrainll/archive/2012/07.html">2012年7月 (27)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_28" href="http://www.cnblogs.com/hnrainll/archive/2012/06.html">2012年6月 (19)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_29" href="http://www.cnblogs.com/hnrainll/archive/2012/05.html">2012年5月 (43)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_30" href="http://www.cnblogs.com/hnrainll/archive/2012/04.html">2012年4月 (22)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_31" href="http://www.cnblogs.com/hnrainll/archive/2012/03.html">2012年3月 (32)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_32" href="http://www.cnblogs.com/hnrainll/archive/2012/02.html">2012年2月 (21)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_33" href="http://www.cnblogs.com/hnrainll/archive/2012/01.html">2012年1月 (50)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_34" href="http://www.cnblogs.com/hnrainll/archive/2011/12.html">2011年12月 (39)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_35" href="http://www.cnblogs.com/hnrainll/archive/2011/11.html">2011年11月 (86)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_36" href="http://www.cnblogs.com/hnrainll/archive/2011/10.html">2011年10月 (118)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_37" href="http://www.cnblogs.com/hnrainll/archive/2011/09.html">2011年9月 (76)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_38" href="http://www.cnblogs.com/hnrainll/archive/2011/08.html">2011年8月 (69)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_39" href="http://www.cnblogs.com/hnrainll/archive/2011/07.html">2011年7月 (54)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_40" href="http://www.cnblogs.com/hnrainll/archive/2011/06.html">2011年6月 (141)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_41" href="http://www.cnblogs.com/hnrainll/archive/2011/05.html">2011年5月 (148)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_42" href="http://www.cnblogs.com/hnrainll/archive/2011/04.html">2011年4月 (63)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_43" href="http://www.cnblogs.com/hnrainll/archive/2011/03.html">2011年3月 (4)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_44" href="http://www.cnblogs.com/hnrainll/archive/2011/02.html">2011年2月 (12)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_45" href="http://www.cnblogs.com/hnrainll/archive/2011/01.html">2011年1月 (59)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_46" href="http://www.cnblogs.com/hnrainll/archive/2010/12.html">2010年12月 (66)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_47" href="http://www.cnblogs.com/hnrainll/archive/2010/11.html">2010年11月 (19)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_48" href="http://www.cnblogs.com/hnrainll/archive/2010/02.html">2010年2月 (1)</a> </li>
+
+</ul>
+
+</div>
+
+<div id="sidebar_blog" class="catListBlog sidebar-block">
+<h3 class="catListTitle">Blog</h3>
+
+</div>
+
+</div><div id="sidebar_scorerank" class="sidebar-block">
+<div class="catListBlogRank">
+<h3 class="catListTitle">积分与排名</h3>
+<ul>
+	<li class="liScore">
+		积分 -	1150516
+	</li>
+	<li class="liRank">
+		排名 -	38
+	</li>
+</ul>
+</div>
+
+
+</div><div id="sidebar_recentcomments" class="sidebar-block"><div id="recent_comments_wrap">
+<div class="catListComment">
+<h3 class="catListTitle">最新评论</h3>
+
+	<div id="RecentCommentsBlock"><ul>
+    <li class="recent_comment_title"><a href="http://www.cnblogs.com/hnrainll/archive/2011/07/18/2109382.html#3398285">1. Re:LINUX C例程2:sprintf的简单例程</a></li>
+    <li class="recent_comment_body">太简单</li>
+    <li class="recent_comment_author">--平常心，平常心</li>
+    <li class="recent_comment_title"><a href="http://www.cnblogs.com/hnrainll/archive/2011/10/11/2207773.html#3396685">2. Re:JAVA中extends 与implements区别</a></li>
+    <li class="recent_comment_body">感觉有点混乱。并没有所谓的清晰见解。（个人见解）</li>
+    <li class="recent_comment_author">--壞人</li>
+    <li class="recent_comment_title"><a href="http://www.cnblogs.com/hnrainll/archive/2012/09/18/2690846.html#3392410">3. Re:面向对象三大基本特性,五大基本原则</a></li>
+    <li class="recent_comment_body">依赖倒置</li>
+    <li class="recent_comment_author">--杀破_狼</li>
+    <li class="recent_comment_title"><a href="http://www.cnblogs.com/hnrainll/archive/2012/09/18/2690846.html#3392409">4. Re:面向对象三大基本特性,五大基本原则</a></li>
+    <li class="recent_comment_body">666</li>
+    <li class="recent_comment_author">--杀破_狼</li>
+    <li class="recent_comment_title"><a href="http://www.cnblogs.com/hnrainll/archive/2011/05/15/2046862.html#3390759">5. Re:不使用第三方变量交换两个变量的值</a></li>
+    <li class="recent_comment_body">学习了！</li>
+    <li class="recent_comment_author">--大爱CATs</li>
+</ul>
+</div>
+</div>
+</div></div><div id="sidebar_topviewedposts" class="sidebar-block"><div id="topview_posts_wrap">
+<div class="catListView">
+<h3 class="catListTitle">阅读排行榜</h3>
+	<div id="TopViewPostsBlock"><ul><li><a href="http://www.cnblogs.com/hnrainll/archive/2011/10/11/2206804.html">1. JAVA帮助文档全系列 JDK1.5 JDK1.6 JDK1.7 官方中英完整版下载(341640)</a></li><li><a href="http://www.cnblogs.com/hnrainll/archive/2011/02/16/1956538.html">2. linux FTP配置详解(110113)</a></li><li><a href="http://www.cnblogs.com/hnrainll/archive/2011/10/14/2212415.html">3. TCP三次握手及四次挥手详细图解(89954)</a></li><li><a href="http://www.cnblogs.com/hnrainll/archive/2011/12/29/2305582.html">4. java常用设计模式(73865)</a></li><li><a href="http://www.cnblogs.com/hnrainll/p/3514637.html">5. Markdown 11种基本语法(66598)</a></li><li><a href="http://www.cnblogs.com/hnrainll/archive/2011/05/11/2043361.html">6. linux stat函数讲解(53238)</a></li><li><a href="http://www.cnblogs.com/hnrainll/archive/2011/06/08/2074957.html">7. 查看Linux内核版本的命令(51946)</a></li><li><a href="http://www.cnblogs.com/hnrainll/archive/2011/09/06/2168604.html">8. Linux man命令的使用方法(50618)</a></li><li><a href="http://www.cnblogs.com/hnrainll/archive/2011/07/04/2097408.html">9. 小技巧：让linux程序在后台运行(49487)</a></li><li><a href="http://www.cnblogs.com/hnrainll/archive/2011/10/12/2208436.html">10. Linux常用的网络命令(44778)</a></li></ul></div>
+</div>
+</div></div></div><script type="text/javascript">loadBlogSideColumn();</script>
+			</div>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		
+<!--done-->
+Copyright ©2016 Leo Chin
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+<!--PageEndHtml Block Begin-->
+&nbsp;&nbsp;&nbsp;
+
+<script src="PPM%20_%20PGM%20_%20PBM%20%E5%9B%BE%E5%83%8F%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8F%20-%20Leo%20Chin%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/stat.php" language="JavaScript"></script>
+
+&nbsp;&nbsp;&nbsp;
+
+<script language="javascript" type="text/javascript" src="PPM%20_%20PGM%20_%20PBM%20%E5%9B%BE%E5%83%8F%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8F%20-%20Leo%20Chin%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD_files/4385490.js"></script><a href="http://www.51.la/?4385490" target="_blank" title="51.La 网站流量统计系统">网站统计</a>
+
+<noscript><a href="http://www.51.la/?4385490" target="_blank"><img alt="&#x6211;&#x8981;&#x5566;&#x514D;&#x8D39;&#x7EDF;&#x8BA1;" src="http://img.users.51.la/4385490.asp" style="border:none" /></a></noscript>
+<!--PageEndHtml Block End-->
+
+
+</body></html>

@@ -17,12 +17,13 @@ namespace GamePlay
 	IRenderer				myRenderer;
 	ITimer					myTimer(TIMER_TIMEUNIT_MILLISECOND);
 	ICamera				myCamera;
-	ILightManager		myLightMgr;
 
 	namespace Res
 	{
+		Material myDefaultMaterial;
 		IPicture  myTestPic;
 		IMesh	  myModel1;
+		DirectionalLight myLight1;
 	}
 }
 
@@ -34,15 +35,34 @@ void GamePlay::Init()
 	myRenderer.SetCamera(myCamera);
 
 	//------------------CAMERA--------------------
-	myCamera.SetPosition(-100.0f, 0.0f, 0.0f);
+	myCamera.SetPosition(200.0f, 100.0f, 0.0f);
 	myCamera.SetLookAt(0, 0, 0);
 	myCamera.SetViewAngle(Math::CONST_PI / 2.0f, 2.5f);
-	myCamera.SetViewFrustumPlane(1.0f, 100.0f);
+	myCamera.SetViewFrustumPlane(1.0f, 500.0f);
 
 	//------------------Init Art Resources------------------
+	Res::myDefaultMaterial.ambient = { 0.2f,0.2f,0.2f };
+	Res::myDefaultMaterial.diffuse = { 0.0f,1.0f,1.0f };
+	Res::myDefaultMaterial.specular = { 1.0f,1.0f,1.0f };
+	Res::myDefaultMaterial.specularSmoothLevel = 20;
 	Res::myTestPic.LoadPPM("Media/beautiful_scene.ppm");
-	Res::myModel1.LoadFile_OBJ("Media/box.obj");
+	Res::myModel1.LoadFile_OBJ("Media/teapot.obj");
+	//Res::myModel1.CreateSphere(100.0f);
 	Res::myModel1.SetPosition(0, 0, 0);
+	Res::myModel1.SetMaterial(Res::myDefaultMaterial);
+
+	//-----------------Lights----------------------
+	Res::myLight1.mAmbientColor = { 1.0f,1.0f,1.0f };
+	Res::myLight1.mDiffuseColor = { 1.0f,1.0f,1.0f };
+	Res::myLight1.mDiffuseIntensity = 0.8f;
+	Res::myLight1.mDirection = { 1.0f,-1.0f,1.0f };
+	Res::myLight1.mIsEnabled = TRUE;
+	Res::myLight1.mSpecularColor = { 1.0f,1.0f,1.0f };
+	Res::myLight1.mSpecularIntensity = 1.2f;
+	myRenderer.SetLight(0, Res::myLight1);
+
+	//-----------------Init Cursor--------------------
+	::SetCursorPos(0, 0);
 }
 
 void GamePlay::UpdateTimer()
@@ -60,29 +80,30 @@ void GamePlay::UpdateWindowTitle()
 void GamePlay::MouseAndKeyBoradProcess()
 {
 	//--------------------------keyboard------------------------------
+	float timeElapsed = float(myTimer.GetInterval());
 	if (IS_KEY_DOWN('A'))
 	{
-		myCamera.fps_MoveRight(-0.05f*myTimer.GetInterval());
+		myCamera.fps_MoveRight(-0.05f*timeElapsed);
 	}
 	if (IS_KEY_DOWN('D'))
 	{
-		myCamera.fps_MoveRight(0.05f*myTimer.GetInterval());
+		myCamera.fps_MoveRight(0.05f*timeElapsed);
 	}
 	if (IS_KEY_DOWN('W'))
 	{
-		myCamera.fps_MoveForward(0.05f*myTimer.GetInterval());
+		myCamera.fps_MoveForward(0.05f*timeElapsed);
 	}
 	if (IS_KEY_DOWN('S'))
 	{
-		myCamera.fps_MoveForward(-0.05f*myTimer.GetInterval());
+		myCamera.fps_MoveForward(-0.05f*timeElapsed);
 	}
 	if (IS_KEY_DOWN(VK_SPACE))
 	{
-		myCamera.fps_MoveUp(0.05f*myTimer.GetInterval());
+		myCamera.fps_MoveUp(0.05f*timeElapsed);
 	}
 	if (IS_KEY_DOWN(VK_LCONTROL))
 	{
-		myCamera.fps_MoveUp(-0.05f*myTimer.GetInterval());
+		myCamera.fps_MoveUp(-0.05f*timeElapsed);
 	}
 
 	//-------------------------------cursor movement----------------------------------
@@ -127,10 +148,10 @@ void GamePlay::MouseAndKeyBoradProcess()
 	}
 
 	//camera rotation
-	float cursorDeltaX = currentCursorPos.x - lastCursorPos.x;
-	float cursorDeltaY = (currentCursorPos.y - lastCursorPos.y);
-	myCamera.RotateY_Yaw(0.0005f * cursorDeltaX*myTimer.GetInterval());
-	myCamera.RotateX_Pitch(0.0005f* cursorDeltaY*myTimer.GetInterval());
+	int cursorDeltaX = currentCursorPos.x - lastCursorPos.x;
+	int cursorDeltaY = (currentCursorPos.y - lastCursorPos.y);
+	myCamera.RotateY_Yaw(0.0005f * cursorDeltaX*timeElapsed);
+	myCamera.RotateX_Pitch(0.0005f* cursorDeltaY*timeElapsed);
 
 }
 

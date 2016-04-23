@@ -15,7 +15,6 @@
 #include "_GeometryMeshGenerator.h"
 #include "Camera.h"
 #include "Mesh.h"
-#include "LightManager.h"
 #include "Timer.h"
 #include "RenderPipeline3D.h"
 #include "Renderer.h"

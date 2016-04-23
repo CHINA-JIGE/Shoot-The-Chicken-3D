@@ -38,6 +38,13 @@ float Math::Vec3_Length(const VECTOR3& vec)
 	return sqrtf(vec.x*vec.x + vec.y*vec.y + vec.z*vec.z);
 }
 
+VECTOR3 Math::Vec3_Reflect(const VECTOR3 & vec, const VECTOR3 & axis)
+{
+	VECTOR3 In = vec;
+	VECTOR3 Out = (-1)*In + 2*(In - Vec3_Dot(In, axis) / In.Length()*axis);
+	return Out;
+}
+
 float Math::Vec4_Dot(const VECTOR4& vec1, const VECTOR4& vec2)
 {
 	return vec1.x*vec2.x + vec1.y*vec2.y + vec1.z*vec2.z + vec1.w*vec2.w;

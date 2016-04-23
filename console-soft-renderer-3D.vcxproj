@@ -116,7 +116,6 @@
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="Picture2D.cpp" />
     <ClCompile Include="RenderPipeline3D.cpp" />
-    <ClCompile Include="LightManager.cpp" />
     <ClCompile Include="Math.cpp" />
     <ClCompile Include="FileLoader.cpp" />
     <ClCompile Include="UnitTest_Mathcpp.cpp">
@@ -138,7 +137,6 @@
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Picture2D.h" />
     <ClInclude Include="RenderPipeline3D.h" />
-    <ClInclude Include="LightManager.h" />
     <ClInclude Include="Math.h" />
     <ClInclude Include="FileLoader.h" />
     <ClInclude Include="MyConsoleEngine.h" />

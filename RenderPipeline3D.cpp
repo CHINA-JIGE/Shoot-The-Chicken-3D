@@ -21,8 +21,9 @@ IRenderPipeline3D::IRenderPipeline3D()
 	mTexCoord_offsetX=0.0f;
 	mTexCoord_offsetY=0.0f;
 	mTexCoord_scale=1.0f;
+	mCameraPos = { 0,0,0 };
 
-	for (UINT i = 0;i < const_maxLightCount;++i)memset(&mDirLight[i],0,sizeof(IDirectionalLight));
+	for (UINT i = 0;i < c_maxLightCount;++i)memset(&mDirLight[i],0,sizeof(DirectionalLight));
 }
 
 BOOL IRenderPipeline3D::Init(RenderPipeline_InitData & initData)
@@ -110,9 +111,14 @@ void IRenderPipeline3D::SetProjMatrix(const MATRIX4x4 & mat)
 	mProjMatrix = mat;
 }
 
-void IRenderPipeline3D::SetLight(UINT index, const IDirectionalLight & light)
+void IRenderPipeline3D::SetCameraPos(const VECTOR3 & vec)
 {
-	if (index < const_maxLightCount)
+	mCameraPos = vec;
+}
+
+void IRenderPipeline3D::SetLight(UINT index, const DirectionalLight & light)
+{
+	if (index < c_maxLightCount)
 	{
 		mDirLight[index] = light;
 	}
@@ -171,7 +177,7 @@ void IRenderPipeline3D::VertexShader(Vertex& inVertex)
 
 
 	//-------Should I Perform Gouraud Shading??Yes...
-	outVertex.color = inVertex.color;
+	outVertex.color = mFunction_VertexLighting(inVertex.pos,inVertex.normal);
 
 	m_pVB_HomoSpace->push_back(outVertex);
 }
@@ -246,9 +252,9 @@ void IRenderPipeline3D::Rasterize(UINT idx1, UINT idx2, UINT idx3)
 				float s = (currentPointLocal_pixel.x*basisVector2.y - currentPointLocal_pixel.y*basisVector2.x) / D;
 				float t = (basisVector1.x*currentPointLocal_pixel.y - basisVector1.y*currentPointLocal_pixel.x) / D;
 
-				//.......
-				float depth = s*v2.posH.z + t *v3.posH.z + (1 - s - t)*v1.posH.z;
-				if (mFunction_DepthTest(i, j, depth) == FALSE)break;
+				//depth correct interpolation ,then perform depth test
+				float depth =1.0f/( s/v2.posH.z + t /v3.posH.z + (1 - s - t)/v1.posH.z);
+				if (mFunction_DepthTest(i, j, depth) == FALSE)goto label_nextPixel;
 
 				//I will use normal bilinear interpolation to see the result first
 				outVertex.pixelX = i;
@@ -258,6 +264,7 @@ void IRenderPipeline3D::Rasterize(UINT idx1, UINT idx2, UINT idx3)
 
 
 				m_pVB_Rasterized->push_back(outVertex);
+			label_nextPixel:;
 			}
 		}
 
@@ -397,14 +404,78 @@ BOOL IRenderPipeline3D::mFunction_HorizontalIntersect(float y, const VECTOR2 & v
 
 }
 
+inline float IRenderPipeline3D::mFunction_GetZ(UINT x, UINT y)
+{
+	return m_pZBuffer->at(y*mBufferWidth + x);
+}
+
 inline BOOL IRenderPipeline3D::mFunction_DepthTest(UINT x, UINT y, float testZ)
 {
-	if (testZ > m_pZBuffer->at(y*mBufferWidth + x))
+	float& targetZ = m_pZBuffer->at(y*mBufferWidth + x);
+	if (testZ <= targetZ&&testZ>0.0f)
 	{
+		targetZ = testZ;
 		return TRUE;
 	}
 	else
 	{
 		return FALSE;
 	}
+}
+
+VECTOR4 IRenderPipeline3D::mFunction_VertexLighting(const VECTOR3& vPosW, const VECTOR3& vNormalW)
+{
+	//---------For Each Vertex, Perform Gouraud Shading------------
+
+	VECTOR4 outColor = { 0.0f,0.0f,0.0f,1.0f };
+
+	//traverse every lights
+	for (UINT i = 0;i < c_maxLightCount;++i)
+	{
+		if (mDirLight[i].mIsEnabled == TRUE)
+		{
+			//normalized light vector
+			VECTOR3 unitIncomingLightVec = mDirLight[i].mDirection;
+			unitIncomingLightVec.Normalize();
+
+			//vector from current vertex to Camera(Eye),used when compute specular
+			VECTOR3 toEye = mCameraPos - vPosW;
+			toEye.Normalize();
+
+			//unit vertex normal
+			VECTOR3 unitNormal = vNormalW;
+			unitNormal.Normalize();
+
+			//Ambient Color
+			VECTOR3 currentAmbient = mMaterial.ambient* mDirLight[i].mAmbientColor * mMaterial.diffuse;
+
+			//diffuse Factor (first make sure that angle <normal,light> is less than PI/2
+			VECTOR3 currentDiffuse = { 0,0,0 };
+			VECTOR3 currentSpecular = { 0,0,0 };
+
+			float diffuseFactor = mDirLight[i].mDiffuseIntensity*Math::Vec3_Dot((-1)*unitIncomingLightVec, unitNormal);
+			if (diffuseFactor > 0.0f)
+			{
+				//diffuse color (eye pos independent)
+				currentDiffuse = diffuseFactor * mMaterial.diffuse*mDirLight[i].mDiffuseColor;
+
+
+				//Specular color - eye position dependent
+				/*
+				VECTOR3 unitOutgoingLightVec = Vec3_Reflect(unitIncomingLightVec, unitNormal);
+				float specFactor =
+					mDirLight[i].mSpecularIntensity *
+					pow(max(Vec3_Dot(unitOutgoingLightVec, toEye), 0.0f), mMaterial.specularSmoothLevel);
+
+				//Vector3 * vector3 means component-wise mult , return vec3(x1*x2,y1*y2,z1*z2)
+				currentSpecular = specFactor* mMaterial.specular * mDirLight[i].mSpecularColor;*/
+
+			}
+
+			VECTOR3 outColor3 = currentAmbient+currentDiffuse+currentSpecular;
+			outColor += VECTOR4(outColor3.x, outColor3.y, outColor3.z, 0.0f);
+		}
+	}
+
+	return outColor;
 }

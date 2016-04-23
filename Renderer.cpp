@@ -100,7 +100,7 @@ void IRenderer::Clear(COLOR3 clearColor,BOOL clearZBuff)
 	{
 		for (UINT i = 0;i < mBufferWidth*mBufferHeight;++i)
 		{
-			m_pZBuffer->at(i) = 0.0f;
+			m_pZBuffer->at(i) = 1.0f;
 		}
 	}
 }
@@ -108,6 +108,11 @@ void IRenderer::Clear(COLOR3 clearColor,BOOL clearZBuff)
 void IRenderer::SetCamera(ICamera & cam)
 {
 	m_pCamera = &cam;
+}
+
+void IRenderer::SetLight(UINT index, const DirectionalLight & light)
+{
+	IRenderPipeline3D::SetLight(index, light);
 }
 
 BOOL IRenderer::DrawPicture(IPicture & pic, UINT x1, UINT y1, UINT x2, UINT y2)
@@ -271,6 +276,8 @@ void IRenderer::RenderMesh(IMesh& mesh)
 	IRenderPipeline3D::SetWorldMatrix(matW);
 	IRenderPipeline3D::SetProjMatrix(matP);
 	IRenderPipeline3D::SetViewMatrix(matV);
+	IRenderPipeline3D::SetCameraPos(m_pCamera->GetPosition());
+	IRenderPipeline3D::SetMaterial(mesh.mMaterial);
 
 	RenderPipeline_DrawCallData drawCallData;
 	drawCallData.offset = 0;
@@ -365,7 +372,7 @@ void IRenderer::mFunction_AdjustWindowSize()
 
 }
 
-void IRenderer::mFunction_UpdateCharAndTextAttrBuffer()
+/*void IRenderer::mFunction_UpdateCharAndTextAttrBuffer()
 {
 	//Update Char And Text Attr Buffer according to Color Buffer,
 	//almost the last operation before using Win API to draw colored chars
@@ -382,7 +389,7 @@ void IRenderer::mFunction_UpdateCharAndTextAttrBuffer()
 	BACKGROUND_RED 红色背景
 	BACKGROUND_INTENSITY 背景色加强
 	COMMON_LVB_REVERSE_VIDEO 反色
-	*/
+	
 
 	//define colors...
 	const WORD lowR = FOREGROUND_RED;
@@ -398,7 +405,7 @@ void IRenderer::mFunction_UpdateCharAndTextAttrBuffer()
 
 	/*const char color_level_to_char[c_color_level_Count] = {
 	' ',	'.',';','s','@'		,'i','s', '@'
-	};*/
+	};
 	const char color_level_to_char[c_color_level_Count] = {
 		' ',	'.',';','s','#'		,'i','s','&','#'
 	};
@@ -420,9 +427,9 @@ void IRenderer::mFunction_UpdateCharAndTextAttrBuffer()
 
 		//quantization
 		//the .01 is in case the r/g/b=1.0f, I want the rLevel = [0,7]
-		UINT rLevel = UINT(c_color_level_Count* (color.x) / 1.0001f);
-		UINT gLevel = UINT(c_color_level_Count * (color.y) / 1.0001f);
-		UINT bLevel = UINT(c_color_level_Count * (color.z) / 1.0001f);
+		UINT rLevel = Clamp(UINT(c_color_level_Count* (color.x)),0, c_color_level_Count);
+		UINT gLevel = Clamp(UINT(c_color_level_Count * (color.y)),0,c_color_level_Count);
+		UINT bLevel = Clamp(UINT(c_color_level_Count * (color.z)),0,c_color_level_Count);
 		UINT maxLevel = max(max(rLevel, gLevel), bLevel);
 
 		m_pCharBuffer->at(i) = color_level_to_char[maxLevel];
@@ -431,9 +438,9 @@ void IRenderer::mFunction_UpdateCharAndTextAttrBuffer()
 			color_level_B_to_textAttr[bLevel]);
 		m_pTextAttrBuffer->at(i) = textAttr;
 	}
-}
+}*/
 
-/*inline void IRenderer::mFunction_SetAllColorBuffer(UINT offset,const COLOR3& color)
+inline void IRenderer::mFunction_UpdateCharAndTextAttrBuffer()
 {
 	/*
 	FOREGROUND_BLUE 蓝色
@@ -445,7 +452,7 @@ void IRenderer::mFunction_UpdateCharAndTextAttrBuffer()
 	BACKGROUND_RED 红色背景
 	BACKGROUND_INTENSITY 背景色加强
 	COMMON_LVB_REVERSE_VIDEO 反色
-	*\/
+	*/
 
 	//I think I should make full use of the foreGround and BackGround color,
 	//control the percentage of foreground coverage, 
@@ -486,10 +493,9 @@ void IRenderer::mFunction_UpdateCharAndTextAttrBuffer()
 	UINT bLevel = c_color_level_Count * (color.b) / 255.01f;
 	UINT maxLevel = max(max(rLevel, gLevel), bLevel);
 
-	m_pCharBuffer->at(offset) = color_level_to_char[maxLevel];
-	m_pColorBuffer->at(offset) = std::move(color);//std::move -> faster "copy"
-	m_pTextAttrBuffer->at(offset) =
-		color_level_R_to_textAttr[rLevel] |
-		color_level_G_to_textAttr[gLevel] |
-		color_level_B_to_textAttr[bLevel];
-}*/
+	for (UINT i = 0;i < mBufferWidth*mBufferHeight;++i)
+	{
+		m_pCharBuffer->at(offset) = color_level_to_char[maxLevel];
+		m_pTextAttrBuffer->at(offset) = ;
+	}
+}

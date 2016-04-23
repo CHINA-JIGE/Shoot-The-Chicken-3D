@@ -92,7 +92,7 @@ namespace Math
 			z = column[2];
 		}
 
-		float	Length()
+		float	Length() const
 		{
 			return sqrt(x*x + y*y + z*z );
 		};
@@ -143,6 +143,11 @@ namespace Math
 		VECTOR3 operator*(const float scaleFactor)
 		{
 			return VECTOR3(scaleFactor*x, scaleFactor* y, scaleFactor* z);
+		}
+
+		VECTOR3 operator*(const VECTOR3& vec)
+		{
+			return VECTOR3(vec.x*x, vec.y*y, vec.z*z);
 		}
 
 		//the scalar is put before the vector3
@@ -326,6 +331,8 @@ namespace Math
 	extern VECTOR3 Vec3_Cross(const VECTOR3& vec1, const VECTOR3& vec2);
 
 	extern float Vec3_Length(const VECTOR3& vec);
+
+	extern VECTOR3 Vec3_Reflect(const VECTOR3& vec, const VECTOR3& axis);
 
 	extern float Vec4_Dot(const VECTOR4& vec1, const VECTOR4& vec2);
 

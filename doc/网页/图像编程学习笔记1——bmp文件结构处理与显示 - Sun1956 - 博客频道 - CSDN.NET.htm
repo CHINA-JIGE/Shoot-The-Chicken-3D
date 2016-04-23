@@ -1,0 +1,1538 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><script src="%E5%9B%BE%E5%83%8F%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94bmp%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%A4%84%E7%90%86%E4%B8%8E%E6%98%BE%E7%A4%BA%20-%20Sun1956%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/uckm" async="" type="text/javascript"></script><script src="%E5%9B%BE%E5%83%8F%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94bmp%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%A4%84%E7%90%86%E4%B8%8E%E6%98%BE%E7%A4%BA%20-%20Sun1956%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/uckm_002" async="" type="text/javascript"></script>   
+   
+
+    <script type="text/javascript" src="%E5%9B%BE%E5%83%8F%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94bmp%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%A4%84%E7%90%86%E4%B8%8E%E6%98%BE%E7%A4%BA%20-%20Sun1956%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/tracking_002.js" charset="utf-8"></script>  
+
+    <script type="text/javascript">
+        var protocol = window.location.protocol;
+        document.write('<script type="text/javascript" src="' + protocol + '//csdnimg.cn/pubfooter/js/repoAddr2.js?v=' + Math.random() + '"></' + 'script>');
+    </script><script type="text/javascript" src="%E5%9B%BE%E5%83%8F%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94bmp%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%A4%84%E7%90%86%E4%B8%8E%E6%98%BE%E7%A4%BA%20-%20Sun1956%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/repoAddr2.js"></script>
+
+  
+ <meta http-equiv="Cache-Control" content="no-siteapp"><link rel="alternate" media="handheld" href="#">
+
+    <title>图像编程学习笔记1——bmp文件结构处理与显示 - Sun1956
+        - 博客频道 - CSDN.NET</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="description" content="saberstart.1QXO3Q1s3pfN3Qbu1/fN5pb/ahIN+mIOcgSR+mIMbo4MbhnSala.saberend">
+    <script src="%E5%9B%BE%E5%83%8F%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94bmp%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%A4%84%E7%90%86%E4%B8%8E%E6%98%BE%E7%A4%BA%20-%20Sun1956%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/jquery.js" type="text/javascript"></script>
+      <script type="text/javascript" src="%E5%9B%BE%E5%83%8F%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94bmp%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%A4%84%E7%90%86%E4%B8%8E%E6%98%BE%E7%A4%BA%20-%20Sun1956%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/jquery-version.js"></script>
+    <script type="text/javascript" src="%E5%9B%BE%E5%83%8F%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94bmp%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%A4%84%E7%90%86%E4%B8%8E%E6%98%BE%E7%A4%BA%20-%20Sun1956%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/ad.js"></script>
+        <!--new top-->
+       
+        <link rel="stylesheet" href="%E5%9B%BE%E5%83%8F%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94bmp%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%A4%84%E7%90%86%E4%B8%8E%E6%98%BE%E7%A4%BA%20-%20Sun1956%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/index.css">
+        <!--new top-->
+    
+      <!-- ad begin -->
+         <script language="javascript" type="text/javascript" src="%E5%9B%BE%E5%83%8F%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94bmp%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%A4%84%E7%90%86%E4%B8%8E%E6%98%BE%E7%A4%BA%20-%20Sun1956%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/tracking.js"></script>
+    <!-- ad end-->
+
+    <link rel="Stylesheet" type="text/css" href="%E5%9B%BE%E5%83%8F%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94bmp%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%A4%84%E7%90%86%E4%B8%8E%E6%98%BE%E7%A4%BA%20-%20Sun1956%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/style_003.css">
+    <link id="RSSLink" title="RSS" type="application/rss+xml" rel="alternate" href="http://blog.csdn.net/Sun1956/rss/list">
+    <link rel="shortcut icon" href="http://c.csdnimg.cn/public/favicon.ico">
+    <link type="text/css" rel="stylesheet" href="%E5%9B%BE%E5%83%8F%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94bmp%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%A4%84%E7%90%86%E4%B8%8E%E6%98%BE%E7%A4%BA%20-%20Sun1956%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/default.css">
+ 
+
+
+<style type="text/css">.MathJax_Hover_Frame {border-radius: .25em; -webkit-border-radius: .25em; -moz-border-radius: .25em; -khtml-border-radius: .25em; box-shadow: 0px 0px 15px #83A; -webkit-box-shadow: 0px 0px 15px #83A; -moz-box-shadow: 0px 0px 15px #83A; -khtml-box-shadow: 0px 0px 15px #83A; border: 1px solid #A6D ! important; display: inline-block; position: absolute}
+.MathJax_Hover_Arrow {position: absolute; width: 15px; height: 11px; cursor: pointer}
+</style><style type="text/css">#MathJax_About {position: fixed; left: 50%; width: auto; text-align: center; border: 3px outset; padding: 1em 2em; background-color: #DDDDDD; color: black; cursor: default; font-family: message-box; font-size: 120%; font-style: normal; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; border-radius: 15px; -webkit-border-radius: 15px; -moz-border-radius: 15px; -khtml-border-radius: 15px; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+.MathJax_Menu {position: absolute; background-color: white; color: black; width: auto; padding: 2px; border: 1px solid #CCCCCC; margin: 0; cursor: default; font: menu; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+.MathJax_MenuItem {padding: 2px 2em; background: transparent}
+.MathJax_MenuArrow {position: absolute; right: .5em; color: #666666}
+.MathJax_MenuActive .MathJax_MenuArrow {color: white}
+.MathJax_MenuArrow.RTL {left: .5em; right: auto}
+.MathJax_MenuCheck {position: absolute; left: .7em}
+.MathJax_MenuCheck.RTL {right: .7em; left: auto}
+.MathJax_MenuRadioCheck {position: absolute; left: 1em}
+.MathJax_MenuRadioCheck.RTL {right: 1em; left: auto}
+.MathJax_MenuLabel {padding: 2px 2em 4px 1.33em; font-style: italic}
+.MathJax_MenuRule {border-top: 1px solid #CCCCCC; margin: 4px 1px 0px}
+.MathJax_MenuDisabled {color: GrayText}
+.MathJax_MenuActive {background-color: Highlight; color: HighlightText}
+.MathJax_Menu_Close {position: absolute; width: 31px; height: 31px; top: -15px; left: -15px}
+</style><style type="text/css">#MathJax_Zoom {position: absolute; background-color: #F0F0F0; overflow: auto; display: block; z-index: 301; padding: .5em; border: 1px solid black; margin: 0; font-weight: normal; font-style: normal; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; box-shadow: 5px 5px 15px #AAAAAA; -webkit-box-shadow: 5px 5px 15px #AAAAAA; -moz-box-shadow: 5px 5px 15px #AAAAAA; -khtml-box-shadow: 5px 5px 15px #AAAAAA; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+#MathJax_ZoomOverlay {position: absolute; left: 0; top: 0; z-index: 300; display: inline-block; width: 100%; height: 100%; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+#MathJax_ZoomFrame {position: relative; display: inline-block; height: 0; width: 0}
+#MathJax_ZoomEventTrap {position: absolute; left: 0; top: 0; z-index: 302; display: inline-block; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+</style><style type="text/css">.MathJax_Preview {color: #888}
+#MathJax_Message {position: fixed; left: 1px; bottom: 2px; background-color: #E6E6E6; border: 1px solid #959595; margin: 0px; padding: 2px 8px; z-index: 102; color: black; font-size: 80%; width: auto; white-space: nowrap}
+#MathJax_MSIE_Frame {position: absolute; top: 0; left: 0; width: 0px; z-index: 101; border: 0px; margin: 0px; padding: 0px}
+.MathJax_Error {color: #CC0000; font-style: italic}
+</style><script src="%E5%9B%BE%E5%83%8F%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94bmp%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%A4%84%E7%90%86%E4%B8%8E%E6%98%BE%E7%A4%BA%20-%20Sun1956%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/share.js"></script><link href="%E5%9B%BE%E5%83%8F%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94bmp%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%A4%84%E7%90%86%E4%B8%8E%E6%98%BE%E7%A4%BA%20-%20Sun1956%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/job_reco.css" type="text/css" rel="stylesheet"><link type="text/css" rel="stylesheet" href="%E5%9B%BE%E5%83%8F%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94bmp%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%A4%84%E7%90%86%E4%B8%8E%E6%98%BE%E7%A4%BA%20-%20Sun1956%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/bdsstyle.css"><script src="%E5%9B%BE%E5%83%8F%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94bmp%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%A4%84%E7%90%86%E4%B8%8E%E6%98%BE%E7%A4%BA%20-%20Sun1956%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/main_002.js" charset="utf-8" type="text/javascript"></script><link rel="stylesheet" type="text/css" href="%E5%9B%BE%E5%83%8F%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94bmp%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%A4%84%E7%90%86%E4%B8%8E%E6%98%BE%E7%A4%BA%20-%20Sun1956%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/style_002.css"><link href="%E5%9B%BE%E5%83%8F%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94bmp%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%A4%84%E7%90%86%E4%B8%8E%E6%98%BE%E7%A4%BA%20-%20Sun1956%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/style.css" rel="stylesheet" type="text/css"><script src="%E5%9B%BE%E5%83%8F%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94bmp%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%A4%84%E7%90%86%E4%B8%8E%E6%98%BE%E7%A4%BA%20-%20Sun1956%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/logger.js"></script><script type="text/javascript" src="%E5%9B%BE%E5%83%8F%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94bmp%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%A4%84%E7%90%86%E4%B8%8E%E6%98%BE%E7%A4%BA%20-%20Sun1956%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/get_ads.php"></script><link href="%E5%9B%BE%E5%83%8F%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94bmp%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%A4%84%E7%90%86%E4%B8%8E%E6%98%BE%E7%A4%BA%20-%20Sun1956%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/content.css" type="text/css" rel="stylesheet"><link href="%E5%9B%BE%E5%83%8F%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94bmp%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%A4%84%E7%90%86%E4%B8%8E%E6%98%BE%E7%A4%BA%20-%20Sun1956%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/search.css" type="text/css" rel="stylesheet"><link href="%E5%9B%BE%E5%83%8F%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94bmp%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%A4%84%E7%90%86%E4%B8%8E%E6%98%BE%E7%A4%BA%20-%20Sun1956%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/share_style0_16.css" rel="stylesheet"></head>
+<body><div style="position: absolute; left: -1px; bottom: -1px; z-index: 0; width: 0px; height: 0px; overflow: hidden; visibility: hidden; display: none;" id="BAIDU_DUP_fp_wrapper"><iframe style="width: 0px; height: 0px; visibility: hidden; display: none;" src="%E5%9B%BE%E5%83%8F%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94bmp%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%A4%84%E7%90%86%E4%B8%8E%E6%98%BE%E7%A4%BA%20-%20Sun1956%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/o.htm" id="BAIDU_DUP_fp_iframe"></iframe></div><iframe style="display: none;" frameborder="0"></iframe><div style="display: none;" id="MathJax_Message"></div>
+    
+   
+      <!--new top-->
+    <script id="toolbar-tpl-scriptId" fixed="true" prod="blog" skin="black" src="%E5%9B%BE%E5%83%8F%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94bmp%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%A4%84%E7%90%86%E4%B8%8E%E6%98%BE%E7%A4%BA%20-%20Sun1956%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/html.js" type="text/javascript"></script><div class="csdn-toolbar csdn-toolbar-skin-black ">        <div class="container row center-block ">          <div class="col-md-3 pull-left logo clearfix"><a href="http://www.csdn.net/?ref=toolbar" title="CSDN首页" target="_blank" class="icon"></a><a title="频道首页" href="http://blog.csdn.net/?ref=toolbar_logo" class="img blog-icon"></a></div>          <div class="pull-right login-wrap unlogin">            <ul class="btns">              <li class="loginlink"><a href="https://passport.csdn.net/account/login?ref=toolbar" target="_top">登录&nbsp;</a>|<a target="_top" href="http://passport.csdn.net/account/mobileregister?ref=toolbar&amp;action=mobileRegister">&nbsp;注册</a></li>              <li class="search">                <div class="icon on-search-icon">                  <div class="wrap">                    <div class="curr-icon-wrap">                      <div class="curr-icon"></div>                    </div>                    <form action="http://so.csdn.net/search" method="get" target="_blank">                      <input value="toolbar" name="ref" accesskey="2" type="hidden">                      <div class="border">                        <input placeholder="搜索" name="q" accesskey="2" type="text"><span class="icon-enter-sm"></span>                      </div>                    </form>                  </div>                </div>              </li>              <li class="favor">                <div class="icon on-favor-icon">                  <div class="wrap">                    <div class="curr-icon-wrap">                      <div class="curr-icon"></div>                    </div>                    <div style="display:none;" class="favor-success"><span class="msg">收藏成功</span>                      <div class="btns"><span class="btn btn-primary ok">确定</span></div>                    </div>                    <div style="display:none;" class="favor-failed"><span class="icon-danger-lg"></span><span class="msg">收藏失败，请重新收藏</span>                      <div class="btns"><span class="btn btn-primary ok">确定</span></div>                    </div>                    <form role="form" class="form-horizontal favor-form">                      <div class="form-group">                        <div class="clearfix">                          <label for="input-title" class="col-sm-2 control-label">标题</label>                          <div class="col-sm-10">                            <input value="图像编程学习笔记1——bmp文件结构处理与显示 - Sun1956 - 博客频道 - CSDN.NET" id="inputTitle" placeholder="" class="title form-control" type="text">                          </div>                        </div>                        <div class="alert alert-danger"><strong></strong>标题不能为空</div>                      </div>                      <div class="form-group">                        <label for="input-url" class="col-sm-2 control-label">网址</label>                        <div class="col-sm-10">                          <input value="http://blog.csdn.net/sun1956/article/details/8648460" id="input-url" placeholder="" class="url form-control" type="text">                        </div>                      </div>                      <div class="form-group">                        <label for="input-tag" class="col-sm-2 tag control-label">标签</label>                        <div class="col-sm-10">                          <input id="input-tag" class="form-control tag" type="text">                        </div>                      </div>                      <div class="form-group">                        <label for="input-description" class="description col-sm-2 control-label">摘要</label>                        <div class="col-sm-10">                          <textarea id="input-description" class="form-control description"></textarea>                        </div>                      </div>                      <div class="form-group">                        <div class="col-sm-offset-2 col-sm-10 ft">                          <div class="col-sm-4 pull-left">                            <div class="checkbox">                              <label>                                <input name="share" checked="checked" class="share" type="checkbox">公开                              </label>                            </div>                          </div>                          <div class="col-sm-8 pull-right favor-btns">                            <button type="button" class="cancel btn btn-default">取消</button>                            <button type="submit" class="submit btn btn-primary">收藏</button>                          </div>                        </div>                      </div>                    </form>                  </div>                </div>              </li>              <li class="notify">                <div style="display:none" class="number"></div>                <div style="display:none" class="icon-hasnotes-sm"></div>                <div id="header_notice_num"></div>                <div class="icon on-notify-icon">                  <div class="wrap">                    <div class="curr-icon-wrap">                      <div class="curr-icon"></div>                    </div>                    <div id="note1" class="csdn_note">                      <div class="box"></div>                    <iframe src="%E5%9B%BE%E5%83%8F%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94bmp%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%A4%84%E7%90%86%E4%B8%8E%E6%98%BE%E7%A4%BA%20-%20Sun1956%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/a.htm" allowtransparency="true" style="z-index:-1;position:absolute;top:0;left:0;width:100%;height:100%;background:transparent" frameborder="0"></iframe></div>                  </div>                </div>              </li>              <li class="ugc">                <div class="icon on-ugc-icon">                  <div class="wrap clearfix">                    <div class="curr-icon-wrap">                      <div class="curr-icon"></div>                    </div>                    <dl>                      <dt><a href="http://geek.csdn.net/news/expert?ref=toolbar" target="_blank" class="p-news clearfix" style="display:none;"><em class="icon"></em><span>分享资讯</span></a></dt>                      <dt style="border: none;"><a href="http://u.download.csdn.net/upload?ref=toolbar" target="_blank" class="p-doc clearfix"><em class="icon"></em><span>传PPT/文档</span></a></dt>                      <dt><a href="http://bbs.csdn.net/topics/new?ref=toolbar" target="_blank" class="p-ask clearfix"><em class="icon"></em><span>提问题</span></a></dt>                      <dt><a href="http://write.blog.csdn.net/postedit?ref=toolbar" target="_blank" class="p-blog clearfix"><em class="icon"></em><span>写博客</span></a></dt>                      <dt><a href="http://u.download.csdn.net/upload?ref=toolbar" target="_blank" class="p-src clearfix"><em class="icon"></em><span>传资源</span></a></dt>                      <dt><a href="https://code.csdn.net/projects/new?ref=toolbar" target="_blank" class="c-obj clearfix"><em class="icon"></em><span>创建项目</span></a></dt>                      <dt><a href="https://code.csdn.net/snippets/new?ref=toolbar" target="_blank" class="c-code clearfix"><em class="icon"></em><span>创建代码片</span></a></dt>                    </dl>                  </div>                </div>              </li>              <li class="profile">                <div class="icon on-profile-icon"><img src="%E5%9B%BE%E5%83%8F%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94bmp%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%A4%84%E7%90%86%E4%B8%8E%E6%98%BE%E7%A4%BA%20-%20Sun1956%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/100x100.jpg" class="curr-icon-img">                  <div class="wrap clearfix">                    <div class="curr-icon-wrap">                      <div class="curr-icon"></div>                    </div>                    <div class="bd">                      <dl class="clearfix">                        <dt class="pull-left img"><a target="_blank" href="http://my.csdn.net/?ref=toolbar" class="avatar"><img src="%E5%9B%BE%E5%83%8F%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94bmp%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%A4%84%E7%90%86%E4%B8%8E%E6%98%BE%E7%A4%BA%20-%20Sun1956%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/100x100.jpg"></a></dt>                        <dd class="info" style="border: none;"><a target="_blank" href="http://my.csdn.net/?ref=toolbar" class="nickname"></a><a class="set-nick" href="https://passport.csdn.net/account/profile">设置昵称<span class="write-icon"></span></a><span class="dec"><a class="fill-dec" href="http://my.csdn.net/" target="_blank">编辑自我介绍，让更多人了解你<span class="write-icon"></span></a></span></dd>                      </dl>                    </div>                    <div class="ft clearfix"><a target="_blank" href="http://my.csdn.net/my/account/changepwd?ref=toolbar" class="pull-left"><span class="icon-cog"></span>帐号设置</a><a href="https://passport.csdn.net/account/logout?ref=toolbar" target="_top" class="pull-left" style="margin-left:132px; width:18px; height:27px; white-space:nowrap; overflow:hidden;"><span class="icon-signout"></span><span class="out">退出</span></a></div>                  </div>                </div>              </li>              <li class="apps">                <div style="display: none;" id="chasnew123" class="hasnew"></div>                <div id="cappsarea123" class="icon on-apps-icon">                  <div class="wrap clearfix">                    <div class="curr-icon-wrap">                      <div class="curr-icon"></div>                    </div>                  <div class="detail">                    <dl>                      <dt>                        <h5>社区</h5>                      </dt>                      <dd> <a href="http://blog.csdn.net/?ref=toolbar" target="_blank">博客</a></dd>                      <dd> <a href="http://bbs.csdn.net/?ref=toolbar" target="_blank">论坛</a></dd>                      <dd> <a href="http://download.csdn.net/?ref=toolbar" target="_blank">下载</a></dd>                      <dd><a href="http://ask.csdn.net/?ref=toolbar" target="_blank">技术问答</a></dd>                      <dd><a href="http://geek.csdn.net/?ref=toolbar" target="_blank">极客头条</a></dd>                      <dd style="display:none"> <a href="http://hero.csdn.net/?ref=toolbar" target="_blank">英雄会</a></dd>                    </dl>                  </div>                  <div class="detail">                    <dl>                      <dt>                        <h5>服务</h5>                      </dt>                      <dd style="display:none"> <a href="http://job.csdn.net/?ref=toolbar" target="_blank">JOB<img src="%E5%9B%BE%E5%83%8F%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94bmp%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%A4%84%E7%90%86%E4%B8%8E%E6%98%BE%E7%A4%BA%20-%20Sun1956%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/new.gif" style="display: none; margin-top: -26px; width: 23px;"></a></dd>                      <dd> <a href="http://edu.csdn.net/?ref=toolbar" target="_blank">学院<img src="%E5%9B%BE%E5%83%8F%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94bmp%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%A4%84%E7%90%86%E4%B8%8E%E6%98%BE%E7%A4%BA%20-%20Sun1956%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/new.gif" style="display: none; margin-top: -26px; width: 23px;"></a></dd>                      <dd> <a href="https://code.csdn.net/?ref=toolbar" target="_blank">CODE</a></dd>                      <dd> <a href="http://huiyi.csdn.net/?ref=toolbar" target="_blank">活动</a></dd>                      <dd> <a href="http://www.csto.com/?ref=toolbar" target="_blank">CSTO</a></dd>                      <dd> <a href="http://mall.csdn.net/?ref=toolbar" target="_blank">C币兑换<img src="%E5%9B%BE%E5%83%8F%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94bmp%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%A4%84%E7%90%86%E4%B8%8E%E6%98%BE%E7%A4%BA%20-%20Sun1956%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/new.gif" style="display: none; margin-top: -26px; width: 23px;"></a></dd>                    </dl>                  </div>                  <div class="detail last">                    <dl>                      <dt>                        <h5>俱乐部</h5>                      </dt>                      <dd> <a href="http://cto.csdn.net/?ref=toolbar" target="_blank">CTO俱乐部</a></dd>                      <dd> <a href="http://student.csdn.net/?ref=toolbar" target="_blank">高校俱乐部</a></dd>                    </dl>                  </div>                </div>              </div>            </li>            </ul>          </div>        </div>    </div>
+     <!--new top-->
+    <div id="container">
+        <div id="header">
+    <div class="header">
+        <div id="blog_title">
+            <h2>
+                <a href="http://blog.csdn.net/sun1956">Sun1956</a></h2>
+            <h3>博观约取，厚积薄发!</h3>
+            <div class="clear">
+            </div>
+        </div>
+        <div class="clear">
+        </div>
+    </div>
+</div>
+<div id="navigator">
+    <div class="navigator_bg">
+    </div>
+    <div class="navigator">
+        <ul>
+            
+                <li id="btnContents"><a href="http://blog.csdn.net/sun1956?viewmode=contents"><span onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_mulu'])">
+                    <img src="%E5%9B%BE%E5%83%8F%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94bmp%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%A4%84%E7%90%86%E4%B8%8E%E6%98%BE%E7%A4%BA%20-%20Sun1956%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/ico_list.gif">目录视图</span></a></li>
+                <li id="btnView"><a href="http://blog.csdn.net/sun1956?viewmode=list"><span onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_zhaiyao'])">
+                    <img src="%E5%9B%BE%E5%83%8F%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94bmp%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%A4%84%E7%90%86%E4%B8%8E%E6%98%BE%E7%A4%BA%20-%20Sun1956%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/ico_summary.gif">摘要视图</span></a></li>
+                <li id="btnRss"><a href="http://blog.csdn.net/sun1956/rss/list"><span onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_RSS'])">
+                    <img src="%E5%9B%BE%E5%83%8F%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94bmp%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%A4%84%E7%90%86%E4%B8%8E%E6%98%BE%E7%A4%BA%20-%20Sun1956%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/ico_rss.gif">订阅</span></a></li>                
+
+            </ul>
+    </div>
+</div>
+<script type="text/javascript">
+    var username = "Sun1956";
+    var _blogger = username;
+    var blog_address = "http://blog.csdn.net/sun1956";
+    var static_host = "http://static.blog.csdn.net";
+    var currentUserName = "";  
+</script>
+
+        <div id="body">
+            <div id="main">
+                <div class="main">
+                        <div class="ad_class">
+<div class="notice tracking-ad" data-mod="popu_3"> 
+
+<a target="_blank" href="http://bbs.csdn.net/topics/391926027">
+<font color="red">2016攒课第二期之你听课我买单，快来攒你想听的课！
+</font></a>
+&nbsp;&nbsp;&nbsp;
+<a target="_blank" href="http://edu.csdn.net/huiyiCourse/detail/85">
+<font color="blue">架构免费公开课报名</font></a>
+&nbsp;&nbsp;&nbsp;
+<a target="_blank" href="http://blog.csdn.net/blogdevteam/article/details/51073018">
+<font color="red">2016年7月微软MVP申请开始了!
+</font></a>
+
+
+</div>                        </div>
+                        
+
+
+
+<!-- 广告位开始 -->
+<div class="J_adv" data-con="ad_content_217" data-order="40" data-mtp="40" data-mod="ad_popu_72" data-view="true" style="padding: 0px; margin: 0px; border: medium none; width: 1px; height: 1px; position: fixed; right: 10px; bottom: 10px; background-color: transparent;"><div id="location_parent"></div><script>document.getElementById('location_parent').parentNode.style.height='1px';document.getElementById('location_parent').parentNode.style.width='1px';document.getElementById('location_parent').parentNode.style.position='fixed';document.getElementById('location_parent').parentNode.style.right='10px';document.getElementById('location_parent').parentNode.style.bottom='10px';document.getElementById('location_parent').parentNode.style.backgroundColor='transparent';</script><!-- 广告占位容器 --><div style="box-sizing: content-box; width: 311px; height: 286px; overflow: hidden; z-index: 2147483647; position: fixed; bottom: 10px; right: 10px;" id="cpro_u2392861"><div style="box-sizing: content-box;width:300px;height:250px;padding:4px;border:#acacac 1px solid;overflow:hidden;position:absolute;left:0;top:25px;"><iframe id="cpro_u2392861_iframe" src="%E5%9B%BE%E5%83%8F%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94bmp%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%A4%84%E7%90%86%E4%B8%8E%E6%98%BE%E7%A4%BA%20-%20Sun1956%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/uckm.htm" vspace="0" hspace="0" marginwidth="0" marginheight="0" scrolling="no" style="border:0; vertical-align:bottom;margin:0;" allowtransparency="true" frameborder="0" height="250" align="center,center" width="300"></iframe></div><div id="cpro_u2392861_closebtn" style="box-sizing: content-box;position:absolute;width:61px;height:20px;top:0;left:250px;margin:0;padding:0;margin-bottom:5px;cursor:pointer;overflow:hidden;"><div style="box-sizing: content-box;width:40px;height:20px;background-color:#999999;color:#fff;float:left;margin-right:1px;font-size:12px;font-family:微软雅黑;text-align: center;line-height:20px;">关闭</div><a style="maring:0;padding:0;display:inline-block;border:none;overflow:hidden;height:20px;line-height:20px;cursor:pointer;width:20px;background:url('http://cpro.baidustatic.com/cpro/ui/noexpire/img/2.0.1/xuanfu_close.png') no-repeat 0 0;margin-bottom:3px;float:left"></a></div></div><!-- 投放代码 --><script type="text/javascript">(window['cproStyleApi'] = window['cproStyleApi'] || {})['u2392861']={at:'3',rsi0:'300',rsi1:'250',pat:'17',tn:'baiduCustNativeAD_xuanfu',rss1:'#FFFFFF',conBW:'1',adp:'1',ptt:'0',titFF:'%E5%BE%AE%E8%BD%AF%E9%9B%85%E9%BB%91',titFS:'14',rss2:'#000000',titSU:'0'};/*服务器频道首页置顶Banner960*90，创建于2014-7-3*/(window.cproArray = window.cproArray || []).push({id:'u2392861'});  </script>  <script src="%E5%9B%BE%E5%83%8F%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94bmp%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%A4%84%E7%90%86%E4%B8%8E%E6%98%BE%E7%A4%BA%20-%20Sun1956%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/f.js" type="text/javascript"></script></div>
+<!-- 广告位结束 -->
+
+  
+<link href="%E5%9B%BE%E5%83%8F%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94bmp%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%A4%84%E7%90%86%E4%B8%8E%E6%98%BE%E7%A4%BA%20-%20Sun1956%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/comment1.css" type="text/css" rel="stylesheet">
+<link href="%E5%9B%BE%E5%83%8F%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94bmp%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%A4%84%E7%90%86%E4%B8%8E%E6%98%BE%E7%A4%BA%20-%20Sun1956%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/style1.css" type="text/css" rel="stylesheet">
+<script language="JavaScript" type="text/javascript" src="%E5%9B%BE%E5%83%8F%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94bmp%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%A4%84%E7%90%86%E4%B8%8E%E6%98%BE%E7%A4%BA%20-%20Sun1956%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/jquery_002.js"></script>
+<script type="text/javascript" src="%E5%9B%BE%E5%83%8F%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94bmp%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%A4%84%E7%90%86%E4%B8%8E%E6%98%BE%E7%A4%BA%20-%20Sun1956%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/main.js"></script>
+<link rel="stylesheet" href="%E5%9B%BE%E5%83%8F%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94bmp%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%A4%84%E7%90%86%E4%B8%8E%E6%98%BE%E7%A4%BA%20-%20Sun1956%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/markdown_views.css">
+<link rel="stylesheet" href="%E5%9B%BE%E5%83%8F%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94bmp%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%A4%84%E7%90%86%E4%B8%8E%E6%98%BE%E7%A4%BA%20-%20Sun1956%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/category.css">
+<script type="text/javascript" src="%E5%9B%BE%E5%83%8F%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94bmp%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%A4%84%E7%90%86%E4%B8%8E%E6%98%BE%E7%A4%BA%20-%20Sun1956%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/MathJax.js"></script>
+
+ <script type="text/javascript" src="%E5%9B%BE%E5%83%8F%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94bmp%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%A4%84%E7%90%86%E4%B8%8E%E6%98%BE%E7%A4%BA%20-%20Sun1956%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/web-storage-cache.js"></script>
+
+<script type="text/javascript" src="%E5%9B%BE%E5%83%8F%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94bmp%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%A4%84%E7%90%86%E4%B8%8E%E6%98%BE%E7%A4%BA%20-%20Sun1956%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/web-storage-cache.js"></script>
+<script type="text/javascript" src="%E5%9B%BE%E5%83%8F%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94bmp%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%A4%84%E7%90%86%E4%B8%8E%E6%98%BE%E7%A4%BA%20-%20Sun1956%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/replace.js"></script>
+
+  <script type="text/ecmascript">
+      window.quickReplyflag = true;
+           
+            var isBole = false;
+            
+          
+    </script>
+<div id="article_details" class="details">
+    <div class="article_title">   
+         <span class="ico ico_type_Original"></span>
+
+
+    <h1>
+        <span class="link_title"><a href="http://blog.csdn.net/sun1956/article/details/8648460">
+        <font color="red">[置顶]</font>
+        图像编程学习笔记1——bmp文件结构处理与显示            
+        </a></span>
+    </h1>
+</div>
+
+   
+
+        <div class="article_manage clearfix">
+        <div class="article_l">
+            <span class="link_categories">
+            标签：
+              <a href="http://www.csdn.net/tag/VC%e5%9b%be%e5%83%8f%e7%bc%96%e7%a8%8b" target="_blank" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_tag']);">VC图像编程</a><a href="http://www.csdn.net/tag/bmp%e4%bd%8d%e5%9b%be%e7%bb%93%e6%9e%84" target="_blank" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_tag']);">bmp位图结构</a><a href="http://www.csdn.net/tag/bmp%e4%bd%8d%e5%9b%be%e6%98%be%e7%a4%ba" target="_blank" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_tag']);">bmp位图显示</a>
+            </span>
+        </div>
+        <div class="article_r">
+            <span class="link_postdate">2013-03-07 22:07</span>
+            <span class="link_view" title="阅读次数">5138人阅读</span>
+            <span class="link_comments" title="评论次数"> <a href="#comments" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_pinglun'])">评论</a>(5)</span>
+            <span class="link_collect tracking-ad" data-mod="popu_171"> <a target="_blank" href="javascript:void(0);" onclick="javascript:collectArticle('图像编程学习笔记1——bmp文件结构处理与显示','8648460');return false;" title="收藏">收藏</a></span>
+             <span class="link_report"> <a href="#report" onclick="javascript:report(8648460,2);return false;" title="举报">举报</a></span>
+
+        </div>
+    </div>
+    <div class="embody" style="display:none" id="embody">
+        <span class="embody_t">本文章已收录于：</span>
+        <div class="embody_c" id="lib" value="{&quot;err&quot;:0,&quot;msg&quot;:&quot;ok&quot;,&quot;data&quot;:[]}"></div>
+    </div>
+    <style type="text/css">        
+            .embody{
+                padding:10px 10px 10px;
+                margin:0 -20px;
+                border-bottom:solid 1px #ededed;                
+            }
+            .embody_b{
+                margin:0 ;
+                padding:10px 0;
+            }
+            .embody .embody_t,.embody .embody_c{
+                display: inline-block;
+                margin-right:10px;
+            }
+            .embody_t{
+                font-size: 12px;
+                color:#999;
+            }
+            .embody_c{
+                font-size: 12px;
+            }
+            .embody_c img,.embody_c em{
+                display: inline-block;
+                vertical-align: middle;               
+            }
+             .embody_c img{               
+                width:30px;
+                height:30px;
+            }
+            .embody_c em{
+                margin: 0 20px 0 10px;
+                color:#333;
+                font-style: normal;
+            }
+    </style>
+    <script type="text/javascript">
+        $(function () {
+            var lib = eval("("+$("#lib").attr("value")+")");
+            var html = "";
+            if (lib.err == 0) {
+                $.each(lib.data, function (i) {
+                    var obj = lib.data[i];
+                    //html += '<img src="' + obj.logo + '"/>' + obj.name + "&nbsp;&nbsp;";
+                    html += ' <a href="' + obj.url + '" target="_blank">';
+                    html += ' <img src="' + obj.logo + '">';
+                    html += ' <em><b>' + obj.name + '</b></em>';
+                    html += ' </a>';
+                });
+                if (html != "") {
+                    setTimeout(function () {
+                        $("#lib").html(html);
+                        /*
+                        var testhtml = "";
+                        testhtml += '<a href="#">';
+                        testhtml += '<img src="http://img.knowledge.csdn.net/upload/base/1455589744328_328.jpg">';
+                        testhtml += '<em>Android知识库</em>';
+                        testhtml += '</a>';
+                        $(".embody_c").html(testhtml);
+                        */
+                        $("#embody").show();
+                    }, 100);
+                }
+            }          
+            
+        });
+    </script>
+      <div class="category clearfix">
+        <div class="category_l">
+           <img src="%E5%9B%BE%E5%83%8F%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94bmp%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%A4%84%E7%90%86%E4%B8%8E%E6%98%BE%E7%A4%BA%20-%20Sun1956%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/category_icon.jpg">
+            <span>分类：</span>
+        </div>
+        <div class="category_r">
+                    <label onclick="GetCategoryArticles('1359270','Sun1956','top','8648460');">
+                        <span onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_fenlei']);">VC图像编程<em>（8）</em></span>
+                      <img class="arrow-down" src="%E5%9B%BE%E5%83%8F%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94bmp%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%A4%84%E7%90%86%E4%B8%8E%E6%98%BE%E7%A4%BA%20-%20Sun1956%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/arrow_triangle%2520_down.jpg" style="display:inline;">
+                      <img class="arrow-up" src="%E5%9B%BE%E5%83%8F%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94bmp%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%A4%84%E7%90%86%E4%B8%8E%E6%98%BE%E7%A4%BA%20-%20Sun1956%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/arrow_triangle_up.jpg" style="display:none;">
+                        <div class="subItem">
+                            <div class="subItem_t"><a href="http://blog.csdn.net/Sun1956/article/category/1359270" target="_blank">作者同类文章</a><i class="J_close">X</i></div>
+                            <ul class="subItem_l" id="top_1359270">                            
+                            </ul>
+                        </div>
+                    </label>                    
+        </div>
+    </div>
+    <script type="text/javascript" src="%E5%9B%BE%E5%83%8F%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94bmp%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%A4%84%E7%90%86%E4%B8%8E%E6%98%BE%E7%A4%BA%20-%20Sun1956%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/category.js"></script>  
+        <div class="bog_copyright">         
+            <p class="copyright_p">版权声明：本文为博主原创文章，未经博主允许不得转载。</p>
+        </div>
+
+  
+
+  
+  
+     
+
+<div id="article_content" class="article_content">
+
+<h2><strong><span style="color:#FF0000">文本内容转载自《数字图像处理编程入门》，代码为自己实现</span><br>
+</strong></h2>
+<p><strong>1.1图和调色板的概念</strong></p>
+<p>如今Windows(3.x以及95，98，NT)系列已经成为绝大多数用户使用的操作系统，它比DOS成功的一个重要因素是它可视化的漂亮界面。那么Windows是如何显示图象的呢？这就要谈到位图(bitmap)。</p>
+<p>我们知道，普通的显示器屏幕是由许许多多点构成的，我们称之为象素。显示时采用扫描的方法：电子枪每次从左到右扫描一行，为每个象素着色，然后从上
+到下这样扫描若干行，就扫过了一屏。为了防止闪烁，每秒要重复上述过程几十次。例如我们常说的屏幕分辨率为640×480，刷新频率为70Hz，意思是说
+每行要扫描640个象素，一共有480行，每秒重复扫描屏幕70次。</p>
+<p>我们称这种显示器为位映象设备。所谓位映象，就是指一个二维的象素矩阵，而位图就是采用位映象方法显示和存储的图象。举个例子，图1.1是一幅普通的黑白位图，图1.2是被放大后的图，图中每个方格代表了一个象素。我们可以看到：整个骷髅就是由这样一些黑点和白点组成的。</p>
+<p align="center"><strong><img src="%E5%9B%BE%E5%83%8F%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94bmp%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%A4%84%E7%90%86%E4%B8%8E%E6%98%BE%E7%A4%BA%20-%20Sun1956%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/1362665246_7595.jpg" alt="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp;&nbsp;
+<img src="%E5%9B%BE%E5%83%8F%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94bmp%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%A4%84%E7%90%86%E4%B8%8E%E6%98%BE%E7%A4%BA%20-%20Sun1956%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/1362665252_1571.jpg" alt=""><br>
+</strong></p>
+<p align="center"><strong>1.1&nbsp;&nbsp;&nbsp; 
+骷髅&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp;&nbsp; 图1.2&nbsp;&nbsp;&nbsp;&nbsp; 放大后的骷髅位图</strong><br>
+</p>
+<p>那么，彩色图是怎么回事呢？</p>
+<p>我们先来说说三元色RGB概念。</p>
+<p>我们知道，自然界中的所有颜色都可以由红、绿、蓝(R，G，B)组合而成。有的颜色含有红色成分多一些，如深红；有的含有红色成分少一些，如浅红。
+针对含有红色成分的多少，可以分成0到255共256个等级，0级表示不含红色成分；255级表示含有100%的红色成分。同样，绿色和蓝色也被分成
+256级。这种分级概念称为量化。</p>
+<p>这样，根据红、绿、蓝各种不同的组合我们就能表示出256×256×256，约1600万种颜色。这么多颜色对于我们人眼来说已经足够丰富了。</p>
+<p align="center"><strong>表1.1&nbsp;&nbsp;&nbsp;&nbsp; 常见颜色的RGB组合值</strong></p>
+<div align="center">
+<table border="1" cellpadding="0" cellspacing="0" width="75%">
+<tbody>
+<tr>
+<td>
+<p align="center">颜色</p>
+</td>
+<td>
+<p align="center">R</p>
+</td>
+<td>
+<p align="center">G</p>
+</td>
+<td>
+<p align="center">B</p>
+</td>
+</tr>
+<tr>
+<td>
+<p align="center">红</p>
+</td>
+<td>
+<p align="center">255</p>
+</td>
+<td>
+<p align="center">0</p>
+</td>
+<td>
+<p align="center">0</p>
+</td>
+</tr>
+<tr>
+<td>
+<p align="center">蓝</p>
+</td>
+<td>
+<p align="center">0</p>
+</td>
+<td>
+<p align="center">255</p>
+</td>
+<td>
+<p align="center">0</p>
+</td>
+</tr>
+<tr>
+<td>
+<p align="center">绿</p>
+</td>
+<td>
+<p align="center">0</p>
+</td>
+<td>
+<p align="center">0</p>
+</td>
+<td>
+<p align="center">255</p>
+</td>
+</tr>
+<tr>
+<td>
+<p align="center">黄</p>
+</td>
+<td>
+<p align="center">255</p>
+</td>
+<td>
+<p align="center">255</p>
+</td>
+<td>
+<p align="center">0</p>
+</td>
+</tr>
+<tr>
+<td>
+<p align="center">紫</p>
+</td>
+<td>
+<p align="center">255</p>
+</td>
+<td>
+<p align="center">0</p>
+</td>
+<td>
+<p align="center">255</p>
+</td>
+</tr>
+<tr>
+<td>
+<p align="center">青</p>
+</td>
+<td>
+<p align="center">0</p>
+</td>
+<td>
+<p align="center">255</p>
+</td>
+<td>
+<p align="center">255</p>
+</td>
+</tr>
+<tr>
+<td>
+<p align="center">白</p>
+</td>
+<td>
+<p align="center">255</p>
+</td>
+<td>
+<p align="center">255</p>
+</td>
+<td>
+<p align="center">255</p>
+</td>
+</tr>
+<tr>
+<td>
+<p align="center">黑</p>
+</td>
+<td>
+<p align="center">0</p>
+</td>
+<td>
+<p align="center">0</p>
+</td>
+<td>
+<p align="center">0</p>
+</td>
+</tr>
+<tr>
+<td>
+<p align="center">灰</p>
+</td>
+<td>
+<p align="center">128</p>
+</td>
+<td>
+<p align="center">128</p>
+</td>
+<td>
+<p align="center">128</p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>你大概已经明白了，当一幅图中每个象素赋予不同的RGB值时，能呈现出五彩缤纷的颜色了，这样就形成了彩色图。的确是这样的，但实际上的做法还有些差别。</p>
+<p>让我们来看看下面的例子。</p>
+<p>有一个长宽各为200个象素，颜色数为16色的彩色图，每一个象素都用R、G、B三个分量表示。因为每个分量有256个级别，要用8位(bit)，
+即一个字节(byte)来表示，所以每个象素需要用3个字节。整个图象要用200×200×3，约120k字节，可不是一个小数目呀！如果我们用下面的方
+法，就能省的多。</p>
+<p>因为是一个16色图，也就是说这幅图中最多只有16种颜色，我们可以用一个表：表中的每一行记录一种颜色的R、G、B值。这样当我们表示一个象素的
+颜色时，只需要指出该颜色是在第几行，即该颜色在表中的索引值。举个例子，如果表的第0行为255，0，0(红色)，那么当某个象素为红色时，只需要标明
+0即可。</p>
+<p>让我们再来计算一下：16种状态可以用4位(bit)表示，所以一个象素要用半个字节。整个图象要用200×200×0.5，约20k字节，再加上表占用的字节为3×16=48字节.整个占用的字节数约为前面的1/6，省很多吧？</p>
+<p>这张R、G、B的表，就是我们常说的调色板(Palette)，另一种叫法是颜色查找表LUT(Look 
+UpTable)，似乎更确切一些。Windows位图中便用到了调色板技术。其实不光是Windows位图，许多图象文件格式如pcx、tif、gif
+等都用到了。所以很好地掌握调色板的概念是十分有用的。</p>
+<p>有一种图，它的颜色数高达256×256×256种，也就是说包含我们上述提到的R、G、B颜色表示方法中所有的颜色，这种图叫做真彩色图
+(true 
+color)。真彩色图并不是说一幅图包含了所有的颜色，而是说它具有显示所有颜色的能力，即最多可以包含所有的颜色。表示真彩色图时，每个象素直接用
+R、G、B三个分量字节表示，而不采用调色板技术。原因很明显：如果用调色板，表示一个象素也要用24位，这是因为每种颜色的索引要用24位(因为总共有
+2<sup>24</sup>种颜色，即调色板有2<sup>24</sup>行)，和直接用R，G，B三个分量表示用的字节数一样，不但没有任何便宜，还要加上一个256×256×256×3个字节的大调色板。所以真彩色图直接用R、G、B三个分量表示，它又叫做24位色图。</p>
+<p><a name="_Toc486332865"></a><a name="_Toc486331865"></a><strong>1.2 </strong><a name="_Toc454856613"></a><a name="_Toc486338974"></a><a name="_Toc454810839"></a><strong>bmp文件格式</strong></p>
+<p>介绍完位图和调色板的概念，下面就让我们来看一看Windows的位图文件(.bmp文件)的格式是什么样子的。</p>
+<p>bmp文件大体上分成四个部分，如图1.3所示。</p>
+<div align="center">
+<table border="1" cellpadding="0" cellspacing="0" width="80%">
+<tbody>
+<tr>
+<td valign="top">
+<p align="center">位图文件头BITMAPFILEHEADER</p>
+</td>
+</tr>
+<tr>
+<td valign="top">
+<p align="center">位图信息头BITMAPINFOHEADER</p>
+</td>
+</tr>
+<tr>
+<td valign="top">
+<p align="center">调色板Palette</p>
+</td>
+</tr>
+<tr>
+<td valign="top">
+<p align="center">实际的位图数据ImageDate</p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p align="center"><strong>图1.3&nbsp;&nbsp;&nbsp;&nbsp; Windows位图文件结构示意图</strong></p>
+<p>第一部分为位图文件头<strong>BITMAPFILEHEADER</strong>，是一个结构，其定义如下：</p>
+<p>typedefstruct tagBITMAPFILEHEADER {</p>
+<p>WORD&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bfType; </p>
+<p>DWORD bfSize;</p>
+<p>WORD&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bfReserved1; </p>
+<p>WORD&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bfReserved2; </p>
+<p>DWORDbfOffBits; </p>
+<p>}BITMAPFILEHEADER; </p>
+<p>这个结构的长度是固定的，为14个字节(WORD为无符号16位整数，DWORD为无符号32位整数)，各个域的说明如下：</p>
+<p><strong>bfType</strong></p>
+<p>指定文件类型，必须是0x424D，即字符串“BM”，也就是说所有.bmp文件的头两个字节都是“BM”。</p>
+<p><strong>bfSize</strong></p>
+<p>指定文件大小，包括这14个字节。</p>
+<p><strong>bfReserved1，bfReserved2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong></p>
+<p>为保留字，不用考虑</p>
+<p><strong>bfOffBits</strong></p>
+<p>为从文件头到实际的位图数据的偏移字节数，即图1.3中前三个部分的长度之和。</p>
+<p>第二部分为位图信息头<strong>BITMAPINFOHEADER</strong>，也是一个结构，其定义如下：</p>
+<p>typedefstruct tagBITMAPINFOHEADER{</p>
+<p>DWORD&nbsp;biSize; </p>
+<p>LONG&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;biWidth; </p>
+<p>LONG&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;biHeight; </p>
+<p>WORD&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;biPlanes; </p>
+<p>WORD&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;biBitCount </p>
+<p>DWORD&nbsp;biCompression; </p>
+<p>DWORD&nbsp;biSizeImage; </p>
+<p>LONG&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;biXPelsPerMeter; </p>
+<p>LONG&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;biYPelsPerMeter; </p>
+<p>DWORD&nbsp;biClrUsed; </p>
+<p>DWORD&nbsp;biClrImportant; </p>
+<p>}BITMAPINFOHEADER; </p>
+<p>这个结构的长度是固定的，为40个字节(LONG为32位整数)，各个域的说明如下：</p>
+<p><strong>biSize</strong></p>
+<p>指定这个结构的长度，为40。</p>
+<p><strong>biWidth</strong></p>
+<p>指定图象的宽度，单位是象素。</p>
+<p><strong>biHeight</strong></p>
+<p>指定图象的高度，单位是象素。</p>
+<p><strong>biPlanes</strong></p>
+<p>必须是1，不用考虑。</p>
+<p><strong>biBitCount </strong></p>
+<p>指定表示颜色时要用到的位数，常用的值为1(黑白二色图), 4(16色图), 8(256色), 24(真彩色图)(新的.bmp格式支持32位色，这里就不做讨论了)。</p>
+<p><strong>biCompression</strong></p>
+<p>指定位图是否压缩，有效的值为BI_RGB，BI_RLE8，BI_RLE4，BI_BITFIELDS(都是一些Windows定义好的常量)。
+要说明的是，Windows位图可以采用RLE4，和RLE8的压缩格式，但用的不多。我们今后所讨论的只有第一种不压缩的情况，即
+biCompression为BI_RGB的情况。</p>
+<p><strong>biSizeImage</strong></p>
+<p>指定实际的位图数据占用的字节数，其实也可以从以下的公式中计算出来：</p>
+<p align="center">biSizeImage=biWidth’ × biHeight</p>
+<p>要注意的是：上述公式中的biWidth’必须是4的整倍数(所以不是biWidth，而是biWidth’，表示大于或等于biWidth的，最
+接近4的整倍数。举个例子，如果biWidth=240，则biWidth’=240；如果biWidth=241，biWidth’=244)。</p>
+<p>如果biCompression为BI_RGB，则该项可能为零</p>
+<p><strong>biXPelsPerMeter</strong></p>
+<p>指定目标设备的水平分辨率，单位是每米的象素个数，关于分辨率的概念，我们将在第4章详细介绍。</p>
+<p><strong>biYPelsPerMeter</strong></p>
+<p>指定目标设备的垂直分辨率，单位同上。</p>
+<p><strong>biClrUsed</strong></p>
+<p>指定本图象实际用到的颜色数，如果该值为零，则用到的颜色数为2<sup>biBitCount</sup>。</p>
+<p><strong>biClrImportant</strong></p>
+<p>指定本图象中重要的颜色数，如果该值为零，则认为所有的颜色都是重要的。</p>
+<p>第三部分为调色板<strong>Palette</strong>，当然，这里是对那些需要调色板的位图文件而言的。有些位图，如真彩色图，前面已经讲过，是不需要调色板的，BITMAPINFOHEADER后直接是位图数据。</p>
+<p>调色板实际上是一个数组，共有biClrUsed个元素(如果该值为零，则有2<sup>biBitCount</sup>个元素)。数组中每个元素的类型是一个RGBQUAD结构，占4个字节，其定义如下：</p>
+<p>typedefstruct tagRGBQUAD { </p>
+<p>BYTE&nbsp;&nbsp;&nbsp;rgbBlue; //该颜色的蓝色分量</p>
+<p>BYTE&nbsp;&nbsp;&nbsp;rgbGreen; //该颜色的绿色分量</p>
+<p>BYTE&nbsp;&nbsp;&nbsp;rgbRed; //该颜色的红色分量</p>
+<p>BYTE&nbsp;&nbsp;&nbsp;rgbReserved; //保留值</p>
+<p>} RGBQUAD; </p>
+<p>第四部分就是实际的图象数据了。对于用到调色板的位图，图象数据就是该象素颜在调色板中的索引值。对于真彩色图，图象数据就是实际的R、G、B值。下面针对2色、16色、256色位图和真彩色位图分别介绍。</p>
+<p>对于2色位图，用1位就可以表示该象素的颜色(一般0表示黑，1表示白)，所以一个字节可以表示8个象素。</p>
+<p>对于16色位图，用4位可以表示一个象素的颜色，所以一个字节可以表示2个象素。</p>
+<p>对于256色位图，一个字节刚好可以表示1个象素。</p>
+<p>对于真彩色图，三个字节才能表示1个象素，哇，好费空间呀！没办法，谁叫你想让图的颜色显得更亮丽呢，有得必有失嘛。</p>
+<p>要注意两点：</p>
+<p>(1)&nbsp;&nbsp;&nbsp; 每一行的字节数必须是4的整倍数，如果不是，则需要补齐。这在前面介绍biSizeImage时已经提到了。</p>
+<p>(2)&nbsp;&nbsp;&nbsp; 
+一般来说，.bMP文件的数据从下到上，从左到右的。也就是说，从文件中最先读到的是图象最下面一行的左边第一个象素，然后是左边第二个象素……接下来是
+倒数第二行左边第一个象素，左边第二个象素……依次类推，最后得到的是最上面一行的最右一个象素。</p>
+<p>开发工具：vc++6.0，Win32 控制台程序</p>
+<p></p><div class="dp-highlighter bg_cpp"><div class="bar"><div class="tools"><b>[cpp]</b> <a href="#" class="ViewSource" title="view plain" onclick="dp.sh.Toolbar.Command('ViewSource',this);return false;">view plain</a><span class="tracking-ad" data-mod="popu_168"> <a target="_blank" href="#" class="CopyToClipboard" title="copy" onclick="dp.sh.Toolbar.Command('CopyToClipboard',this);return false;">copy</a><div style="position: absolute; left: 426px; top: 4208px; width: 18px; height: 18px; z-index: 99;"><embed id="ZeroClipboardMovie_1" src="%E5%9B%BE%E5%83%8F%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94bmp%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%A4%84%E7%90%86%E4%B8%8E%E6%98%BE%E7%A4%BA%20-%20Sun1956%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/ZeroClipboard.swf" loop="false" menu="false" quality="best" bgcolor="#ffffff" name="ZeroClipboardMovie_1" allowscriptaccess="always" allowfullscreen="false" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" flashvars="id=1&amp;width=18&amp;height=18" wmode="transparent" height="18" align="middle" width="18"></div></span><span class="tracking-ad" data-mod="popu_169"> <a target="_blank" href="#" class="PrintSource" title="print" onclick="dp.sh.Toolbar.Command('PrintSource',this);return false;">print</a></span><a href="#" class="About" title="?" onclick="dp.sh.Toolbar.Command('About',this);return false;">?</a></div></div><ol class="dp-cpp" start="1"><li class="alt"><span><span class="comment">/**</span>&nbsp;</span></li><li class=""><span><span class="comment">*&nbsp;程序名:&nbsp;WorkBmp.cpp</span>&nbsp;</span></li><li class="alt"><span><span class="comment">*&nbsp;功&nbsp;&nbsp;能:&nbsp;读取和显示24位BMP图像,并把图像数据输入到ImageData.txt中</span>&nbsp;</span></li><li class=""><span><span class="comment">*&nbsp;24位bmp可以通过画图程序中的另存为的文件类型中可以选择</span>&nbsp;</span></li><li class="alt"><span><span class="comment">*&nbsp;bmp文件放到工程目录下</span>&nbsp;</span></li><li class=""><span><span class="comment">*/</span><span>&nbsp;&nbsp;</span></span></li><li class="alt"><span><span class="preprocessor">#include&nbsp;&lt;iostream.h&gt;</span><span>&nbsp;&nbsp;</span></span></li><li class=""><span><span class="preprocessor">#include&nbsp;&lt;stdio.h&gt;</span><span>&nbsp;&nbsp;</span></span></li><li class="alt"><span><span class="preprocessor">#include&nbsp;&lt;windows.h&gt;</span><span>&nbsp;&nbsp;</span></span></li><li class=""><span><span class="preprocessor">#include&nbsp;&lt;fstream.h&gt;</span><span>&nbsp;&nbsp;</span></span></li><li class="alt"><span><span class="datatypes">int</span><span>&nbsp;biWidth;&nbsp;&nbsp;</span><span class="comment">//图像宽</span><span>&nbsp;&nbsp;</span></span></li><li class=""><span><span class="datatypes">int</span><span>&nbsp;biHeight;&nbsp;&nbsp;</span><span class="comment">//图像高</span><span>&nbsp;&nbsp;</span></span></li><li class="alt"><span><span class="datatypes">int</span><span>&nbsp;biBitCount;&nbsp;</span><span class="comment">//图像类型，每像素位数</span><span>&nbsp;&nbsp;</span></span></li><li class=""><span><span class="comment">//RGBQUAD&nbsp;*pColorTable;&nbsp;&nbsp;//颜色表指针</span><span>&nbsp;&nbsp;</span></span></li><li class="alt"><span>unsigned&nbsp;<span class="datatypes">char</span><span>&nbsp;*pBmpBuf;&nbsp;&nbsp;</span><span class="comment">//存储图像数据</span><span>&nbsp;&nbsp;</span></span></li><li class=""><span><span class="datatypes">int</span><span>&nbsp;lineByte;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="comment">//图像数据每行字节数</span><span>&nbsp;&nbsp;</span></span></li><li class="alt"><span><span class="comment">/**</span>&nbsp;</span></li><li class=""><span><span class="comment">*&nbsp;函数名:&nbsp;readBmp</span>&nbsp;</span></li><li class="alt"><span><span class="comment">*&nbsp;参&nbsp;&nbsp;数:&nbsp;bmpName&nbsp;--&nbsp;bmp文件名</span>&nbsp;</span></li><li class=""><span><span class="comment">*&nbsp;功&nbsp;&nbsp;能:&nbsp;读入bmp文件，并获取相应的信息</span>&nbsp;</span></li><li class="alt"><span><span class="comment">*/</span><span>&nbsp;&nbsp;</span></span></li><li class=""><span><span class="datatypes">bool</span><span>&nbsp;readBmp(</span><span class="datatypes">char</span><span>&nbsp;*bmpName)&nbsp;&nbsp;</span></span></li><li class="alt"><span>{&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="datatypes">FILE</span><span>&nbsp;*fp;&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">if</span><span>(&nbsp;(fp&nbsp;=&nbsp;fopen(bmpName,</span><span class="string">"rb"</span><span>))&nbsp;==&nbsp;NULL)&nbsp;&nbsp;</span><span class="comment">//以二进制的方式打开文件</span><span>&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cout&lt;&lt;<span class="string">"The&nbsp;file&nbsp;"</span><span>&lt;&lt;bmpName&lt;&lt;</span><span class="string">"was&nbsp;not&nbsp;opened"</span><span>&lt;&lt;endl;&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span><span>&nbsp;FALSE;&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">if</span><span>(fseek(fp,</span><span class="keyword">sizeof</span><span>(BITMAPFILEHEADER),SEEK_CUR))&nbsp;&nbsp;</span><span class="comment">//跳过BITMAPFILEHEADE</span><span>&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cout&lt;&lt;<span class="string">"跳转失败"</span><span>&lt;&lt;endl;&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span><span>&nbsp;FALSE;&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;BITMAPINFOHEADER&nbsp;infoHead;&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;fread(&amp;infoHead,<span class="keyword">sizeof</span><span>(BITMAPINFOHEADER),1,fp);&nbsp;&nbsp;&nbsp;</span><span class="comment">//从fp中读取BITMAPINFOHEADER信息到infoHead中,同时fp的指针移动</span><span>&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;biWidth&nbsp;=&nbsp;infoHead.biWidth;&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;biHeight&nbsp;=&nbsp;infoHead.biHeight;&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;biBitCount&nbsp;=&nbsp;infoHead.biBitCount;&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;lineByte&nbsp;=&nbsp;(biWidth*biBitCount/8+3)/4*4;&nbsp;&nbsp;&nbsp;<span class="comment">//lineByte必须为4的倍数</span><span>&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">//24位bmp没有颜色表，所以就直接到了实际的位图数据的起始位置</span><span>&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;pBmpBuf&nbsp;=&nbsp;<span class="keyword">new</span><span>&nbsp;unsigned&nbsp;</span><span class="datatypes">char</span><span>[lineByte&nbsp;*&nbsp;biHeight];&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;fread(pBmpBuf,<span class="keyword">sizeof</span><span>(</span><span class="datatypes">char</span><span>),lineByte&nbsp;*&nbsp;biHeight,fp);&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;fclose(fp);&nbsp;&nbsp;&nbsp;<span class="comment">//关闭文件</span><span>&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span><span>&nbsp;TRUE;&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;</span></li><li class="alt"><span>}&nbsp;&nbsp;</span></li><li class=""><span><span class="comment">/**</span>&nbsp;</span></li><li class="alt"><span><span class="comment">*&nbsp;函数名:&nbsp;saveBmp</span>&nbsp;</span></li><li class=""><span><span class="comment">*&nbsp;参&nbsp;&nbsp;数:&nbsp;bmpName&nbsp;--&nbsp;bmp文件名</span>&nbsp;</span></li><li class="alt"><span><span class="comment">*&nbsp;功&nbsp;&nbsp;能:&nbsp;将bmp位图文件的相关信息，写入新创建的文件中</span>&nbsp;</span></li><li class=""><span><span class="comment">*/</span><span>&nbsp;&nbsp;</span></span></li><li class="alt"><span><span class="datatypes">bool</span><span>&nbsp;saveBmp(</span><span class="datatypes">char</span><span>&nbsp;*bmpName)&nbsp;&nbsp;</span></span></li><li class=""><span>{&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="datatypes">FILE</span><span>&nbsp;*fp;&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">if</span><span>(&nbsp;(fp&nbsp;=&nbsp;fopen(bmpName,</span><span class="string">"wb"</span><span>)&nbsp;)==&nbsp;NULL)&nbsp;&nbsp;&nbsp;</span><span class="comment">//以二进制写入方式打开</span><span>&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cout&lt;&lt;<span class="string">"打开失败!"</span><span>&lt;&lt;endl;&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span><span>&nbsp;FALSE;&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">//设置BITMAPFILEHEADER参数</span><span>&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;BITMAPFILEHEADER&nbsp;fileHead;&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;fileHead.bfType&nbsp;=&nbsp;0x4D42;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;fileHead.bfSize&nbsp;=&nbsp;<span class="keyword">sizeof</span><span>(BITMAPFILEHEADER)&nbsp;+&nbsp;</span><span class="keyword">sizeof</span><span>(BITMAPINFOHEADER)&nbsp;+&nbsp;lineByte&nbsp;*&nbsp;biHeight;&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;fileHead.bfReserved1&nbsp;=&nbsp;0;&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;fileHead.bfReserved2&nbsp;=&nbsp;0;&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;fileHead.bfOffBits&nbsp;=&nbsp;<span class="keyword">sizeof</span><span>(BITMAPFILEHEADER)&nbsp;+&nbsp;</span><span class="keyword">sizeof</span><span>(BITMAPINFOHEADER);&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;fwrite(&amp;fileHead,<span class="keyword">sizeof</span><span>(BITMAPFILEHEADER),1,fp);&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">//设置BITMAPINFOHEADER参数</span><span>&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;BITMAPINFOHEADER&nbsp;infoHead;&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;infoHead.biSize&nbsp;=&nbsp;40;&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;infoHead.biWidth&nbsp;=&nbsp;biWidth;&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;infoHead.biHeight&nbsp;=&nbsp;biHeight;&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;infoHead.biPlanes&nbsp;=&nbsp;1;&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;infoHead.biBitCount&nbsp;=&nbsp;biBitCount;&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;infoHead.biCompression&nbsp;=&nbsp;BI_RGB;&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;infoHead.biSizeImage&nbsp;=&nbsp;lineByte&nbsp;*&nbsp;biHeight;&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;infoHead.biXPelsPerMeter&nbsp;=&nbsp;0;&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;infoHead.biYPelsPerMeter&nbsp;=&nbsp;0;&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;infoHead.biClrUsed&nbsp;=&nbsp;0;&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;infoHead.biClrImportant&nbsp;=&nbsp;0;&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">//写入</span><span>&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;fwrite(&amp;infoHead,<span class="keyword">sizeof</span><span>(BITMAPINFOHEADER),1,fp);&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;fwrite(pBmpBuf,<span class="keyword">sizeof</span><span>(</span><span class="datatypes">char</span><span>),lineByte&nbsp;*&nbsp;biHeight,fp);&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;fclose(fp);&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">//关闭文件</span><span>&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span><span>&nbsp;TRUE;&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;</span></li><li class="alt"><span>}&nbsp;&nbsp;</span></li><li class=""><span><span class="comment">/**</span>&nbsp;</span></li><li class="alt"><span><span class="comment">*&nbsp;函数名:&nbsp;work</span>&nbsp;</span></li><li class=""><span><span class="comment">*&nbsp;功&nbsp;&nbsp;能:&nbsp;处理位图信息，并将位图数据保存到ImageData文件中</span>&nbsp;</span></li><li class="alt"><span><span class="comment">*/</span><span>&nbsp;&nbsp;</span></span></li><li class=""><span><span class="keyword">void</span><span>&nbsp;work()&nbsp;&nbsp;</span></span></li><li class="alt"><span>{&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="datatypes">char</span><span>&nbsp;readFileName[]&nbsp;=&nbsp;</span><span class="string">"nv.BMP"</span><span>;&nbsp;&nbsp;&nbsp;</span><span class="comment">//定义要读入的文件名</span><span>&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">if</span><span>(FALSE&nbsp;==&nbsp;readBmp(readFileName))&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cout&lt;&lt;<span class="string">"readfile&nbsp;error!"</span><span>&lt;&lt;endl;&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">//输出图像的信息</span><span>&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;cout&lt;&lt;<span class="string">"Width&nbsp;=&nbsp;"</span><span>&lt;&lt;biWidth&lt;&lt;</span><span class="string">"&nbsp;Height&nbsp;=&nbsp;"</span><span>&lt;&lt;biHeight&lt;&lt;</span><span class="string">"&nbsp;biBitCount="</span><span>&lt;&lt;biBitCount&lt;&lt;endl;&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;ofstream&nbsp;outfile(<span class="string">"ImageData.txt"</span><span>,ios::in&nbsp;|&nbsp;ios::trunc);&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">if</span><span>(!outfile)&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cout&lt;&lt;<span class="string">"open&nbsp;error"</span><span>&lt;&lt;endl;&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span><span>&nbsp;;&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="datatypes">int</span><span>&nbsp;count&nbsp;=&nbsp;0;&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">//图像数据信息是从左下角按行开始存储的</span><span>&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">for</span><span>(</span><span class="datatypes">int</span><span>&nbsp;i&nbsp;=&nbsp;0;&nbsp;i&nbsp;&lt;&nbsp;biHeight;&nbsp;i++&nbsp;)&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">for</span><span>(</span><span class="datatypes">int</span><span>&nbsp;j&nbsp;=&nbsp;0;&nbsp;j&nbsp;&lt;&nbsp;biWidth;&nbsp;j++&nbsp;)&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">for</span><span>(</span><span class="datatypes">int</span><span>&nbsp;k&nbsp;=&nbsp;0;&nbsp;k&nbsp;&lt;&nbsp;3;&nbsp;k++&nbsp;)&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="datatypes">int</span><span>&nbsp;temp&nbsp;=&nbsp;*(pBmpBuf&nbsp;+&nbsp;i&nbsp;*&nbsp;lineByte&nbsp;+&nbsp;j&nbsp;+&nbsp;k);&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;count++;&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;outfile&lt;&lt;temp&lt;&lt;<span class="string">"&nbsp;"</span><span>;&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">if</span><span>(count&nbsp;%&nbsp;8&nbsp;==&nbsp;0)&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;outfile&lt;&lt;endl;&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;cout&lt;&lt;<span class="string">"总的像素数:"</span><span>&lt;&lt;count&nbsp;/&nbsp;3&lt;&lt;endl;&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="datatypes">char</span><span>&nbsp;writeBmpName[]&nbsp;=&nbsp;</span><span class="string">"nvcpy.BMP"</span><span>;&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;saveBmp(writeBmpName);&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">delete</span><span>&nbsp;[]pBmpBuf;&nbsp;&nbsp;</span><span class="comment">//释放内存</span><span>&nbsp;&nbsp;</span></span></li><li class=""><span>}&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;</span></li><li class=""><span><span class="datatypes">int</span><span>&nbsp;main()&nbsp;&nbsp;</span></span></li><li class="alt"><span>{&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;work();&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span><span>&nbsp;0;&nbsp;&nbsp;</span></span></li><li class=""><span>}&nbsp;&nbsp;</span></li></ol></div><pre style="display: none;" name="code" class="cpp">/**
+* 程序名: WorkBmp.cpp
+* 功  能: 读取和显示24位BMP图像,并把图像数据输入到ImageData.txt中
+* 24位bmp可以通过画图程序中的另存为的文件类型中可以选择
+* bmp文件放到工程目录下
+*/
+#include &lt;iostream.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;windows.h&gt;
+#include &lt;fstream.h&gt;
+int biWidth;  //图像宽
+int biHeight;  //图像高
+int biBitCount; //图像类型，每像素位数
+//RGBQUAD *pColorTable;  //颜色表指针
+unsigned char *pBmpBuf;  //存储图像数据
+int lineByte;         //图像数据每行字节数
+/**
+* 函数名: readBmp
+* 参  数: bmpName -- bmp文件名
+* 功  能: 读入bmp文件，并获取相应的信息
+*/
+bool readBmp(char *bmpName)
+{
+	FILE *fp;
+	if( (fp = fopen(bmpName,"rb")) == NULL)  //以二进制的方式打开文件
+	{
+		cout&lt;&lt;"The file "&lt;&lt;bmpName&lt;&lt;"was not opened"&lt;&lt;endl;
+		return FALSE;
+	}
+	if(fseek(fp,sizeof(BITMAPFILEHEADER),SEEK_CUR))  //跳过BITMAPFILEHEADE
+	{
+		cout&lt;&lt;"跳转失败"&lt;&lt;endl;
+		return FALSE;
+	}
+	BITMAPINFOHEADER infoHead;
+	fread(&amp;infoHead,sizeof(BITMAPINFOHEADER),1,fp);   //从fp中读取BITMAPINFOHEADER信息到infoHead中,同时fp的指针移动
+	biWidth = infoHead.biWidth;
+	biHeight = infoHead.biHeight;
+	biBitCount = infoHead.biBitCount;
+	lineByte = (biWidth*biBitCount/8+3)/4*4;   //lineByte必须为4的倍数
+	//24位bmp没有颜色表，所以就直接到了实际的位图数据的起始位置
+	pBmpBuf = new unsigned char[lineByte * biHeight];
+	fread(pBmpBuf,sizeof(char),lineByte * biHeight,fp);
+	fclose(fp);   //关闭文件
+	return TRUE;
+
+}
+/**
+* 函数名: saveBmp
+* 参  数: bmpName -- bmp文件名
+* 功  能: 将bmp位图文件的相关信息，写入新创建的文件中
+*/
+bool saveBmp(char *bmpName)
+{
+	FILE *fp;
+	if( (fp = fopen(bmpName,"wb") )== NULL)   //以二进制写入方式打开
+	{
+		cout&lt;&lt;"打开失败!"&lt;&lt;endl;
+		return FALSE;
+	}
+	//设置BITMAPFILEHEADER参数
+	BITMAPFILEHEADER fileHead;
+	fileHead.bfType = 0x4D42;   
+	fileHead.bfSize = sizeof(BITMAPFILEHEADER) + sizeof(BITMAPINFOHEADER) + lineByte * biHeight;
+	fileHead.bfReserved1 = 0;
+	fileHead.bfReserved2 = 0;
+	fileHead.bfOffBits = sizeof(BITMAPFILEHEADER) + sizeof(BITMAPINFOHEADER);
+	fwrite(&amp;fileHead,sizeof(BITMAPFILEHEADER),1,fp);
+	//设置BITMAPINFOHEADER参数
+	BITMAPINFOHEADER infoHead;
+	infoHead.biSize = 40;
+	infoHead.biWidth = biWidth;
+	infoHead.biHeight = biHeight;
+	infoHead.biPlanes = 1;
+	infoHead.biBitCount = biBitCount;
+	infoHead.biCompression = BI_RGB;
+	infoHead.biSizeImage = lineByte * biHeight;
+	infoHead.biXPelsPerMeter = 0;
+	infoHead.biYPelsPerMeter = 0;
+	infoHead.biClrUsed = 0;
+	infoHead.biClrImportant = 0;
+	//写入
+	fwrite(&amp;infoHead,sizeof(BITMAPINFOHEADER),1,fp);
+	fwrite(pBmpBuf,sizeof(char),lineByte * biHeight,fp);
+	fclose(fp);    //关闭文件
+	return TRUE;
+
+
+}
+/**
+* 函数名: work
+* 功  能: 处理位图信息，并将位图数据保存到ImageData文件中
+*/
+void work()
+{
+	char readFileName[] = "nv.BMP";   //定义要读入的文件名
+	if(FALSE == readBmp(readFileName))
+		cout&lt;&lt;"readfile error!"&lt;&lt;endl;
+	//输出图像的信息
+	cout&lt;&lt;"Width = "&lt;&lt;biWidth&lt;&lt;" Height = "&lt;&lt;biHeight&lt;&lt;" biBitCount="&lt;&lt;biBitCount&lt;&lt;endl;
+	ofstream outfile("ImageData.txt",ios::in | ios::trunc);
+	if(!outfile)
+	{
+		cout&lt;&lt;"open error"&lt;&lt;endl;
+		return ;
+	}
+	int count = 0;
+	//图像数据信息是从左下角按行开始存储的
+	for(int i = 0; i &lt; biHeight; i++ )
+	{
+		for(int j = 0; j &lt; biWidth; j++ )
+		{
+			for(int k = 0; k &lt; 3; k++ )
+			{
+				int temp = *(pBmpBuf + i * lineByte + j + k);
+				count++;
+				outfile&lt;&lt;temp&lt;&lt;" ";
+				if(count % 8 == 0)
+				{
+					outfile&lt;&lt;endl;
+				}
+			}
+		}
+	}
+	cout&lt;&lt;"总的像素数:"&lt;&lt;count / 3&lt;&lt;endl;
+
+	char writeBmpName[] = "nvcpy.BMP";
+	saveBmp(writeBmpName);
+	delete []pBmpBuf;  //释放内存
+}
+
+int main()
+{
+	work();
+	return 0;
+}</pre><br>
+<br>
+<p></p>
+   
+</div>
+
+
+
+
+<!-- Baidu Button BEGIN -->
+
+
+
+
+<div data-bd-bind="1460463634895" class="bdsharebuttonbox tracking-ad bdshare-button-style0-16" style="float: right;" data-mod="popu_172">
+<a target="_blank" href="#" class="bds_more" data-cmd="more" style="background-position:0 0 !important; background-image: url(http://bdimg.share.baidu.com/static/api/img/share/icons_0_16.png?v=d754dcc0.png) !important"></a>
+<a target="_blank" href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间" style="background-position:0 -52px !important"></a>
+<a target="_blank" href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博" style="background-position:0 -104px !important"></a>
+<a target="_blank" href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博" style="background-position:0 -260px !important"></a>
+<a target="_blank" href="#" class="bds_renren" data-cmd="renren" title="分享到人人网" style="background-position:0 -208px !important"></a>
+<a target="_blank" href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信" style="background-position:0 -1612px !important"></a>
+</div>
+<script>window._bd_share_config = { "common": { "bdSnsKey": {}, "bdText": "", "bdMini": "1", "bdMiniList": false, "bdPic": "", "bdStyle": "0", "bdSize": "16" }, "share": {} }; with (document) 0[(getElementsByTagName('head')[0] || body).appendChild(createElement('script')).src = 'http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion=' + ~(-new Date() / 36e5)];</script>
+<!-- Baidu Button END -->
+
+   <link rel="stylesheet" href="%E5%9B%BE%E5%83%8F%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94bmp%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%A4%84%E7%90%86%E4%B8%8E%E6%98%BE%E7%A4%BA%20-%20Sun1956%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/blog_detail.css">
+
+    
+<!--172.16.140.11-->
+
+<!-- Baidu Button BEGIN -->
+<script src="%E5%9B%BE%E5%83%8F%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94bmp%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%A4%84%E7%90%86%E4%B8%8E%E6%98%BE%E7%A4%BA%20-%20Sun1956%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/bds_s_v2.js" type="text/javascript" id="bdshare_js" data="type=tools&amp;uid=1536434"></script>
+
+<script type="text/javascript">
+    document.getElementById("bdshell_js").src = "http://bdimg.share.baidu.com/static/js/shell_v2.js?cdnversion=" + Math.ceil(new Date()/3600000)
+</script>
+<!-- Baidu Button END -->
+
+ 
+
+        <div id="digg" articleid="8648460">
+            <dl id="btnDigg" class="digg digg_disable">
+               
+                 <dt>顶</dt>
+                <dd>5</dd>
+            </dl>
+            <dl id="btnBury" class="digg digg_disable">
+              
+                  <dt>踩</dt>
+                <dd>0</dd>
+            </dl>
+        </div>
+
+   <ul class="article_next_prev">
+                <li class="prev_article"><span onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_shangyipian']);location.href='/sun1956/article/details/8646800';">上一篇</span><a href="http://blog.csdn.net/sun1956/article/details/8646800" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_shangyipian'])">图像编程学习笔记2——bmp位图平移</a></li>
+                <li class="next_article"><span onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_xiayipian']);location.href='/sun1956/article/details/8656576';">下一篇</span><a href="http://blog.csdn.net/sun1956/article/details/8656576" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_xiayipian'])">图像编程学习笔记3——图像旋转</a></li>
+    </ul>
+
+    <div style="clear:both; height:10px;"></div>
+
+
+        <div class="similar_article" style="">
+                <h4>我的同类文章</h4>
+                <div class="similar_c" style="margin:20px 0px 0px 0px">
+                    <div class="similar_c_t">
+                                <label class="similar_cur">
+                                    <span style="cursor:pointer" onclick="GetCategoryArticles('1359270','Sun1956','foot','8648460');">VC图像编程<em>（8）</em></span>
+                                </label>
+                    </div>
+                   
+                    <div class="similar_wrap tracking-ad" data-mod="popu_141" style="max-height:195px;">
+                        <a target="_blank" href="http://blog.csdn.net/" style="display:none">http://blog.csdn.net</a>
+                        <ul class="similar_list fl"><li><em>•</em><a title="图像编程学习笔记9——图像的锐化" href="http://blog.csdn.net/Sun1956/article/details/8826509" id="foot_aritcle_8826509undefined02309546450536515" target="_blank">图像编程学习笔记9——图像的锐化</a><span>2013-04-19</span><label><i>阅读</i><b>860</b></label></li> <li><em>•</em><a title="图像编程学习笔记7——图像缩放" href="http://blog.csdn.net/Sun1956/article/details/8713512" id="foot_aritcle_8713512undefined17327188435665597" target="_blank">图像编程学习笔记7——图像缩放</a><span>2013-03-24</span><label><i>阅读</i><b>1089</b></label></li> <li><em>•</em><a title="图像编程学习笔记5——图像镜像" href="http://blog.csdn.net/Sun1956/article/details/8685433" id="foot_aritcle_8685433undefined8099695476757744" target="_blank">图像编程学习笔记5——图像镜像</a><span>2013-03-18</span><label><i>阅读</i><b>1590</b></label></li> <li><em>•</em><a title="图像编程学习笔记3——图像旋转" href="http://blog.csdn.net/Sun1956/article/details/8656576" id="foot_aritcle_8656576undefined40720022668710065" target="_blank">图像编程学习笔记3——图像旋转</a><span>2013-03-10</span><label><i>阅读</i><b>2262</b></label></li> </ul>
+
+                        <ul class="similar_list fr"><li><em>•</em><a title="图像编程学习笔记8——图像的平滑(去噪)" href="http://blog.csdn.net/Sun1956/article/details/8729132" id="foot_aritcle_8729132undefined5231452651987535" target="_blank">图像编程学习笔记8——图像的平滑(去噪)</a><span>2013-03-28</span><label><i>阅读</i><b>3668</b></label></li> <li><em>•</em><a title="图像编程学习笔记6——图像转置" href="http://blog.csdn.net/Sun1956/article/details/8704142" id="foot_aritcle_8704142undefined7702461296752449" target="_blank">图像编程学习笔记6——图像转置</a><span>2013-03-22</span><label><i>阅读</i><b>2075</b></label></li> <li><em>•</em><a title="图像编程学习笔记4——24位真彩色转换为灰度图像" href="http://blog.csdn.net/Sun1956/article/details/8665946" id="foot_aritcle_8665946undefined23315817777367498" target="_blank">图像编程学习笔记4——24位真彩色转换为灰度图像</a><span>2013-03-12</span><label><i>阅读</i><b>2279</b></label></li> <li><em>•</em><a title="图像编程学习笔记2——bmp位图平移" href="http://blog.csdn.net/Sun1956/article/details/8646800" id="foot_aritcle_8646800undefined6756447142919282" target="_blank">图像编程学习笔记2——bmp位图平移</a><span>2013-03-07</span><label><i>阅读</i><b>1690</b></label></li> </ul>
+                    </div>
+                </div>
+            </div>    
+    <script type="text/javascript">
+        $(function () {
+            GetCategoryArticles('1359270', 'Sun1956','foot','8648460');
+        });
+    </script>
+      
+</div>
+<div id="suggest">
+
+</div>
+         <script language="javascript" type="text/javascript">     
+             $(function(){
+                 $.get("/Sun1956/svc/GetSuggestContent/8648460",function(data){
+                     $("#suggest").html(data);
+                 });     
+             });             
+         </script>  
+
+
+<style>
+.blog-ass-articl dd {
+color: #369;
+width: 99%; /*修改行*/
+float: left;
+overflow: hidden;
+font: normal normal 12px/23px "SimSun";
+height: 23px;
+margin: 0;
+padding: 0 0 0 10px;
+margin-right: 30px;
+background: url(http://static.blog.csdn.net/skin/default/images/blog-dot-red3.gif) no-repeat 0 10px;
+}
+</style>
+
+ <link rel="stylesheet" href="%E5%9B%BE%E5%83%8F%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94bmp%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%A4%84%E7%90%86%E4%B8%8E%E6%98%BE%E7%A4%BA%20-%20Sun1956%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/replace.css">
+
+<div style="display: none;" id="relate">
+        <div class="relate_t">
+            <h3><span>参考知识库</span></h3>
+        </div>
+        <div class="relate_c">
+                    </div>
+</div>
+ 
+
+<dl class="blog-ass-articl" id="res-relatived"> 
+    <div class="embody embody_b" id="libkeyparent" style="display:none">
+            <span class="embody_t">更多资料请参考：</span>
+            <div class="embody_c" id="libkey"></div>
+    </div>
+
+
+     <dt><span>猜你在找</span></dt>    
+
+
+   
+
+
+    <div id="adCollege" style="width: 42%;float: left;"> 
+        <script src="%E5%9B%BE%E5%83%8F%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94bmp%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%A4%84%E7%90%86%E4%B8%8E%E6%98%BE%E7%A4%BA%20-%20Sun1956%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/job_reco.js" type="text/javascript"></script> 
+        <script type="text/javascript">
+            csdn.position.showEdu({
+                sourceType: "blog",
+                searchType: "detail",
+                searchKey: "8648460",
+                username: "",
+                recordcount: "5",
+                containerId: "adCollege" //容器DIV的id。 
+            });
+        </script> 
+    <div class="tracking-ad" data-mod="popu_84"><dd style="background:url(http://static.blog.csdn.net/skin/default/images/blog-dot-red3.gif) no-repeat 0 10px; white-space: nowrap;"><a href="http://edu.csdn.net/course/detail/1709" title="iOS开发高级专题—数据存储" strategy="v4:content" target="_blank">iOS开发高级专题—数据存储</a></dd><dd style="background:url(http://static.blog.csdn.net/skin/default/images/blog-dot-red3.gif) no-repeat 0 10px; white-space: nowrap;"><a href="http://edu.csdn.net/course/detail/1100" title="Windows Server 2012 R2 存储和文件服务管理" strategy="v4:content" target="_blank">Windows Server 2012 R2 存储和文件服务管理</a></dd><dd style="background:url(http://static.blog.csdn.net/skin/default/images/blog-dot-red3.gif) no-repeat 0 10px; white-space: nowrap;"><a href="http://edu.csdn.net/course/detail/330" title="iOS8开发技术（Swift版）：iOS基础知识" strategy="v4:content" target="_blank">iOS8开发技术（Swift版）：iOS基础知识</a></dd><dd style="background:url(http://static.blog.csdn.net/skin/default/images/blog-dot-red3.gif) no-repeat 0 10px; white-space: nowrap;"><a href="http://edu.csdn.net/course/detail/1708" title="iOS网络编程-AFNetworking | JSON、XML解析" strategy="v4:content" target="_blank">iOS网络编程-AFNetworking | JSON、XML解析</a></dd><dd style="background:url(http://static.blog.csdn.net/skin/default/images/blog-dot-red3.gif) no-repeat 0 10px; white-space: nowrap;"><a href="http://edu.csdn.net/course/detail/873" title="360度解析亚马逊AWS数据存储服务" strategy="v4:content" target="_blank">360度解析亚马逊AWS数据存储服务</a></dd></div></div>  
+
+    
+     <div id="res" data-mod="popu_36" class="tracking-ad" style="width: 42%; float: left; margin-right: 30px; display: none;"></div>
+   
+</dl>
+
+
+<script type="text/javascript">
+    $(function () {
+        setTimeout(function () {
+            var searchtitletags = '图像编程学习笔记1——bmp文件结构处理与显示' + ',' + $("#tags").html();
+            searchService({
+                index: 'blog',
+                query: searchtitletags,
+                from: 5,
+                size: 5,
+                appendTo: '#res',
+                url: 'recommend',
+                his: 2,
+                client: "blog_cf_enhance",
+                tmpl: '<dd style="background:url(http://static.blog.csdn.net/skin/default/images/blog-dot-red3.gif) no-repeat 0 10px;"><a href="#{ url }" title="#{ title }" strategy="#{ strategy }">#{ title }</a></dd>'
+            });
+        }, 500);
+    });    
+
+ </script>  
+
+    <div id="ad_cen">        
+<!-- 广告位开始 -->
+<div class="J_adv" data-con="ad_content_216" data-order="40" data-mtp="36" data-mod="ad_popu_71" data-view="true" style="padding: 0px; margin: 0px; border: medium none; width: 728px; height: 90px;"><!-- 广告占位容器 --><div id="cpro_u1607657"><iframe id="iframeu1607657_0" src="%E5%9B%BE%E5%83%8F%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94bmp%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%A4%84%E7%90%86%E4%B8%8E%E6%98%BE%E7%A4%BA%20-%20Sun1956%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/uckm_002.htm" vspace="0" hspace="0" marginwidth="0" marginheight="0" scrolling="no" style="border:0; vertical-align:bottom;margin:0;" allowtransparency="true" frameborder="0" height="90" align="center,center" width="728"></iframe></div><!-- 投放代码 --><script type="text/javascript">(window['cproStyleApi'] = window['cproStyleApi'] ||{})['u1607657']={at:'3',rsi0:'728',rsi1:'90',pat:'6',tn:'baiduCustNativeAD',rss1:'#FFFFFF',conBW:'1',adp:'1',ptt:'0',titFF:'%E5%BE%AE%E8%BD%AF%E9%9B%85%E9%BB%91',titFS:'',rss2:'#000000',titSU:'0',ptbg:'90',piw:'0',pih:'0',ptp:'0'};/*服务器频道首页置顶Banner960*90，创建于2014-7-3*/(window.cproArray = window.cproArray || []).push({id:'u1607657'});  </script>  <script src="%E5%9B%BE%E5%83%8F%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94bmp%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%A4%84%E7%90%86%E4%B8%8E%E6%98%BE%E7%A4%BA%20-%20Sun1956%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/c.js" type="text/javascript"></script></div>
+<!-- 广告位结束 -->    </div>  
+
+<div class="comment_class">
+    <div id="comment_title" class="panel_head">
+        <span class="see_comment">查看评论</span><a name="comments"></a></div>
+    <div id="comment_list"><dl class="comment_item comment_topic" id="comment_item_5928203"><dt class="comment_head" floor="5">5楼 <span class="user"><a class="username" href="http://blog.csdn.net/i1t2o3l4" target="_blank">你好程序</a> <span class="ptime">2016-03-11 13:17发表</span>  <a href="#reply" class="cmt_btn reply" title="回复">[回复]</a> <span class="comment_manage" style="display:none;" commentid="5928203" username="i1t2o3l4"> <a href="#quote" class="cmt_btn quote" title="引用">[引用]</a> <a href="#report" class="cmt_btn report" title="举报">[举报]</a></span></span></dt><dd class="comment_userface"><a href="http://blog.csdn.net/i1t2o3l4" target="_blank"><img src="%E5%9B%BE%E5%83%8F%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94bmp%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%A4%84%E7%90%86%E4%B8%8E%E6%98%BE%E7%A4%BA%20-%20Sun1956%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/3_i1t2o3l4.gif" height="40" width="40"></a></dd><dd class="comment_body">我保存的文件一直出现：最下边上有一条线。不知是那里出错了，深圳市孟军自动化设备科技有限公司 潘孟军</dd></dl><dl class="comment_item comment_topic" id="comment_item_5848962"><dt class="comment_head" floor="4">4楼 <span class="user"><a class="username" href="http://blog.csdn.net/lzj_0218" target="_blank">S马不停蹄S</a> <span class="ptime">2016-01-21 10:20发表</span>  <a href="#reply" class="cmt_btn reply" title="回复">[回复]</a> <span class="comment_manage" style="display:none;" commentid="5848962" username="lzj_0218"> <a href="#quote" class="cmt_btn quote" title="引用">[引用]</a> <a href="#report" class="cmt_btn report" title="举报">[举报]</a></span></span></dt><dd class="comment_userface"><a href="http://blog.csdn.net/lzj_0218" target="_blank"><img src="%E5%9B%BE%E5%83%8F%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94bmp%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%A4%84%E7%90%86%E4%B8%8E%E6%98%BE%E7%A4%BA%20-%20Sun1956%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/3_lzj_0218.jpg" height="40" width="40"></a></dd><dd class="comment_body">我怎么没看到你是在哪里把图片显示出来的？</dd></dl><dl class="comment_item comment_topic" id="comment_item_5838263"><dt class="comment_head" floor="3">3楼 <span class="user"><a class="username" href="http://blog.csdn.net/u011322069" target="_blank">DoubleDecker</a> <span class="ptime">2016-01-11 18:34发表</span>  <a href="#reply" class="cmt_btn reply" title="回复">[回复]</a> <span class="comment_manage" style="display:none;" commentid="5838263" username="u011322069"> <a href="#quote" class="cmt_btn quote" title="引用">[引用]</a> <a href="#report" class="cmt_btn report" title="举报">[举报]</a></span></span></dt><dd class="comment_userface"><a href="http://blog.csdn.net/u011322069" target="_blank"><img src="%E5%9B%BE%E5%83%8F%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94bmp%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%A4%84%E7%90%86%E4%B8%8E%E6%98%BE%E7%A4%BA%20-%20Sun1956%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/3_u011322069.gif" height="40" width="40"></a></dd><dd class="comment_body">非常感谢，但是有一点不对，你的k无意义，这样做并不能将RGB的三个值合在一起</dd></dl><dl class="comment_item comment_topic" id="comment_item_5596415"><dt class="comment_head" floor="2">2楼 <span class="user"><a class="username" href="http://blog.csdn.net/qq_22226209" target="_blank">qq_22226209</a> <span class="ptime">2015-11-06 22:32发表</span>  <a href="#reply" class="cmt_btn reply" title="回复">[回复]</a> <span class="comment_manage" style="display:none;" commentid="5596415" username="qq_22226209"> <a href="#quote" class="cmt_btn quote" title="引用">[引用]</a> <a href="#report" class="cmt_btn report" title="举报">[举报]</a></span></span></dt><dd class="comment_userface"><a href="http://blog.csdn.net/qq_22226209" target="_blank"><img src="%E5%9B%BE%E5%83%8F%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94bmp%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%A4%84%E7%90%86%E4%B8%8E%E6%98%BE%E7%A4%BA%20-%20Sun1956%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/3_qq_22226209.gif" height="40" width="40"></a></dd><dd class="comment_body">非常感谢你的分享，帮助了我很多。<br>不过，你的代码有一点有错：<br>115行的int temp = *(pBmpBuf + i * lineByte + j + k); <br>应该是	int temp = *(pBmpBuf + i * lineByte + 3*j + k);<br><br>因为当j赋新值后k会回0，读的数会出错<br><br>不管怎样，再次感谢你。</dd></dl><dl class="comment_item comment_topic" id="comment_item_5053275"><dt class="comment_head" floor="1">1楼 <span class="user"><a class="username" href="http://blog.csdn.net/pengchao131420" target="_blank">雨后午夜</a> <span class="ptime">2015-05-15 16:52发表</span>  <a href="#reply" class="cmt_btn reply" title="回复">[回复]</a> <span class="comment_manage" style="display:none;" commentid="5053275" username="pengchao131420"> <a href="#quote" class="cmt_btn quote" title="引用">[引用]</a> <a href="#report" class="cmt_btn report" title="举报">[举报]</a></span></span></dt><dd class="comment_userface"><a href="http://blog.csdn.net/pengchao131420" target="_blank"><img src="%E5%9B%BE%E5%83%8F%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94bmp%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%A4%84%E7%90%86%E4%B8%8E%E6%98%BE%E7%A4%BA%20-%20Sun1956%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/3_pengchao131420.jpg" height="40" width="40"></a></dd><dd class="comment_body">请问for(int i = 0; i &lt; biHeight; i++ )  <br>110.    {  <br>111.        for(int j = 0; j &lt; biWidth; j++ )  <br>112.        {  <br>113.            for(int k = 0; k &lt; 3; k++ )  <br>114.            {  <br>115.                int temp = *(pBmpBuf + i * lineByte + j + k);  <br>116.                count++;  <br>117.                outfile&lt;&lt;temp&lt;&lt;" ";  <br>118.                if(count % 8 == 0)  <br>119.                {  <br>120.                    outfile&lt;&lt;endl;  <br>121.                }  <br>122.            }  <br>123.        }  <br>这里的k指的是什么意思？</dd></dl><div class="clear"></div></div>
+    <div style="display: none;" id="comment_bar">
+    </div>
+    <div id="comment_form"><div class="guest_link">您还没有登录,请<a href="javascript:void(0);" onclick="javascript:loginbox();">[登录]</a>或<a href="http://passport.csdn.net/account/register?from=http%3A%2F%2Fblog.csdn.net%2Fsun1956%2Farticle%2Fdetails%2F8648460">[注册]</a></div></div>
+    <div class="announce">
+        * 以上用户言论只代表其个人观点，不代表CSDN网站的观点或立场<a name="reply"></a><a name="quote"></a></div>
+</div>
+
+<script type="text/javascript">
+    var fileName = '8648460';
+    var commentscount = 5;
+    var islock = false
+</script>
+<script type="text/javascript" src="%E5%9B%BE%E5%83%8F%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94bmp%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%A4%84%E7%90%86%E4%B8%8E%E6%98%BE%E7%A4%BA%20-%20Sun1956%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/comment.js"></script>
+    <div id="ad_bot">
+    </div>
+<div id="report_dialog">
+</div>
+
+<div id="d-top" style="bottom:60px;">
+        <a id="quick-reply" class="btn btn-top q-reply" title="快速回复" style="display:none;">
+            <img src="%E5%9B%BE%E5%83%8F%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94bmp%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%A4%84%E7%90%86%E4%B8%8E%E6%98%BE%E7%A4%BA%20-%20Sun1956%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/blog-icon-reply.png" alt="快速回复">
+        </a>    
+
+    <a id="d-top-a" class="btn btn-top backtop" style="display: none;" title="返回顶部" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_huidaodingbu'])">         
+         <img src="%E5%9B%BE%E5%83%8F%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94bmp%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%A4%84%E7%90%86%E4%B8%8E%E6%98%BE%E7%A4%BA%20-%20Sun1956%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/top.png" alt="TOP">
+    </a>
+</div>
+<script type="text/javascript">
+    $(function ()
+    {
+        $("#ad_frm_0").height("90px");
+        
+        setTimeout(function(){
+            $("#ad_frm_2").height("200px");
+        },1000);    
+    });
+  
+</script>
+<style type="text/css">
+    .tag_list
+    {
+        background: none repeat scroll 0 0 #FFFFFF;
+        border: 1px solid #D7CBC1;
+        color: #000000;
+        font-size: 12px;
+        line-height: 20px;
+        list-style: none outside none;
+        margin: 10px 2% 0 1%;
+        padding: 1px;
+    }
+    .tag_list h5
+    {
+        background: none repeat scroll 0 0 #E0DBD3;
+        color: #47381C;
+        font-size: 12px;
+        height: 24px;
+        line-height: 24px;
+        padding: 0 5px;
+        margin: 0;
+    }
+    .tag_list h5 a
+    {
+        color: #47381C;
+    }
+    .classify
+    {
+        margin: 10px 0;
+        padding: 4px 12px 8px;
+    }
+    .classify a
+    {
+        margin-right: 20px;
+        white-space: nowrap;
+    }
+</style>
+
+
+<div class="tag_list" style="">
+
+    <h5>
+        <a href="http://www.csdn.net/tag/" target="_blank">核心技术类目</a></h5>
+    <div class="classify">
+<a title="全部主题" href="http://www.csdn.net/tag" target="_blank" onclick="LogClickCount(this,336);">全部主题</a>
+<a title="Hadoop" href="http://g.csdn.net/5272865" target="_blank" onclick="LogClickCount(this,336);">Hadoop</a>
+<a title="AWS" href="http://g.csdn.net/5272866" target="_blank" onclick="LogClickCount(this,336);">AWS</a>
+<a title="移动游戏" href="http://g.csdn.net/5272870" target="_blank" onclick="LogClickCount(this,336);">移动游戏</a>
+<a title="Java" href="http://g.csdn.net/5272871" target="_blank" onclick="LogClickCount(this,336);">Java</a>
+<a title="Android" href="http://g.csdn.net/5272872" target="_blank" onclick="LogClickCount(this,336);">Android</a>
+<a title="iOS" href="http://g.csdn.net/5272873" target="_blank" onclick="LogClickCount(this,336);">iOS</a>
+<a title="Swift" href="http://g.csdn.net/5272868" target="_blank" onclick="LogClickCount(this,336);">Swift</a>
+<a title="智能硬件" href="http://g.csdn.net/5272869" target="_blank" onclick="LogClickCount(this,336);">智能硬件</a>
+<a title="Docker" href="http://g.csdn.net/5272867" target="_blank" onclick="LogClickCount(this,336);">Docker</a>
+<a title="OpenStack" href="http://g.csdn.net/5272925" target="_blank" onclick="LogClickCount(this,336);">OpenStack</a>
+<a title="VPN" href="http://www.csdn.net/tag/vpn" target="_blank" onclick="LogClickCount(this,336);">VPN</a>
+<a title="Spark" href="http://g.csdn.net/5272924" target="_blank" onclick="LogClickCount(this,336);">Spark</a>
+<a title="ERP" href="http://www.csdn.net/tag/erp" target="_blank" onclick="LogClickCount(this,336);">ERP</a>
+<a title="IE10" href="http://www.csdn.net/tag/ie10" target="_blank" onclick="LogClickCount(this,336);">IE10</a>
+<a title="Eclipse" href="http://www.csdn.net/tag/eclipse" target="_blank" onclick="LogClickCount(this,336);">Eclipse</a>
+<a title="CRM" href="http://www.csdn.net/tag/crm" target="_blank" onclick="LogClickCount(this,336);">CRM</a>
+<a title="JavaScript" href="http://www.csdn.net/tag/javascript" target="_blank" onclick="LogClickCount(this,336);">JavaScript</a>
+<a title="数据库" href="http://www.csdn.net/tag/%E6%95%B0%E6%8D%AE%E5%BA%93" target="_blank" onclick="LogClickCount(this,336);">数据库</a>
+<a title="Ubuntu" href="http://www.csdn.net/tag/ubuntu" target="_blank" onclick="LogClickCount(this,336);">Ubuntu</a>
+<a title="NFC" href="http://www.csdn.net/tag/nfc" target="_blank" onclick="LogClickCount(this,336);">NFC</a>
+<a title="WAP" href="http://www.csdn.net/tag/wap" target="_blank" onclick="LogClickCount(this,336);">WAP</a>
+<a title="jQuery" href="http://www.csdn.net/tag/jquery" target="_blank" onclick="LogClickCount(this,336);">jQuery</a>
+<a title="BI" href="http://www.csdn.net/tag/bi" target="_blank" onclick="LogClickCount(this,336);">BI</a>
+<a title="HTML5" href="http://www.csdn.net/tag/html5" target="_blank" onclick="LogClickCount(this,336);">HTML5</a>
+<a title="Spring" href="http://www.csdn.net/tag/spring" target="_blank" onclick="LogClickCount(this,336);">Spring</a>
+<a title="Apache" href="http://www.csdn.net/tag/apache" target="_blank" onclick="LogClickCount(this,336);">Apache</a>
+<a title=".NET" href="http://www.csdn.net/tag/.net" target="_blank" onclick="LogClickCount(this,336);">.NET</a>
+<a title="API" href="http://www.csdn.net/tag/api" target="_blank" onclick="LogClickCount(this,336);">API</a>
+<a title="HTML" href="http://www.csdn.net/tag/html" target="_blank" onclick="LogClickCount(this,336);">HTML</a>
+<a title="SDK" href="http://www.csdn.net/tag/sdk" target="_blank" onclick="LogClickCount(this,336);">SDK</a>
+<a title="IIS" href="http://www.csdn.net/tag/iis" target="_blank" onclick="LogClickCount(this,336);">IIS</a>
+<a title="Fedora" href="http://www.csdn.net/tag/fedora" target="_blank" onclick="LogClickCount(this,336);">Fedora</a>
+<a title="XML" href="http://www.csdn.net/tag/xml" target="_blank" onclick="LogClickCount(this,336);">XML</a>
+<a title="LBS" href="http://www.csdn.net/tag/lbs" target="_blank" onclick="LogClickCount(this,336);">LBS</a>
+<a title="Unity" href="http://www.csdn.net/tag/unity" target="_blank" onclick="LogClickCount(this,336);">Unity</a>
+<a title="Splashtop" href="http://www.csdn.net/tag/splashtop" target="_blank" onclick="LogClickCount(this,336);">Splashtop</a>
+<a title="UML" href="http://www.csdn.net/tag/uml" target="_blank" onclick="LogClickCount(this,336);">UML</a>
+<a title="components" href="http://www.csdn.net/tag/components" target="_blank" onclick="LogClickCount(this,336);">components</a>
+<a title="Windows Mobile" href="http://www.csdn.net/tag/windowsmobile" target="_blank" onclick="LogClickCount(this,336);">Windows Mobile</a>
+<a title="Rails" href="http://www.csdn.net/tag/rails" target="_blank" onclick="LogClickCount(this,336);">Rails</a>
+<a title="QEMU" href="http://www.csdn.net/tag/qemu" target="_blank" onclick="LogClickCount(this,336);">QEMU</a>
+<a title="KDE" href="http://www.csdn.net/tag/kde" target="_blank" onclick="LogClickCount(this,336);">KDE</a>
+<a title="Cassandra" href="http://www.csdn.net/tag/cassandra" target="_blank" onclick="LogClickCount(this,336);">Cassandra</a>
+<a title="CloudStack" href="http://www.csdn.net/tag/cloudstack" target="_blank" onclick="LogClickCount(this,336);">CloudStack</a>
+<a title="FTC" href="http://www.csdn.net/tag/ftc" target="_blank" onclick="LogClickCount(this,336);">FTC</a>
+<a title="coremail" href="http://www.csdn.net/tag/coremail" target="_blank" onclick="LogClickCount(this,336);">coremail</a>
+<a title="OPhone " href="http://www.csdn.net/tag/ophone" target="_blank" onclick="LogClickCount(this,336);">OPhone </a>
+<a title="CouchBase" href="http://www.csdn.net/tag/couchbase" target="_blank" onclick="LogClickCount(this,336);">CouchBase</a>
+<a title="云计算" href="http://www.csdn.net/tag/%E4%BA%91%E8%AE%A1%E7%AE%97" target="_blank" onclick="LogClickCount(this,336);">云计算</a>
+<a title="iOS6" href="http://www.csdn.net/tag/iOS6" target="_blank" onclick="LogClickCount(this,336);">iOS6</a>
+<a title="Rackspace " href="http://www.csdn.net/tag/rackspace" target="_blank" onclick="LogClickCount(this,336);">Rackspace </a>
+<a title="Web App" href="http://www.csdn.net/tag/webapp" target="_blank" onclick="LogClickCount(this,336);">Web App</a>
+<a title="SpringSide" href="http://www.csdn.net/tag/springside" target="_blank" onclick="LogClickCount(this,336);">SpringSide</a>
+<a title="Maemo" href="http://www.csdn.net/tag/maemo" target="_blank" onclick="LogClickCount(this,336);">Maemo</a>
+<a title="Compuware" href="http://www.csdn.net/tag/compuware" target="_blank" onclick="LogClickCount(this,336);">Compuware</a>
+<a title="大数据" href="http://www.csdn.net/tag/%E5%A4%A7%E6%95%B0%E6%8D%AE" target="_blank" onclick="LogClickCount(this,336);">大数据</a>
+<a title="aptech" href="http://www.csdn.net/tag/aptech" target="_blank" onclick="LogClickCount(this,336);">aptech</a>
+<a title="Perl" href="http://www.csdn.net/tag/perl" target="_blank" onclick="LogClickCount(this,336);">Perl</a>
+<a title="Tornado" href="http://www.csdn.net/tag/tornado" target="_blank" onclick="LogClickCount(this,336);">Tornado</a>
+<a title="Ruby" href="http://www.csdn.net/tag/ruby" target="_blank" onclick="LogClickCount(this,336);">Ruby</a>
+<a title="Hibernate" href="http://www.csdn.net/hibernate" target="_blank" onclick="LogClickCount(this,336);">Hibernate</a>
+<a title="ThinkPHP" href="http://www.csdn.net/tag/thinkphp" target="_blank" onclick="LogClickCount(this,336);">ThinkPHP</a>
+<a title="HBase" href="http://www.csdn.net/tag/hbase" target="_blank" onclick="LogClickCount(this,336);">HBase</a>
+<a title="Pure" href="http://www.csdn.net/tag/pure" target="_blank" onclick="LogClickCount(this,336);">Pure</a>
+<a title="Solr" href="http://www.csdn.net/tag/solr" target="_blank" onclick="LogClickCount(this,336);">Solr</a>
+<a title="Angular" href="http://www.csdn.net/tag/angular" target="_blank" onclick="LogClickCount(this,336);">Angular</a>
+<a title="Cloud Foundry" href="http://www.csdn.net/tag/cloudfoundry" target="_blank" onclick="LogClickCount(this,336);">Cloud Foundry</a>
+<a title="Redis" href="http://www.csdn.net/tag/redis" target="_blank" onclick="LogClickCount(this,336);">Redis</a>
+<a title="Scala" href="http://www.csdn.net/tag/scala" target="_blank" onclick="LogClickCount(this,336);">Scala</a>
+<a title="Django" href="http://www.csdn.net/tag/django" target="_blank" onclick="LogClickCount(this,336);">Django</a>
+<a title="Bootstrap" href="http://www.csdn.net/tag/bootstrap" target="_blank" onclick="LogClickCount(this,336);">Bootstrap</a>
+    </div>
+
+</div>
+  <script language="javascript" type="text/javascript">     
+      $(function(){
+              setTimeout(function(){
+                  $.get("/Sun1956/svc/GetTagContent",function(data){
+                      $(".tag_list").html(data).show();
+                  });     
+              });
+          },500);                       
+ </script> 
+
+
+<div id="pop_win" style="display:none ;position: absolute; z-index: 10000; border: 1px solid rgb(220, 220, 220); top: 222.5px; left: 630px; opacity: 1; background: none 0px 0px repeat scroll rgb(255, 255, 255);">
+    
+</div>
+<div id="popup_mask"></div>
+<style>
+    #popup_mask
+    {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: #000;
+        z-index: 9999;
+        left: 0px;
+        top: 0px;
+        opacity: 0.3;
+        filter: alpha(opacity=30);
+        display: none;
+    }
+
+</style>
+
+
+
+
+<script type="text/javascript">
+    $(function(){
+        setTimeout(function(){
+            $(".comment_body:contains('回复')").each(function(index,item){
+                var u=$(this).text().split('：')[0].toString().replace("回复","")
+                var thisComment=$(this);
+                if(u)
+                {
+                    $.getJSON("https://passport.csdn.net/get/nick?callback=?", {users: u}, function(a) {
+                        if(a!=null&&a.data!=null&&a.data.length>0)
+                        {
+                            nick=a.data[0].n; 
+                            if(u!=nick)
+                            {
+                                thisComment.text(thisComment.text().replace(u,nick));  
+                            }
+                        }       
+                    });  
+                }
+            });         
+
+        },200);  
+
+        setTimeout(function(){
+            $(".math").each(function(index,value){$(this).find("span").last().css("color","#fff"); })
+        },5000);
+
+        setTimeout(function(){
+            $(".math").each(function(index,value){$(this).find("span").last().css("color","#fff"); })
+        },10000);
+
+        setTimeout(function(){
+            $(".math").each(function(index,value){$(this).find("span").last().css("color","#fff"); })
+        },15000);
+        
+        setTimeout(function(){
+            $("a img[src='http://js.tongji.linezing.com/stats.gif']").parent().css({"position":"absolute","left":"50%"});
+        },300);
+    });
+
+    function loginbox(){
+        var $logpop=$("#pop_win");
+        $logpop.html('<iframe src="https://passport.csdn.net/account/loginbox?service=http://static.blog.csdn.net/callback.htm" frameborder="0" height="600" width="400" scrolling="no"></iframe>');
+
+        $('#popup_mask').css({
+            opacity: 0.5,
+            width: $( document ).width() + 'px',
+            height:  $( document ).height() + 'px'
+        });
+        $('#popup_mask').css("display","block");
+ 
+        $logpop.css( {
+            top: ($( window ).height() - $logpop.height())/ 2  + $( window 
+       ).scrollTop() + 'px',
+            left:($( window ).width() - $logpop.width())/ 2
+        } );
+ 
+        setTimeout( function () {
+            $logpop.show();
+            $logpop.css( {
+                opacity: 1
+            } );
+        }, 200 );
+ 
+        $('#popup_mask').unbind("click");
+        $('#popup_mask').bind("click", function(){
+            $('#popup_mask').hide();
+            var $clopop = $("#pop_win");
+            $("#common_ask_div_sc").css("display","none");
+            $clopop.css( {
+                opacity: 0
+            } );
+            setTimeout( function () {
+                $clopop.hide();
+            }, 350 );
+            return false;
+        });
+    }   
+
+</script>
+ <script language="javascript" type="text/javascript" src="%E5%9B%BE%E5%83%8F%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94bmp%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%A4%84%E7%90%86%E4%B8%8E%E6%98%BE%E7%A4%BA%20-%20Sun1956%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/async_new.js"></script>      
+
+
+                        <div class="clear">
+                        </div>
+                    </div>                   
+                
+            </div>
+                   
+           <div id="side">
+    <div class="side">
+<div id="panel_Profile" class="panel">
+<ul class="panel_head"><span>个人资料</span></ul>
+<ul class="panel_body profile">
+<div id="blog_userface">
+    <a href="http://my.csdn.net/Sun1956" target="_blank">
+    <img src="%E5%9B%BE%E5%83%8F%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94bmp%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%A4%84%E7%90%86%E4%B8%8E%E6%98%BE%E7%A4%BA%20-%20Sun1956%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/1_sun1956.jpg" title="访问我的空间" style="max-width:90%">
+    </a>
+    <br>
+    <span><a href="http://my.csdn.net/Sun1956" class="user_name" target="_blank">Sun1956</a></span>
+</div>
+<div class="interact">
+
+    <a href="javascript:void(0);" class="attent" id="span_add_follow" title="[加关注]"></a>
+
+ <a href="javascript:void(0);" class="letter" title="[发私信]" onclick="window.open('http://msg.csdn.net/letters/model?receiver=Sun1956','_blank','height=350,width=700');_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_sixin'])"></a>  
+</div>
+<div id="blog_medal">
+                <div id="bms_box">
+                                            <a target="_blank">
+                                                    <img src="%E5%9B%BE%E5%83%8F%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94bmp%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%A4%84%E7%90%86%E4%B8%8E%E6%98%BE%E7%A4%BA%20-%20Sun1956%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/chizhiyiheng.png" onmouseover="m_over_m(this,4)" onmouseout="m_out_m()" alt="1">
+                                            </a>
+               </div>
+</div>
+<ul id="blog_rank">
+    <li>访问：<span>77573次</span></li>
+    <li>积分：<span>1032</span> </li>    
+    <li>等级： <span style="position:relative;display:inline-block;z-index:1">
+            <img src="%E5%9B%BE%E5%83%8F%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94bmp%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%A4%84%E7%90%86%E4%B8%8E%E6%98%BE%E7%A4%BA%20-%20Sun1956%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/blog4.png" alt="" style="vertical-align: middle;" id="leveImg">
+            <div id="smallTittle" style=" position: absolute;  left: -24px;  top: 25px;  text-align: center;  width: 101px;  height: 32px;  background-color: #fff;  line-height: 32px;  border: 2px #DDDDDD solid;  box-shadow: 0px 2px 2px rgba (0,0,0,0.1);  display: none;   z-index: 999;">
+            <div style="left: 42%;  top: -8px;  position: absolute;  width: 0;  height: 0;  border-left: 10px solid transparent;  border-right: 10px solid transparent;  border-bottom: 8px solid #EAEAEA;"></div>
+            积分：1032 </div>
+        </span>  </li>
+    <li>排名：<span>千里之外</span></li>
+</ul>
+<ul id="blog_statistics">
+    <li>原创：<span>29篇</span></li>
+    <li>转载：<span>1篇</span></li>
+    <li>译文：<span>0篇</span></li>
+    <li>评论：<span>51条</span></li>
+</ul>
+</ul>
+</div>
+
+
+<div class="panel" id="panel_Search">
+    <ul class="panel_head"><span>文章搜索</span></ul>
+    <ul class="panel_body">
+        <form id="frmSearch" action="http://so.csdn.net/search" class="form_search" target="_blank">
+        <span><input id="inputSearch" class="blogsearch" title="请输入关键字" type="text"></span>
+        <input id="btnSubmit" value="搜索" title="search in blog" type="button">
+        <input name="q" id="inputQ" type="hidden">
+        <input name="t" value="blog" type="hidden">
+        <a id="btnSearchBlog" target="_blank"></a>
+        </form>
+    </ul>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        $("#btnSubmit").click(function () {           
+            search();
+        });
+
+        $("#frmSearch").submit(function () {
+            search();
+            return false;
+        });
+
+        function search()
+        {
+            var url = "http://so.csdn.net/so/search/s.do?q=" + encodeURIComponent($("#inputSearch").val()) + "&u=" + username + "&t=blog";
+            window.location.href = url;
+        }   
+    });
+</script><div id="panel_Category" class="panel">
+<ul class="panel_head"><span>文章分类</span></ul>
+<ul class="panel_body">    
+                 <li>
+                    <a href="http://blog.csdn.net/Sun1956/article/category/1291931" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_wenzhangfenlei']); ">JAVA学习笔记</a><span>(9)</span>
+                </li>
+                 <li>
+                    <a href="http://blog.csdn.net/Sun1956/article/category/1297235" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_wenzhangfenlei']); ">MFC</a><span>(1)</span>
+                </li>
+                 <li>
+                    <a href="http://blog.csdn.net/Sun1956/article/category/1304336" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_wenzhangfenlei']); ">数据结构与算法</a><span>(2)</span>
+                </li>
+                 <li>
+                    <a href="http://blog.csdn.net/Sun1956/article/category/1359270" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_wenzhangfenlei']); ">VC图像编程</a><span>(9)</span>
+                </li>
+                 <li>
+                    <a href="http://blog.csdn.net/Sun1956/article/category/1382842" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_wenzhangfenlei']); ">故障处理</a><span>(4)</span>
+                </li>
+                 <li>
+                    <a href="http://blog.csdn.net/Sun1956/article/category/2181385" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_wenzhangfenlei']); ">Hadoop</a><span>(0)</span>
+                </li>
+                 <li>
+                    <a href="http://blog.csdn.net/Sun1956/article/category/2181387" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_wenzhangfenlei']); ">Linux</a><span>(2)</span>
+                </li>
+                 <li>
+                    <a href="http://blog.csdn.net/Sun1956/article/category/3115275" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_wenzhangfenlei']); ">Android</a><span>(3)</span>
+                </li>
+</ul>
+</div><div id="panel_Archive" class="panel">
+<ul class="panel_head"><span>文章存档</span></ul>
+<ul class="panel_body">
+<div id="archive_list"><li><a href="http://blog.csdn.net/Sun1956/article/month/2015/10">2015年10月</a><span>(1)</span></li><li><a href="http://blog.csdn.net/Sun1956/article/month/2015/07">2015年07月</a><span>(1)</span></li><li><a href="http://blog.csdn.net/Sun1956/article/month/2015/04">2015年04月</a><span>(4)</span></li><li><a href="http://blog.csdn.net/Sun1956/article/month/2014/08">2014年08月</a><span>(1)</span></li><li><a href="http://blog.csdn.net/Sun1956/article/month/2014/04">2014年04月</a><span>(1)</span></li><span class="hidelist" style="display:none;"><li><a href="http://blog.csdn.net/Sun1956/article/month/2013/04">2013年04月</a><span>(3)</span></li><li><a href="http://blog.csdn.net/Sun1956/article/month/2013/03">2013年03月</a><span>(8)</span></li><li><a href="http://blog.csdn.net/Sun1956/article/month/2012/12">2012年12月</a><span>(8)</span></li><li><a href="http://blog.csdn.net/Sun1956/article/month/2012/11">2012年11月</a><span>(3)</span></li></span><div id="archive_list_button" class="list_closed">展开</div></div>
+</ul>
+</div>
+<div id="hotarticls" class="panel">
+<ul class="panel_head">
+    <span>       
+阅读排行    </span>
+</ul>
+
+<ul class="panel_body itemlist">
+<li>
+<a href="http://blog.csdn.net/sun1956/article/details/8760239" title="安装JDK不当--找不到或无法加载主类 com.sun.tools.javac.Main">安装JDK不当--找不到或无法加载主类 com.sun.tools.javac.Main</a><span>(29089)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/sun1956/article/details/8648460" title="图像编程学习笔记1——bmp文件结构处理与显示">图像编程学习笔记1——bmp文件结构处理与显示</a><span>(5116)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/sun1956/article/details/38534423" title="qt自定义按钮去除边框和背景色">qt自定义按钮去除边框和背景色</a><span>(3755)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/sun1956/article/details/8729132" title="图像编程学习笔记8——图像的平滑(去噪)">图像编程学习笔记8——图像的平滑(去噪)</a><span>(3661)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/sun1956/article/details/8751949" title="Vbox虚拟机 所选虚拟电脑不能正常访问">Vbox虚拟机 所选虚拟电脑不能正常访问</a><span>(3350)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/sun1956/article/details/8237682" title="JSplitPane中分隔条禁止拖动">JSplitPane中分隔条禁止拖动</a><span>(2715)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/sun1956/article/details/8665946" title="图像编程学习笔记4——24位真彩色转换为灰度图像">图像编程学习笔记4——24位真彩色转换为灰度图像</a><span>(2277)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/sun1956/article/details/8656576" title="图像编程学习笔记3——图像旋转">图像编程学习笔记3——图像旋转</a><span>(2251)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/sun1956/article/details/23354905" title="Linux下jdk的安装与配置">Linux下jdk的安装与配置</a><span>(2219)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/sun1956/article/details/8704142" title="图像编程学习笔记6——图像转置">图像编程学习笔记6——图像转置</a><span>(2072)</span>
+</li>
+</ul>
+</div>
+<div id="hotarticls2" class="panel">
+<ul class="panel_head"><span>评论排行</span></ul>
+<ul class="panel_body itemlist">
+<li>
+<a href="http://blog.csdn.net/sun1956/article/details/8760239" title="安装JDK不当--找不到或无法加载主类 com.sun.tools.javac.Main">安装JDK不当--找不到或无法加载主类 com.sun.tools.javac.Main</a><span>(38)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/sun1956/article/details/8648460" title="图像编程学习笔记1——bmp文件结构处理与显示">图像编程学习笔记1——bmp文件结构处理与显示</a><span>(5)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/sun1956/article/details/8704142" title="图像编程学习笔记6——图像转置">图像编程学习笔记6——图像转置</a><span>(3)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/sun1956/article/details/8713512" title="图像编程学习笔记7——图像缩放">图像编程学习笔记7——图像缩放</a><span>(2)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/sun1956/article/details/8656576" title="图像编程学习笔记3——图像旋转">图像编程学习笔记3——图像旋转</a><span>(1)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/sun1956/article/details/8241883" title="JAVA 捕获窗口事件变化">JAVA 捕获窗口事件变化</a><span>(1)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/sun1956/article/details/8294048" title="HDU1007 查找平面最近点对">HDU1007 查找平面最近点对</a><span>(1)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/sun1956/article/details/8274955" title="Set接口类：HashSet、LinkedHashSet、TreeSet">Set接口类：HashSet、LinkedHashSet、TreeSet</a><span>(0)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/sun1956/article/details/8262571" title="MFC中创建类似画图程序中的画笔">MFC中创建类似画图程序中的画笔</a><span>(0)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/sun1956/article/details/49130169" title="博客搬家了~~">博客搬家了~~</a><span>(0)</span>
+</li>
+</ul>
+</div>
+<div id="homepageArticles" class="panel tracking-ad" data-mod="popu_4">
+<ul class="panel_head"><span>推荐文章</span></ul>
+<ul class="panel_body" id="ad_commend">
+<ul>
+<li><a href="http://blog.csdn.net/baby_hua/article/details/51004405" target="_blank">*在iOS9上调用支付宝不回调的问题解决，以及支付宝嵌入的流程梳理</a></li>
+<li><a href="http://blog.csdn.net/erlib/article/details/50994209" target="_blank">*几种软负载均衡策略分析</a></li>
+<li><a href="http://blog.csdn.net/fanyun_01/article/details/50921678" target="_blank">*浅谈Storm流式处理框架</a></li>
+<li><a href="http://blog.csdn.net/u011116672/article/details/50991618" target="_blank">*阿里2016实习offer五面经验与总结</a></li>
+<li><a href="http://blog.csdn.net/apksafe/article/details/51038646#comments" target="_blank">*Android移动应用开发中常见的经验技巧总结</a></li>
+<li><a href="http://blog.csdn.net/afandaafandaafanda/article/details/51067044" target="_blank">* 关于前端开发的思考</a></li>
+
+</ul></ul>
+</div>
+
+
+<div id="newcomments" class="panel">
+<ul class="panel_head"><span>最新评论</span></ul>
+<ul class="panel_body itemlist">
+    <li>
+   
+         <a href="http://blog.csdn.net/sun1956/article/details/8648460#comments">图像编程学习笔记1——bmp文件结构处理与显示</a>
+    <p style="margin:0px;"><a href="http://blog.csdn.net/i1t2o3l4" class="user_name">你好程序</a>:
+我保存的文件一直出现：最下边上有一条线。不知是那里出错了，深圳市孟军自动化设备科技有限公司 潘孟军
+    </p>
+    </li>
+    <li>
+   
+         <a href="http://blog.csdn.net/sun1956/article/details/8648460#comments">图像编程学习笔记1——bmp文件结构处理与显示</a>
+    <p style="margin:0px;"><a href="http://blog.csdn.net/lzj_0218" class="user_name">S马不停蹄S</a>:
+我怎么没看到你是在哪里把图片显示出来的？
+    </p>
+    </li>
+    <li>
+   
+         <a href="http://blog.csdn.net/sun1956/article/details/8760239#comments">安装JDK不当--找不到或无法加载主类 com.sun.tools.javac.Main</a>
+    <p style="margin:0px;"><a href="http://blog.csdn.net/yj7758423" class="user_name">Jaynnay</a>:
+十分感谢
+    </p>
+    </li>
+    <li>
+   
+         <a href="http://blog.csdn.net/sun1956/article/details/8760239#comments">图像编程学习笔记1——bmp文件结构处理与显示</a>
+    <p style="margin:0px;"><a href="http://blog.csdn.net/u011322069" class="user_name">DoubleDecker</a>:
+非常感谢，但是有一点不对，你的k无意义，这样做并不能将RGB的三个值合在一起
+    </p>
+    </li>
+    <li>
+   
+         <a href="http://blog.csdn.net/sun1956/article/details/8760239#comments">图像编程学习笔记1——bmp文件结构处理与显示</a>
+    <p style="margin:0px;"><a href="http://blog.csdn.net/qq_22226209" class="user_name">qq_22226209</a>:
+非常感谢你的分享，帮助了我很多。不过，你的代码有一点有错：115行的int temp = *(pBm...
+    </p>
+    </li>
+    <li>
+   
+         <a href="http://blog.csdn.net/sun1956/article/details/8656576#comments">图像编程学习笔记3——图像旋转</a>
+    <p style="margin:0px;"><a href="http://blog.csdn.net/what_can_I_say" class="user_name">Peugeot_Heart</a>:
+我觉得读取位图数据之间应该考虑是不是24位位图，如果是的话，位图里面是没有颜色表的。
+    </p>
+    </li>
+    <li>
+   
+         <a href="http://blog.csdn.net/sun1956/article/details/8656576#comments">安装JDK不当--找不到或无法加载主类 com.sun.tools.javac.Main</a>
+    <p style="margin:0px;"><a href="http://blog.csdn.net/PANGHAIFEI" class="user_name">PANGHAIFEI</a>:
+特地登陆来表示感谢
+    </p>
+    </li>
+    <li>
+   
+         <a href="http://blog.csdn.net/sun1956/article/details/8656576#comments">安装JDK不当--找不到或无法加载主类 com.sun.tools.javac.Main</a>
+    <p style="margin:0px;"><a href="http://blog.csdn.net/sinat_30107983" class="user_name">bru_yueshen</a>:
+找了半天，还是这个最好，特别登录感谢
+    </p>
+    </li>
+    <li>
+   
+         <a href="http://blog.csdn.net/sun1956/article/details/8656576#comments">安装JDK不当--找不到或无法加载主类 com.sun.tools.javac.Main</a>
+    <p style="margin:0px;"><a href="http://blog.csdn.net/baidu_29814563" class="user_name">baidu_29814563</a>:
+百度了一下午，你这个才是靠谱的，特地登录感谢。
+    </p>
+    </li>
+    <li>
+   
+         <a href="http://blog.csdn.net/sun1956/article/details/8656576#comments">安装JDK不当--找不到或无法加载主类 com.sun.tools.javac.Main</a>
+    <p style="margin:0px;"><a href="http://blog.csdn.net/j2370530" class="user_name">j2370530</a>:
+谢谢楼主
+    </p>
+    </li>
+</ul>
+</div>
+    </div>
+    <div class="clear">
+    </div>
+ </div>   
+            <div class="clear">
+            </div>
+        </div>
+
+        
+
+<script type="text/javascript" src="%E5%9B%BE%E5%83%8F%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94bmp%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%A4%84%E7%90%86%E4%B8%8E%E6%98%BE%E7%A4%BA%20-%20Sun1956%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/cnick.js"></script>
+<script type="text/javascript" src="%E5%9B%BE%E5%83%8F%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94bmp%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%A4%84%E7%90%86%E4%B8%8E%E6%98%BE%E7%A4%BA%20-%20Sun1956%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/newblog.js"></script>
+
+
+<script type="text/javascript" src="%E5%9B%BE%E5%83%8F%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94bmp%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%A4%84%E7%90%86%E4%B8%8E%E6%98%BE%E7%A4%BA%20-%20Sun1956%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/showblogmedal.js"></script>
+<script type="text/javascript" src="%E5%9B%BE%E5%83%8F%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94bmp%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%A4%84%E7%90%86%E4%B8%8E%E6%98%BE%E7%A4%BA%20-%20Sun1956%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/JavaScript1.js"></script><link rel="stylesheet" type="text/css" href="%E5%9B%BE%E5%83%8F%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94bmp%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%A4%84%E7%90%86%E4%B8%8E%E6%98%BE%E7%A4%BA%20-%20Sun1956%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/pub_footer_2014.css"><div class="pub_fo"><div id="pub_footerall" class="pub_footer_new"><dl><dt></dt> <dd class="foot_sub_menu"><a href="http://www.csdn.net/company/about.html" target="_blank">公司简介</a><span>|</span><a href="http://www.csdn.net/company/recruit.html" target="_blank">招贤纳士</a><span>|</span><a href="http://www.csdn.net/company/marketing.html" target="_blank">广告服务</a><span>|</span><a href="http://www.csdn.net/company/account.html" target="_blank">银行汇款帐号</a><span>|</span><a href="http://www.csdn.net/company/contact.html" target="_blank">联系方式</a><span>|</span><a href="http://www.csdn.net/company/statement.html" target="_blank">版权声明</a><span>|</span><a href="http://www.csdn.net/company/layer.html" target="_blank">法律顾问</a><span>|</span><a href="mailto:webmaster@csdn.net">问题报告</a><span>|</span><a target="_blank" href="http://www.csdn.net/friendlink.html">合作伙伴</a><span>|</span><a href="http://bbs.csdn.net/forums/Service" target="_blank">论坛反馈</a></dd><dd class="foot_contact"><a href="http://wpa.qq.com/msgrd?v=3&amp;uin=2355263776&amp;site=qq&amp;menu=yes" target="_blank" class="qq">网站客服</a><a href="http://wpa.qq.com/msgrd?v=3&amp;uin=2251809102&amp;site=qq&amp;menu=yes" target="_blank" class="qq">杂志客服</a><a href="http://e.weibo.com/csdnsupport/profile" target="_blank" class="weibo">微博客服</a><a href="mailto:webmaster@csdn.net" class="email" title="联系邮箱">webmaster@csdn.net</a><span class="phone" title="服务热线">400-600-2320</span><span class="interval">|</span><span>北京创新乐知信息技术有限公司 版权所有</span><span class="interval">|</span><span>江苏乐知网络技术有限公司 提供商务支持</span></dd><dd class="foot_copyright"><span>京&nbsp;ICP&nbsp;证&nbsp;09002463&nbsp;号</span><span class="interval">|</span><span>Copyright © 1999-2014, CSDN.NET, All Rights Reserved&nbsp;</span><a href="http://www.hd315.gov.cn/beian/view.asp?bianhao=010202001032100010" target="_blank"><img src="%E5%9B%BE%E5%83%8F%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94bmp%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%A4%84%E7%90%86%E4%B8%8E%E6%98%BE%E7%A4%BA%20-%20Sun1956%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/gongshang_logos.gif" alt="GongshangLogo" title=""></a></dd></dl></div></div><div id="note1" class="csdn_note" style="display:none; position:absolute; z-index:9999; width:440px">  <span class="notice_top_arrow"><span class="inner"></span></span>  <div class="box"></div></div><div class="csdn_notice_tip" style="display:none; position:absolute; z-index:9990; width:170px">  <iframe src="%E5%9B%BE%E5%83%8F%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94bmp%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%A4%84%E7%90%86%E4%B8%8E%E6%98%BE%E7%A4%BA%20-%20Sun1956%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/a_002.htm" scrolling="no" style="z-index:-1;position:absolute;top:0;left:0;width:100%;height:100%;background:transparent" frameborder="0"></iframe>  <div class="tip_text">您有<strong>0</strong>条新通知</div>  <a href="javascript:void%200" class="close2"></a></div><script id="noticeScript" type="text/javascript" btnid="header_notice_num" wrapid="note1" count="5" subcount="5" src="%E5%9B%BE%E5%83%8F%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94bmp%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%A4%84%E7%90%86%E4%B8%8E%E6%98%BE%E7%A4%BA%20-%20Sun1956%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/notify.js"></script>
+
+    <script type="text/javascript" src="%E5%9B%BE%E5%83%8F%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94bmp%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%A4%84%E7%90%86%E4%B8%8E%E6%98%BE%E7%A4%BA%20-%20Sun1956%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/login.js"></script>
+<script type="text/javascript">document.write("<img src=http://counter.csdn.net/pv.aspx?id=24 border=0 width=0 height=0>");</script><img src="%E5%9B%BE%E5%83%8F%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94bmp%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%A4%84%E7%90%86%E4%B8%8E%E6%98%BE%E7%A4%BA%20-%20Sun1956%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/pv.xml" height="0" border="0" width="0">
+<script type="text/javascript" src="%E5%9B%BE%E5%83%8F%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94bmp%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%A4%84%E7%90%86%E4%B8%8E%E6%98%BE%E7%A4%BA%20-%20Sun1956%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/counter.js"></script><script type="text/javascript" charset="UTF-8" src="%E5%9B%BE%E5%83%8F%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94bmp%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%A4%84%E7%90%86%E4%B8%8E%E6%98%BE%E7%A4%BA%20-%20Sun1956%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/msg.js"></script>
+<script type="text/javascript" src="%E5%9B%BE%E5%83%8F%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94bmp%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%A4%84%E7%90%86%E4%B8%8E%E6%98%BE%E7%A4%BA%20-%20Sun1956%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/ad-blog.js"></script><script type="text/javascript" src="%E5%9B%BE%E5%83%8F%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94bmp%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%A4%84%E7%90%86%E4%B8%8E%E6%98%BE%E7%A4%BA%20-%20Sun1956%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/ad-ms1608.js"></script>
+<script type="text/javascript" src="%E5%9B%BE%E5%83%8F%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94bmp%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%A4%84%E7%90%86%E4%B8%8E%E6%98%BE%E7%A4%BA%20-%20Sun1956%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/ad-ms1609_2.js"></script>
+
+<script type="text/javascript">
+    $(function () {
+        function __get_code_toolbar(snippet_id) {
+            return $("<span class='tracking-ad' data-mod='popu_167'><a href='https://code.csdn.net/snippets/"
+                    + snippet_id
+                    + "' target='_blank' title='在CODE上查看代码片'  style='text-indent:0;'><img src='https://code.csdn.net/assets/CODE_ico.png' width=12 height=12 alt='在CODE上查看代码片' style='position:relative;top:1px;left:2px;'/></a></span>"
+                    + "<span class='tracking-ad' data-mod='popu_170'><a href='https://code.csdn.net/snippets/"
+                    + snippet_id
+                    + "/fork' target='_blank' title='派生到我的代码片' style='text-indent:0;'><img src='https://code.csdn.net/assets/ico_fork.svg' width=12 height=12 alt='派生到我的代码片' style='position:relative;top:2px;left:2px;'/></a></span>");
+        }
+        
+        $("[code_snippet_id]").each(function () {
+            __s_id = $(this).attr("code_snippet_id");
+            if (__s_id != null && __s_id != "" && __s_id != 0 && parseInt(__s_id) > 70020) {
+                __code_tool = __get_code_toolbar(__s_id);
+                $(this).prev().find(".tools").append(__code_tool);
+            }
+        });
+
+        $(".bar").show();
+    });
+</script>
+
+
+
+
+    </div><input id="aa_g_data_ids" type="hidden">
+      <!--new top-->
+    
+    <script id="csdn-toolbar-id" btnid="header_notice_num" wrapid="note1" count="5" subcount="5" type="text/javascript" src="%E5%9B%BE%E5%83%8F%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94bmp%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%A4%84%E7%90%86%E4%B8%8E%E6%98%BE%E7%A4%BA%20-%20Sun1956%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/toolbar.js"></script>
+     <!--new top-->
+   
+    <link href="%E5%9B%BE%E5%83%8F%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94bmp%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%A4%84%E7%90%86%E4%B8%8E%E6%98%BE%E7%A4%BA%20-%20Sun1956%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/ask_float_block.css" type="text/css" rel="stylesheet">
+    <script language="JavaScript" type="text/javascript" src="%E5%9B%BE%E5%83%8F%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94bmp%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%A4%84%E7%90%86%E4%B8%8E%E6%98%BE%E7%A4%BA%20-%20Sun1956%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/wmd.js"></script>
+    <script language="JavaScript" type="text/javascript" src="%E5%9B%BE%E5%83%8F%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94bmp%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%A4%84%E7%90%86%E4%B8%8E%E6%98%BE%E7%A4%BA%20-%20Sun1956%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/showdown.js"></script>
+    <script language="JavaScript" type="text/javascript" src="%E5%9B%BE%E5%83%8F%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94bmp%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%A4%84%E7%90%86%E4%B8%8E%E6%98%BE%E7%A4%BA%20-%20Sun1956%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/prettify.js"></script>
+    <script language="JavaScript" type="text/javascript" src="%E5%9B%BE%E5%83%8F%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94bmp%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%A4%84%E7%90%86%E4%B8%8E%E6%98%BE%E7%A4%BA%20-%20Sun1956%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/ask_float_block.js"></script>
+   
+
+  <div id="a52b5334d" style="width: 1px; height: 1px; display: none;">
+                    <script src="%E5%9B%BE%E5%83%8F%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94bmp%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%A4%84%E7%90%86%E4%B8%8E%E6%98%BE%E7%A4%BA%20-%20Sun1956%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/52b5334.js" id="adJs52b5334"></script>
+                    <script>document.getElementById("adJs52b5334").src = "http://ads.csdn.net/js/opt/52b5334.js?t=" + Math.random();</script>
+   </div>
+
+
+   
+ <div id="tag-suggest-pop">
+  <div class="relative">
+    <div class="close"></div>
+    <div class="content"></div>
+  </div>
+</div><link rel="stylesheet" type="text/css" media="screen" href="%E5%9B%BE%E5%83%8F%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94bmp%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%A4%84%E7%90%86%E4%B8%8E%E6%98%BE%E7%A4%BA%20-%20Sun1956%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/ask_float_fonts_css-6b30a53970eb5c3a2a045e3df585b475.css"><div data-mod="popu_64" class="tracking-ad" chg-blk="0"><a id="com-quick-reply" title="快速回复" style="top:310px"></a><a id="com-d-top-a" style="top: 348px; display: none;" title="返回顶部" onclick=""></a> </div><div class="pop_edit ask_second comm_ask_second"><h3>提问</h3><span class="ask_float_span">您的问题将会被发布在“<a class="ask_float_channel" href="http://ask.csdn.net/" target="_blank" style="cursor:pointer">技术问答</a>”频道</span><a href="#" nodetype="close" class="close">×</a><div class="context"><div class="err_div"><span class="err_ico"></span><span class="err_txt">该问题已存在，请勿重复提问</span></div><div class="input_div"><input id="askInputSecond" style="font-size:14px;" placeholder="问题标题" type="text"></div><div class="cm_box"><div class="cm_dialog"></div> <div class="pop_cm cm_add_link"><input placeholder="链接内容" id="af_cm_link_txt" type="text"><input placeholder="链接地址" id="af_cm_link_url" type="text"><input placeholder="链接提示" id="af_cm_link_tit" type="text"><div class="text-right"><span class="btn btn-default btn-sm" id="add_link_btn">插入链接</span> </div> </div><div class="pop_cm cm_add_img"><div class="nav-tabs"><a class="img_tab active" href="#tab_upload">本地上传</a><a class="img_tab" href="#tab_weburl">网络图片</a></div><div class="tab_panel active" id="tab_upload"><div class="set_img"><iframe src="%E5%9B%BE%E5%83%8F%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94bmp%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%A4%84%E7%90%86%E4%B8%8E%E6%98%BE%E7%A4%BA%20-%20Sun1956%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/upload.htm"></iframe></div></div><div class="tab_panel" id="tab_weburl"><input placeholder="图片地址" id="af_cm_img_url" type="text"><input placeholder="图片说明" id="af_cm_img_alt" type="text"><div class="text-right"><span class="btn btn-default btn-sm" id="add_img_btn">插入图片</span> </div></div> </div></div> <textarea style="display: none;" id="editor_all" rows="8"></textarea><div class="editor-toolbar"><i class="separator">|</i><a title="标题一（Ctrl+Alt+1）" class="icon-headline"></a><a title="标题二（Ctrl+Alt+2）" class="icon-heading"></a><a title="粗体（Ctrl+B）" class="icon-bold"></a><a title="斜体（Ctrl+I）" class="icon-italic"></a><i class="separator">|</i><a title="引用（Ctrl+’）" class="icon-quote-left"></a><a title="插入代码片（Ctrl+,）" class="icon-code"></a><a title="无序列表（Ctrl+L）" class="icon-list-ul"></a><a title="有序列表（Ctrl+Alt+L）" class="icon-list-ol"></a><i class="separator">|</i><a title="添加链接（Ctrl+K）" class="icon-link"></a><a title="添加图片（Ctrl+Alt+I）" class="icon-picture"></a><i class="separator">|</i><a title="撤退（Ctrl+Z）" class="icon-reply"></a><a title="前进（Ctrl+Shift+Z）" class="icon-share-alt"></a><i class="separator">|</i><a title="markdown语法参考" target="_blank" href="http://ask.csdn.net/pages/markdown" class="icon-info"></a><a title="预览" class="icon-preview"></a><i class="separator">|</i></div><div class="CodeMirror cm-s-paper CodeMirror-focused"><div style="overflow: hidden; position: relative; width: 3px; height: 0px;"><textarea tabindex="0" spellcheck="false" autocapitalize="off" autocorrect="off" style="position: absolute; padding: 0px; width: 1px; height: 1em; outline: medium none; font-size: 4px;" wrap="off"></textarea></div><div class="CodeMirror-hscrollbar"><div style="height: 1px;"></div></div><div class="CodeMirror-vscrollbar"><div style="width: 1px;"></div></div><div class="CodeMirror-scrollbar-filler"></div><div class="CodeMirror-gutter-filler"></div><div draggable="true" tabindex="-1" class="CodeMirror-scroll"><div style="min-width: 33px;" class="CodeMirror-sizer"><div style="position: relative;"><div class="CodeMirror-lines"><div style="position: relative; outline: medium none;"><div class="CodeMirror-measure"><pre>&nbsp;<span style="display: inline-block; width: 1px; margin-right: -1px;">&nbsp;</span></pre></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code"></div><div style="visibility: hidden;" class="CodeMirror-cursor">&nbsp;</div><div style="visibility: hidden;" class="CodeMirror-cursor CodeMirror-secondarycursor">&nbsp;</div></div></div></div></div><div style="position: absolute; height: 30px; width: 1px;"></div><div style="display: none;" class="CodeMirror-gutters"></div></div></div><div class="editor-statusbar"><span class="lines">0</span><span class="words">0</span><span class="cursor">0:0</span></div><div class="div_tags clearfix"><div id="divSearchTags" class="tags_con"><input type="text"></div><input name="txtSearchTags" type="hidden"></div><div id="ask2_tagRecomm_div" class="drt_tagRecomm tracking-ad" data-mod="popu_73"><span class="drt_tit">推荐标签：</span></div></div><div class="success"><div class="left_area"><input id="chk_cb" type="checkbox"><span class="wyxs">我要悬赏</span><input id="cb_num" class="cb_num" readonly="true"><span class="phib_rii"><span> 币</span></span></div><a href="#" nodetype="cancel" class="cancel">取消</a><a href="#" nodetype="ok" class="ok">发布</a></div></div><div id="common_ask_div_sc" class="searchContainer"><div class="sTitle">可能存在类似的问题：</div><div class="sFooter"><a class="sFirstNewAsk">我想提一个新问题</a></div></div><iframe src="%E5%9B%BE%E5%83%8F%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94bmp%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%A4%84%E7%90%86%E4%B8%8E%E6%98%BE%E7%A4%BA%20-%20Sun1956%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/log.htm" style="width: 1px; height: 1px; position: absolute; visibility: hidden;"></iframe><iframe src="%E5%9B%BE%E5%83%8F%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94bmp%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%A4%84%E7%90%86%E4%B8%8E%E6%98%BE%E7%A4%BA%20-%20Sun1956%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/log.swf" style="width: 1px; height: 1px; position: absolute; visibility: hidden;"></iframe></body><iframe src="%E5%9B%BE%E5%83%8F%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94bmp%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%A4%84%E7%90%86%E4%B8%8E%E6%98%BE%E7%A4%BA%20-%20Sun1956%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/top.htm" style="position: fixed ! important; z-index: 2147483647 ! important; overflow: hidden ! important; top: 0px ! important; left: 0px ! important; right: 0px ! important; width: 138px ! important; height: 13px ! important; max-height: none ! important; min-height: 0px ! important; margin: 0px auto ! important; padding: 0px ! important; border: 0px none ! important; background-color: transparent ! important; display: block ! important;" id="abs-top-frame" allowtransparency="true" frameborder="0"></iframe></html>

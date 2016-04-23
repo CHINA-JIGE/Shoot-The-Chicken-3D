@@ -13,7 +13,6 @@ enum TIMER_TIMEUINT
 	TIMER_TIMEUNIT_SECOND = 1,
 };
 
-
 /*struct COLOR3
 {
 	COLOR3() { r = g = b = 255U; }
@@ -50,11 +49,47 @@ enum TIMER_TIMEUINT
 
 typedef VECTOR3 COLOR3;
 
+struct DirectionalLight
+{
+public:
+	DirectionalLight()
+	{
+		ZeroMemory(this, sizeof(*this));
+		mSpecularIntensity = 1.0f;
+		mDirection = VECTOR3(1.0f, 0, 0);
+		mDiffuseIntensity = 0.5;
+		mIsEnabled = TRUE;
+	}
+
+	BOOL operator==(DirectionalLight& Light)
+	{
+		//two memory fragments are identical
+		if (memcmp(this, &Light, sizeof(Light)) == 0)
+		{
+			return TRUE;
+		}
+		return FALSE;
+	}
+
+	VECTOR3 mAmbientColor;	 float		mSpecularIntensity;
+	VECTOR3 mDiffuseColor;		float			mDiffuseIntensity;
+	VECTOR3 mSpecularColor;	 BOOL		mIsEnabled;
+	VECTOR3 mDirection;
+};
+
 struct Material
 {
-	VECTOR4 ambient;
-	VECTOR4 diffuse;
-	VECTOR4 specular;
+	Material() 
+	{
+		ambient = { 0,0,0 };
+		diffuse = { 1.0f,0,0 };
+		specular = { 1.0f,1.0f,1.0f };
+		specularSmoothLevel = 10;
+	};
+	VECTOR3	ambient;
+	VECTOR3	diffuse;
+	VECTOR3	specular;
+	UINT			specularSmoothLevel;
 };
 
 struct Vertex

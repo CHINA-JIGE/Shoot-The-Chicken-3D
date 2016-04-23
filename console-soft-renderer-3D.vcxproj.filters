@@ -34,9 +34,6 @@
     <ClCompile Include="Timer.cpp">
       <Filter>源文件\Engine\_Core</Filter>
     </ClCompile>
-    <ClCompile Include="LightManager.cpp">
-      <Filter>源文件\Engine\_Scene</Filter>
-    </ClCompile>
     <ClCompile Include="UnitTest_Mathcpp.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -80,9 +77,6 @@
     </ClInclude>
     <ClInclude Include="Game.h">
       <Filter>源文件\Game</Filter>
-    </ClInclude>
-    <ClInclude Include="LightManager.h">
-      <Filter>源文件\Engine\_Scene</Filter>
     </ClInclude>
     <ClInclude Include="RenderPipeline3D.h">
       <Filter>源文件\Engine\_Renderer</Filter>

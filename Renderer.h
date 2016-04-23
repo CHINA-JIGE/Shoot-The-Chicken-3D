@@ -17,6 +17,8 @@ public:
 
 	void		SetCamera(ICamera& cam);
 
+	void		SetLight(UINT index,const  DirectionalLight& light);
+
 	void		RenderMesh(IMesh& mesh);
 
 	BOOL	DrawPicture(IPicture& pic, UINT x1, UINT y1, UINT x2, UINT y2);

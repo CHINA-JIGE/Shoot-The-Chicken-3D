@@ -25,6 +25,15 @@ IMesh::IMesh()
 	m_pIB_Mem			= new std::vector<UINT>;
 
 	mMatrixWorld.Identity();
+
+	Material defaultMat;
+	defaultMat.ambient = { 0.2f,0.2f,0.2f };
+	defaultMat.diffuse	= { 0,0,1.0f };
+	defaultMat.specular = { 1.0f,1.0f,1.0f };
+	defaultMat.specularSmoothLevel = 20;
+	IMesh::SetMaterial(defaultMat);
+
+	m_pTexture = nullptr;
 };
 
 void IMesh::Destroy()
@@ -160,6 +169,11 @@ void IMesh::SetColor(const VECTOR4& color)
 	{
 		v.color = color;
 	}
+}
+
+void IMesh::SetMaterial(const Material & mat)
+{
+	mMaterial = mat;
 }
 
 void IMesh::SetPosition(float x,float y,float z)
