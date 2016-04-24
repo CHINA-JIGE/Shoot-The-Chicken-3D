@@ -35,7 +35,7 @@ void GamePlay::Init()
 	myRenderer.SetCamera(myCamera);
 
 	//------------------CAMERA--------------------
-	myCamera.SetPosition(200.0f, 100.0f, 0.0f);
+	myCamera.SetPosition(0, 100.0f, 200.0f);
 	myCamera.SetLookAt(0, 0, 0);
 	myCamera.SetViewAngle(Math::CONST_PI / 2.0f, 2.5f);
 	myCamera.SetViewFrustumPlane(1.0f, 500.0f);
@@ -74,7 +74,7 @@ void GamePlay::UpdateTimer()
 void GamePlay::UpdateWindowTitle()
 {
 	std::string titleStr;
-	titleStr = "Soft Renderer - By Jige  FPS:" + std::to_string(myTimer.GetFPS());
+	titleStr = "Soft Renderer - By Jige  FPS:" + std::to_string(myTimer.GetFPS()) +"angleY"+std::to_string(myCamera.GetRotationY_Yaw());
 	myRenderer.SetWindowTitle(titleStr.c_str());
 }
 

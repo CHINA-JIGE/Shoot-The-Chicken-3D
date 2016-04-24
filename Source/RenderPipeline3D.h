@@ -53,11 +53,15 @@ private:
 
 	void VertexShader(Vertex& inVertex);
 
-	std::vector<VertexShaderOutput_Vertex>*	m_pVB_HomoSpace;//vertices in homogeous clipping space
+	std::vector<VertexShaderOutput_Vertex>*		m_pVB_HomoSpace;//vertices in homogeous clipping space
 
-	void	HomoSpaceClipping();//polygon clipping in homo space
+	void	HomoSpaceClipping(std::vector<UINT>* const pIB);//polygon clipping in homo space
 
-	void Rasterize(UINT idx1,UINT idx2,UINT idx3);//rasterize triangles to get discrete pixels
+	std::vector<VertexShaderOutput_Vertex>*	 m_pVB_HomoSpace_Clipped;//after clipping
+
+	std::vector<UINT>*										m_pIB_HomoSpace_Clipped;
+
+	void Rasterize();//rasterize triangles to get discrete pixels
 
 	std::vector<RasterizedFragment>*		m_pVB_Rasterized;//vertices attribute have been interpolated
 
