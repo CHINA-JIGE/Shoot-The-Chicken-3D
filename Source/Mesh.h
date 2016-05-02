@@ -19,7 +19,7 @@
 
 		void CreateBox(float fWidth, float fHeight, float fDepth, UINT iDepthStep = 3, UINT iWidthStep = 3, UINT iHeightStep = 3);
 
-		void	CreateSphere(float fRadius, UINT iColumnCount = 20, UINT iRingCount = 20);
+		void	CreateSphere(float fRadius, UINT iColumnCount = 20, UINT iRingCount = 20,BOOL bInvertNormal=FALSE);
 
 		void CreateCylinder(float fRadius, float fHeight, UINT iColumnCount = 40, UINT iRingCount = 8);
 
@@ -53,9 +53,7 @@
 
 		void		GetVertexBuffer(std::vector<Vertex>& outBuff);
 
-		VECTOR3		ComputeBoundingBoxMax();
-
-		VECTOR3		ComputeBoundingBoxMin();
+		BOUNDINGBOX ComputeBoundingBox();
 
 	private:
 
@@ -77,8 +75,7 @@
 		IGeometryMeshGenerator mMeshGenerator;
 
 		VECTOR3							mPosition;
-		VECTOR3							mBoundingBox_Min;
-		VECTOR3							mBoundingBox_Max;
+		BOUNDINGBOX				mBoundingBox;
 
 		float									mRotationX_Pitch;
 		float									mRotationY_Yaw;

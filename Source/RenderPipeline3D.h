@@ -11,6 +11,7 @@ public:
 
 	void		DrawTriangles(RenderPipeline_DrawCallData& drawCallData);
 
+	void		DrawPoint(RenderPipeline_DrawCallData& drawCallData);
 
 	//so many SET functions provide interface to modify this render state machine
 	void		SetWorldMatrix(const MATRIX4x4& mat);
@@ -20,6 +21,8 @@ public:
 	void		SetProjMatrix(const MATRIX4x4& mat);
 
 	void		SetCameraPos(const VECTOR3& vec);
+
+	void		SetLightingEnabled(BOOL enabled=TRUE);
 
 	void		SetLight(UINT index,const DirectionalLight& light);
 
@@ -44,6 +47,7 @@ private:
 	float						mTexCoord_offsetY;
 	float						mTexCoord_scale;
 	static const UINT	c_maxLightCount = 8;
+	BOOL					mLightEnabled;
 	DirectionalLight	mDirLight[c_maxLightCount];//"IsEnabled"control whether to enable a light in one draw call
 	Material				mMaterial;//current using material
 	IPicture*				m_pTexture;//current using texture
@@ -51,21 +55,27 @@ private:
 
 	//------------------pipeline stage-----------------
 
-	void VertexShader(Vertex& inVertex);
+	void VertexShader(Vertex& inVertex);//draw triangles & points share one VS
 
 	std::vector<VertexShaderOutput_Vertex>*		m_pVB_HomoSpace;//vertices in homogeous clipping space
 
-	void	HomoSpaceClipping(std::vector<UINT>* const pIB);//polygon clipping in homo space
+	void	HomoSpaceClipping_Triangles(std::vector<UINT>* const pIB);//polygon clipping in homo space
+
+	void	HomoSpaceClipping_Points(std::vector<UINT>* pIB);
 
 	std::vector<VertexShaderOutput_Vertex>*	 m_pVB_HomoSpace_Clipped;//after clipping
 
 	std::vector<UINT>*										m_pIB_HomoSpace_Clipped;
 
-	void Rasterize();//rasterize triangles to get discrete pixels
+	void RasterizeTriangles();//rasterize triangles to get discrete pixels
+
+	void	RasterizePoints();
 
 	std::vector<RasterizedFragment>*		m_pVB_Rasterized;//vertices attribute have been interpolated
 
-	void PixelShader(RasterizedFragment& inVertex);//compute colors of each rasterized "pixel"
+	void	PixelShader_DrawTriangles(RasterizedFragment& inVertex);//compute colors of each rasterized "pixel"
+
+	void	PixelShader_DrawPoints(RasterizedFragment& inVertex);
 
 	std::vector<COLOR3>*		m_pOutColorBuffer;//output color buffer
 

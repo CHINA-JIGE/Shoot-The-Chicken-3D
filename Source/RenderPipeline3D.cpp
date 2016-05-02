@@ -25,7 +25,7 @@ IRenderPipeline3D::IRenderPipeline3D()
 	mTexCoord_offsetY=0.0f;
 	mTexCoord_scale=1.0f;
 	mCameraPos = { 0,0,0 };
-
+	mLightEnabled = TRUE;
 	for (UINT i = 0;i < c_maxLightCount;++i)memset(&mDirLight[i],0,sizeof(DirectionalLight));
 }
 
@@ -87,17 +87,60 @@ void IRenderPipeline3D::DrawTriangles(RenderPipeline_DrawCallData & drawCallData
 	}
 
 	//--------------------HOMO SPACE CLIPPING-------------------
-	HomoSpaceClipping(pIB);
+	HomoSpaceClipping_Triangles(pIB);
 
 	//------------------------------RASTERIZER-----------------------------
-	Rasterize();
+	RasterizeTriangles();
 
 	//------------------------------PIXEL SHADER-----------------------------
 	for (auto& rasterizedVertex: *m_pVB_Rasterized)
 	{
-		PixelShader(rasterizedVertex);
+		PixelShader_DrawTriangles(rasterizedVertex);
 	}
 
+}
+
+void IRenderPipeline3D::DrawPoint(RenderPipeline_DrawCallData & drawCallData)
+{
+	//clear the last Draw Call ruins...
+	m_pVB_HomoSpace->clear();
+	m_pVB_HomoSpace_Clipped->clear();
+	m_pIB_HomoSpace_Clipped->clear();
+	m_pVB_Rasterized->clear();
+
+	//..............
+	UINT offset = drawCallData.offset;
+	UINT vCount = drawCallData.VertexCount;
+	auto const pVB = drawCallData.pVertexBuffer;//the data the ptr point to can't be modified
+	auto const pIB = drawCallData.pIndexBuffer;
+
+	//reserve space for vector, because they need to push_back later
+	m_pVB_HomoSpace->reserve(vCount);
+	m_pVB_Rasterized->reserve(mBufferWidth*mBufferHeight / 3);// /3 is approximate estimation
+
+	//------------------------------VERTEX SHADER-----------------------------
+	//---Point drawing use the same VS as triangle drawing
+	//in case vertex index is invalid
+	for (UINT i = offset;i < vCount;++i)
+	{
+
+		Vertex& currVertex = pVB->at(offset + i);
+
+		//Use Vertex Shader To Deal with Every vertex
+		VertexShader(currVertex);
+	}
+
+	//--------------------HOMO SPACE CLIPPING-------------------
+	HomoSpaceClipping_Points(pIB);
+
+	//------------------------------RASTERIZER-----------------------------
+	RasterizePoints();
+
+	//------------------------------PIXEL SHADER-----------------------------
+	for (auto& rasterizedVertex: *m_pVB_Rasterized)
+	{
+		PixelShader_DrawPoints(rasterizedVertex);
+	}
 }
 
 void IRenderPipeline3D::SetWorldMatrix(const MATRIX4x4 & mat)
@@ -118,6 +161,11 @@ void IRenderPipeline3D::SetProjMatrix(const MATRIX4x4 & mat)
 void IRenderPipeline3D::SetCameraPos(const VECTOR3 & vec)
 {
 	mCameraPos = vec;
+}
+
+void IRenderPipeline3D::SetLightingEnabled(BOOL enabled)
+{
+	mLightEnabled = enabled;
 }
 
 void IRenderPipeline3D::SetLight(UINT index, const DirectionalLight & light)
@@ -185,13 +233,21 @@ void IRenderPipeline3D::VertexShader(Vertex& inVertex)
 		inVertex.texcoord.y*mTexCoord_scale + mTexCoord_offsetY);
 
 
-	//-------Should I Perform Gouraud Shading??Yes...
-	outVertex.color = mFunction_VertexLighting(inVertex.pos,inVertex.normal);
+	//...Vertex Light or directly use vertex color
+	if (mLightEnabled)
+	{
+		outVertex.color = mFunction_VertexLighting(inVertex.pos, inVertex.normal);
+	}
+	else
+	{
+		outVertex.color = inVertex.color;
+	}
 
 	m_pVB_HomoSpace->push_back(outVertex);
 }
 
-void IRenderPipeline3D::HomoSpaceClipping(std::vector<UINT>* const pIB)
+//Draw Triangles
+void IRenderPipeline3D::HomoSpaceClipping_Triangles(std::vector<UINT>* const pIB)
 {
 	//copy VB/IB into new list, then erase (or std::remove() );
 	*m_pIB_HomoSpace_Clipped = (*pIB);
@@ -245,7 +301,44 @@ void IRenderPipeline3D::HomoSpaceClipping(std::vector<UINT>* const pIB)
 	}
 }
 
-void IRenderPipeline3D::Rasterize()
+void IRenderPipeline3D::HomoSpaceClipping_Points(std::vector<UINT>* pIB)
+{
+		//copy VB/IB into new list, then erase (or std::remove() );
+	*m_pIB_HomoSpace_Clipped = (*pIB);
+	*m_pVB_HomoSpace_Clipped = std::move(*m_pVB_HomoSpace);
+
+	UINT i = 0;
+	while(i < m_pIB_HomoSpace_Clipped->size())
+	{
+		UINT idx = m_pIB_HomoSpace_Clipped->at(i);
+
+		//refer to vertex
+		auto const v1 = m_pVB_HomoSpace_Clipped->at(idx);
+
+		bool bOutOfBox = v1.posH.x <= -1.0f || v1.posH.x >= 1.0f ||
+			v1.posH.y <= -1.0f || v1.posH.y >= 1.0f ||
+			v1.posH.z <= 0.0f || v1.posH.z >= 1.0f;
+
+		//violently and roughly clip triangles ::: only when 3 vertices out of boundary
+		//will we exclude this triangle
+		//THIS IS NOT A COMPLETE CORRECT SOLUTION, BUT USABLE
+
+		if (bOutOfBox)
+		{
+			//swap the clipped index to the tail
+			UINT rubbishFragmentStartIndex = m_pIB_HomoSpace_Clipped->size() - 1;
+			std::swap(m_pIB_HomoSpace_Clipped->at(i), m_pIB_HomoSpace_Clipped->at(rubbishFragmentStartIndex));
+			//then pop back the rubbish indices
+			m_pIB_HomoSpace_Clipped->pop_back();
+		}
+		else
+		{
+			++i;
+		}
+	}
+}
+
+void IRenderPipeline3D::RasterizeTriangles()
 {
 	for (UINT tri = 0;tri < m_pIB_HomoSpace_Clipped->size() - 2;tri += 3)
 	{
@@ -351,7 +444,51 @@ void IRenderPipeline3D::Rasterize()
 	}//for each homogeneous clip space triangle
 }
 
-void IRenderPipeline3D::PixelShader(RasterizedFragment& inVertex)
+void IRenderPipeline3D::RasterizePoints()
+{
+	for (UINT i = 0;i < m_pIB_HomoSpace_Clipped->size() ;++i)
+	{
+		RasterizedFragment outVertex;
+
+
+		//get vertex
+		UINT idx = m_pIB_HomoSpace_Clipped->at(i);
+		const auto& v1 = m_pVB_HomoSpace_Clipped->at(idx);
+
+		//convert to pixel space
+		auto convertToPixelSpace = [&](const VertexShaderOutput_Vertex& v, VECTOR2& outV)
+		{
+			outV.x = float(mBufferWidth) * (v.posH.x + 1.0f) / 2.0f;
+			outV.y = float(mBufferHeight) * (-v.posH.y + 1.0f) / 2.0f;
+		};
+
+		VECTOR2 v1_pixel;//pixel space
+		convertToPixelSpace(v1, v1_pixel);
+
+		//clip in scr space 
+		if (v1_pixel.x >= mBufferWidth || v1_pixel.y >= mBufferHeight)
+		{
+			goto label_nextPixel;
+		}
+
+		//perform depth test
+		float depth = v1.posH.z;
+		if (mFunction_DepthTest(UINT(v1_pixel.x), UINT(v1_pixel.y), depth) == FALSE)goto label_nextPixel;
+
+		//I will use normal bilinear interpolation to see the result first
+		outVertex.pixelX = UINT(v1_pixel.x);
+		outVertex.pixelY = UINT(v1_pixel.y);
+
+		//perspective correct interpolation
+		outVertex.color = v1.color;
+		outVertex.texcoord = v1.texcoord;
+
+		m_pVB_Rasterized->push_back(outVertex);
+		label_nextPixel:;
+	}//for each homogeneous space point
+}
+
+void IRenderPipeline3D::PixelShader_DrawTriangles(RasterizedFragment& inVertex)
 {
 	COLOR3 outColor;
 	//if texture mapping is disabled, (1,1,1) will be returned to apply multiplication
@@ -359,6 +496,15 @@ void IRenderPipeline3D::PixelShader(RasterizedFragment& inVertex)
 	outColor =COLOR3(inVertex.color.x, inVertex.color.y, inVertex.color.z) * texSampleColor;
 	m_pOutColorBuffer->at(inVertex.pixelY*mBufferWidth + inVertex.pixelX) = outColor;
 }
+
+void IRenderPipeline3D::PixelShader_DrawPoints(RasterizedFragment & inVertex)
+{
+	COLOR3 outColor;
+	outColor = COLOR3(inVertex.color.x, inVertex.color.y, inVertex.color.z);
+	m_pOutColorBuffer->at(inVertex.pixelY*mBufferWidth + inVertex.pixelX) = outColor;
+}
+
+//Draw Points
 
 /************************************************************
 						
@@ -577,7 +723,7 @@ inline VECTOR3 IRenderPipeline3D::mFunction_SampleTexture(float x, float y)
 	//wrap-mode
 	UINT width = m_pTexture->GetWidth();
 	UINT height = m_pTexture->GetHeight();
-	x = abs(width * float(x - UINT(x)));
-	y = abs(height * float(y - UINT(y)));
-	return m_pTexture->GetPixel(UINT(x), UINT(y));
+	float pixelX= abs(width * (float(x - UINT(x))));
+	float pixelY = abs(height * (float(y - UINT(y))));
+	return m_pTexture->GetPixel(UINT(pixelX), UINT(pixelY));
 }

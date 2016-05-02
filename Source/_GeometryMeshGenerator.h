@@ -8,7 +8,7 @@
 
 		void CreateBox(float fWidth, float fHeight, float fDepth, UINT iDepthStep, UINT iWidthStep, UINT iHeightStep, std::vector<Vertex>& outVerticeList, std::vector<UINT>& outIndicesList);
 
-		void	CreateSphere(float fRadius, UINT iColumnCount, UINT iRingCount, std::vector<Vertex>& outVerticeList, std::vector<UINT>& outIndicesList);
+		void	CreateSphere(float fRadius, UINT iColumnCount, UINT iRingCount, BOOL bInvertNormal, std::vector<Vertex>& outVerticeList, std::vector<UINT>& outIndicesList);
 
 		void CreateCylinder(float fRadius, float fHeight, UINT iColumnCount, UINT iRingCount, std::vector<Vertex>& outVerticeList, std::vector<UINT>& outIndicesList);
 

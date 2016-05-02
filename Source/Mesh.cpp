@@ -64,7 +64,7 @@ void IMesh::CreateBox(float fWidth,float fHeight,float fDepth,UINT iDepthStep,UI
 	mMeshGenerator.CreateBox(fWidth, fHeight, fDepth, iDepthStep, iWidthStep, iHeightStep, *m_pVB_Mem, *m_pIB_Mem);
 }
 
-void	IMesh::CreateSphere(float fRadius,UINT iColumnCount, UINT iRingCount)
+void	IMesh::CreateSphere(float fRadius,UINT iColumnCount, UINT iRingCount, BOOL bInvertNormal)
 {
 	//check if the input "Step Count" is illegal
 	if(iColumnCount <= 3)	{iColumnCount =3;}
@@ -74,7 +74,7 @@ void	IMesh::CreateSphere(float fRadius,UINT iColumnCount, UINT iRingCount)
 	m_pIB_Mem->clear();
 
 	//mesh creation delegate to MeshGenerator
-	mMeshGenerator.CreateSphere(fRadius, iColumnCount, iRingCount, *m_pVB_Mem, *m_pIB_Mem);
+	mMeshGenerator.CreateSphere(fRadius, iColumnCount, iRingCount,bInvertNormal, *m_pVB_Mem, *m_pIB_Mem);
 
 };
 
@@ -119,9 +119,9 @@ BOOL IMesh::LoadFile_STL(std::string pFilePath)
 
 	//计算包围盒中心点
 	tmpBoundingBoxCenter = VECTOR3(
-		(mBoundingBox_Max.x + mBoundingBox_Min.x) / 2.0f,
-		(mBoundingBox_Max.y + mBoundingBox_Min.y) / 2.0f,
-		(mBoundingBox_Max.z + mBoundingBox_Min.z) / 2.0f);
+		(mBoundingBox.max.x + mBoundingBox.min.x) / 2.0f,
+		(mBoundingBox.max.y + mBoundingBox.min.y) / 2.0f,
+		(mBoundingBox.max.z + mBoundingBox.min.z) / 2.0f);
 
 
 
@@ -210,7 +210,7 @@ void IMesh::SetRotationZ_Roll(float angleZ)
 	mRotationZ_Roll = angleZ;
 }
 
-void IMesh::GetWorldMatrix(MATRIX4x4 & outMat)
+void IMesh::GetWorldMatrix(MATRIX4x4 & outMat) 
 {
 	mFunction_UpdateWorldMatrix();
 	outMat = mMatrixWorld;
@@ -237,16 +237,10 @@ void IMesh::GetVertexBuffer(std::vector<Vertex>& outBuff)
 	outBuff.assign(iterBegin,iterLast);
 }
 
-VECTOR3 IMesh::ComputeBoundingBoxMax()
+BOUNDINGBOX IMesh::ComputeBoundingBox()
 {
 	mFunction_ComputeBoundingBox();
-	return mBoundingBox_Max;
-};
-
-VECTOR3 IMesh::ComputeBoundingBoxMin()
-{
-	mFunction_ComputeBoundingBox();
-	return mBoundingBox_Min;
+	return mBoundingBox;
 }
 
 
@@ -286,15 +280,17 @@ void IMesh::mFunction_ComputeBoundingBox()
 	{
 		//N_DEFAULT_VERTEX
 		tmpV = m_pVB_Mem->at(i).pos;
-		if (tmpV.x <( mBoundingBox_Min.x)) { mBoundingBox_Min.x = tmpV.x; }
-		if (tmpV.y <(mBoundingBox_Min.y)) { mBoundingBox_Min.y = tmpV.y; }
-		if (tmpV.z <(mBoundingBox_Min.z)) { mBoundingBox_Min.z = tmpV.z; }
+		if (tmpV.x <(mBoundingBox.min.x)) { mBoundingBox.min.x = tmpV.x; }
+		if (tmpV.y <(mBoundingBox.min.y)) { mBoundingBox.min.y = tmpV.y; }
+		if (tmpV.z <(mBoundingBox.min.z)) { mBoundingBox.min.z = tmpV.z; }
 
-		if (tmpV.x >(mBoundingBox_Max.x)) { mBoundingBox_Max.x = tmpV.x; }
-		if (tmpV.y >(mBoundingBox_Max.y)) { mBoundingBox_Max.y = tmpV.y; }
-		if (tmpV.z >(mBoundingBox_Max.z)) { mBoundingBox_Max.z = tmpV.z; }
+		if (tmpV.x >(mBoundingBox.max.x)) { mBoundingBox.max.x = tmpV.x; }
+		if (tmpV.y >(mBoundingBox.max.y)) { mBoundingBox.max.y = tmpV.y; }
+		if (tmpV.z >(mBoundingBox.max.z)) { mBoundingBox.max.z = tmpV.z; }
 	}
 
+	mBoundingBox.max += mPosition;
+	mBoundingBox.min += mPosition;
 }
 
 void IMesh::mFunction_ComputeBoundingBox(std::vector<VECTOR3>* pVertexBuffer)
@@ -307,15 +303,17 @@ void IMesh::mFunction_ComputeBoundingBox(std::vector<VECTOR3>* pVertexBuffer)
 	for (i = 0;i < pVertexBuffer->size();i++)
 	{
 		tmpV = pVertexBuffer->at(i);
-		if (tmpV.x <(mBoundingBox_Min.x)) { mBoundingBox_Min.x = tmpV.x; }
-		if (tmpV.y <(mBoundingBox_Min.y)) { mBoundingBox_Min.y = tmpV.y; }
-		if (tmpV.z <(mBoundingBox_Min.z)) { mBoundingBox_Min.z = tmpV.z; }
+		if (tmpV.x <(mBoundingBox.min.x)) { mBoundingBox.min.x = tmpV.x; }
+		if (tmpV.y <(mBoundingBox.min.y)) { mBoundingBox.min.y = tmpV.y; }
+		if (tmpV.z <(mBoundingBox.min.z)) { mBoundingBox.min.z = tmpV.z; }
 
-		if (tmpV.x >(mBoundingBox_Max.x)) { mBoundingBox_Max.x = tmpV.x; }
-		if (tmpV.y >(mBoundingBox_Max.y)) { mBoundingBox_Max.y = tmpV.y; }
-		if (tmpV.z >(mBoundingBox_Max.z)) { mBoundingBox_Max.z = tmpV.z; }
+		if (tmpV.x >(mBoundingBox.max.x)) { mBoundingBox.max.x = tmpV.x; }
+		if (tmpV.y >(mBoundingBox.max.y)) { mBoundingBox.max.y = tmpV.y; }
+		if (tmpV.z >(mBoundingBox.max.z)) { mBoundingBox.max.z = tmpV.z; }
 	}
 
+	mBoundingBox.max += mPosition;
+	mBoundingBox.min += mPosition;
 }
 
 inline VECTOR2 IMesh::mFunction_ComputeTexCoord_SphericalWrap(VECTOR3 vBoxCenter, VECTOR3 vPoint)

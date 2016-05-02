@@ -21,13 +21,15 @@ using namespace Math;
 
 		void				SetLookAt(float x, float y, float z);//要更新旋转角
 
-		VECTOR3	GetLookAt();
+		VECTOR3		GetLookAt();
 
 		void				SetPosition(VECTOR3 vPos);
 
 		void				SetPosition(float x, float y, float z);
 
-		VECTOR3	GetPosition();
+		VECTOR3		GetPosition();
+
+		VECTOR3		GetDirection();
 
 		void				Move(VECTOR3 vRelativePos);//pos and lookat
 

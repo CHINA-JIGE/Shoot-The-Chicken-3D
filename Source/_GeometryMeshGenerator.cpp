@@ -121,7 +121,7 @@ void IGeometryMeshGenerator::CreateBox(float fWidth, float fHeight, float fDepth
 		outIndicesList);
 }
 
-void IGeometryMeshGenerator::CreateSphere(float fRadius, UINT iColumnCount, UINT iRingCount, std::vector<Vertex>& outVerticeList, std::vector<UINT>& outIndicesList)
+void IGeometryMeshGenerator::CreateSphere(float fRadius, UINT iColumnCount, UINT iRingCount, BOOL bInvertNormal, std::vector<Vertex>& outVerticeList, std::vector<UINT>& outIndicesList)
 {
 
 
@@ -190,6 +190,7 @@ void IGeometryMeshGenerator::CreateSphere(float fRadius, UINT iColumnCount, UINT
 		tmpCompleteV.normal		= VECTOR3(tmpV[i].x/fRadius,tmpV[i].y/fRadius,tmpV[i].z/fRadius);
 		tmpCompleteV.color			= 	VECTOR4(tmpV[i].x/fRadius,tmpV[i].y/fRadius,tmpV[i].z/fRadius,1.0f);
 		tmpCompleteV.texcoord	= tmpTexCoord[i];
+		if (bInvertNormal == TRUE)tmpCompleteV.normal = tmpCompleteV.normal*(-1);
 		outVerticeList.push_back(tmpCompleteV);
 	}
 

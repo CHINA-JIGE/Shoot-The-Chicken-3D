@@ -21,6 +21,8 @@ public:
 
 	void		RenderMesh(IMesh& mesh);
 
+	void		RenderPointCollection(IPointCollection& collection);
+
 	BOOL	DrawPicture(IPicture& pic, UINT x1, UINT y1, UINT x2, UINT y2);
 
 	void		DrawLine(COLOR3 color, UINT x1, UINT y1, UINT x2, UINT y2);
@@ -47,9 +49,9 @@ private:
 
 	DWORD	mBufferWidth;
 	DWORD	mBufferHeight;
-
 	HANDLE	m_hScreenOutput;
 	HANDLE	m_hScreenBuffer;
+	std::string* m_pConsoleWindowTitle;
 
 	ICamera*						m_pCamera;
 

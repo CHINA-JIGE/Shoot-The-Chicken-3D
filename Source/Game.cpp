@@ -1,87 +1,105 @@
 
-/***********************************************************************
-
-                           .cpp£ºGame Play
-
-			Desc : Implementation of GamePlays
-
-************************************************************************/
-
-
 #include "Game.h"
 
 using namespace GamePlay;
 
 namespace GamePlay
 {
-	IRenderer				myRenderer;
-	ITimer					myTimer(TIMER_TIMEUNIT_MILLISECOND);
-	ICamera				myCamera;
+	IRenderer				gRenderer;
+	ITimer					gTimer(TIMER_TIMEUNIT_MILLISECOND);
+	ICamera				gCamera;
+	IMainGame			gMainGame;
+	GameState			gGameState;
 
-	namespace Res
+}
+
+void GamePlay::InitGlobal()
+{
+	gGameState = GameState::GameState_StartAnimation;
+	gRenderer.Init(250, 100);
+	gRenderer.SetWindowTitle("Console Soft Renderer - By Jige");
+	gRenderer.SetCamera(gCamera);
+
+}
+
+void GamePlay::GameStateSelector()
+{
+	switch (UINT(gGameState))
 	{
-		Material myDefaultMaterial;
-		IPicture  myTestPic;
-		IMesh	  myModel1;
-		DirectionalLight myLight1;
+	case GameState::GameState_StartAnimation:
+		StartAnimation();
+		break;
+
+	case GameState::GameState_StartMenu:
+		StartMenu();
+		break;
+
+	case GameState::GameState_ChooseSceneMenu:
+		ChooseSceneMenu();
+		break;
+
+	case GameState::GameState_MainGame:
+		MainGame();
+		break;
+
+	case GameState::GameState_PauseMenu:
+		PauseMenu();
+		break;
+
+	default:
+		std::terminate();
+		break;
 	}
 }
 
 
-void GamePlay::Init()
+void GamePlay::StartAnimation()
 {
-	myRenderer.Init(250,100);
-	myRenderer.SetWindowTitle("Console Soft Renderer - By Jige");
-	myRenderer.SetCamera(myCamera);
-
-	//------------------CAMERA--------------------
-	myCamera.SetPosition(0, 100.0f, 200.0f);
-	myCamera.SetLookAt(0, 0, 0);
-	myCamera.SetViewAngle(Math::CONST_PI / 2.0f, 2.5f);
-	myCamera.SetViewFrustumPlane(1.0f, 500.0f);
-
-	//------------------Init Art Resources------------------
-	Res::myDefaultMaterial.ambient = { 0.5f,0.5f,0.5f };
-	Res::myDefaultMaterial.diffuse = { 1.0f,1.0f,1.0f };
-	Res::myDefaultMaterial.specular = { 1.0f,1.0f,1.0f };
-	Res::myDefaultMaterial.specularSmoothLevel = 20;
-	Res::myTestPic.LoadPPM("Media/earth.ppm");
-	//Res::myModel1.LoadFile_OBJ("Media/teapot.obj");
-	Res::myModel1.CreateSphere(100.0f);
-	Res::myModel1.SetPosition(0, 0, 0);
-	Res::myModel1.SetMaterial(Res::myDefaultMaterial);
-	Res::myModel1.SetTexture(&Res::myTestPic);
-
-	//-----------------Lights----------------------
-	Res::myLight1.mAmbientColor = { 1.0f,1.0f,1.0f };
-	Res::myLight1.mDiffuseColor = { 1.0f,1.0f,1.0f };
-	Res::myLight1.mDiffuseIntensity =1.0f;
-	Res::myLight1.mDirection = { 1.0f,-1.0f,1.0f };
-	Res::myLight1.mIsEnabled = TRUE;
-	Res::myLight1.mSpecularColor = { 1.0f,1.0f,1.0f };
-	Res::myLight1.mSpecularIntensity = 1.2f;
-	myRenderer.SetLight(0, Res::myLight1);
-
-	//-----------------Init Cursor--------------------
-	::SetCursorPos(0, 0);
+	gGameState = GameState::GameState_StartMenu;
 }
 
-void GamePlay::UpdateTimer()
+void GamePlay::StartMenu()
 {
-	myTimer.NextTick();
+	gMainGame.Init();
+	gGameState = GameState::GameState_MainGame;
+
+}
+
+void GamePlay::MainGame()
+{
+	gMainGame.UpdateLogic();
+	gMainGame.Render();
+}
+
+void	GamePlay::PauseMenu()
+{
+
+}
+
+void GamePlay::ChooseSceneMenu()
+{
+}
+
+
+void GamePlay::UpdateGlobalTimer()
+{
+	gTimer.NextTick();
 }
 
 void GamePlay::UpdateWindowTitle()
 {
 	std::string titleStr;
-	titleStr = "Soft Renderer - By Jige  FPS:" + std::to_string(myTimer.GetFPS()) +"angleY"+std::to_string(myCamera.GetRotationY_Yaw());
-	myRenderer.SetWindowTitle(titleStr.c_str());
+	titleStr = "Soft Renderer - By Jige  FPS:" + std::to_string(gTimer.GetFPS());
+	gRenderer.SetWindowTitle(titleStr.c_str());
 }
 
+/*
 void GamePlay::MouseAndKeyBoradProcess()
 {
 	//--------------------------keyboard------------------------------
-	float timeElapsed = float(myTimer.GetInterval());
+	float timeElapsed = Clamp(float(myTimer.GetInterval()),0,100.0f);
+
+	VECTOR2 moveVector = { 0,0 };
 	if (IS_KEY_DOWN('A'))
 	{
 		myCamera.fps_MoveRight(-0.05f*timeElapsed);
@@ -98,14 +116,8 @@ void GamePlay::MouseAndKeyBoradProcess()
 	{
 		myCamera.fps_MoveForward(-0.05f*timeElapsed);
 	}
-	if (IS_KEY_DOWN(VK_SPACE))
-	{
-		myCamera.fps_MoveUp(0.05f*timeElapsed);
-	}
-	if (IS_KEY_DOWN(VK_LCONTROL))
-	{
-		myCamera.fps_MoveUp(-0.05f*timeElapsed);
-	}
+
+
 
 	//-------------------------------cursor movement----------------------------------
 	static POINT lastCursorPos = { 0,0 };
@@ -122,7 +134,7 @@ void GamePlay::MouseAndKeyBoradProcess()
 		lastCursorPos = { 0,currentCursorPos.y };
 		currentCursorPos = lastCursorPos;
 	}
-	else 
+	else
 	{
 		if (currentCursorPos.x == 0)
 		{
@@ -132,7 +144,7 @@ void GamePlay::MouseAndKeyBoradProcess()
 		}
 	}
 
-	if (currentCursorPos.y == scrHeight-1)
+	if (currentCursorPos.y == scrHeight - 1)
 	{
 		::SetCursorPos(currentCursorPos.x, 0);
 		lastCursorPos = { currentCursorPos.x,0 };
@@ -155,17 +167,4 @@ void GamePlay::MouseAndKeyBoradProcess()
 	myCamera.RotateX_Pitch(0.0005f* cursorDeltaY*timeElapsed);
 
 }
-
-void GamePlay::Render()
-{
-	myRenderer.Clear(COLOR3(0, 0, 0), TRUE);
-	//myRenderer.DrawPicture(Res::myTestPic, 0, 0, 250,100);
-	//myRenderer.DrawLine(COLOR3(1.0f, 0, 0), 0, 0, 250, 100);
-	//myRenderer.DrawLine(COLOR3(0, 1.0f, 0),20, 80, 200, 20);
-	//myRenderer.DrawLine(COLOR3(0, 0, 1.0f), 30, 0, 300, 70);
-	myRenderer.RenderMesh(Res::myModel1);
-	/*static float tmpF = 0.0f;
-	tmpF += 0.05f;
-	myRenderer.DrawTriangle(COLOR3(255, 0, 255), VECTOR2(0,0), VECTOR2(200.0f,0.0f), VECTOR2(255.0f,100.0f));*/
-	myRenderer.Present();
-}
+*/

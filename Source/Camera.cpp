@@ -73,6 +73,10 @@ void	ICamera::SetPosition(float x,float y,float z)
 VECTOR3 ICamera::GetPosition()
 {
 	return mPosition;
+}
+VECTOR3 ICamera::GetDirection()
+{
+	return mLookat - mPosition;
 };
 
 void	ICamera::Move(VECTOR3 vRelativePos)
@@ -354,8 +358,8 @@ void	ICamera::mFunction_UpdateDirection()
 	//要更新Lookat
 	float tmpDirectionLength = Vec3_Length(mDirection);
 	//直接用三角函数表达Direction	3dscanner的世界变换一章里面有
-	mDirection.x =- tmpDirectionLength* sin(mRotateY_Yaw)* cos(mRotateX_Pitch);
+	mDirection.x = tmpDirectionLength* sin(mRotateY_Yaw)* cos(mRotateX_Pitch);
 	mDirection.z =tmpDirectionLength* cos(mRotateY_Yaw)*cos(mRotateX_Pitch);
-	mDirection.y =tmpDirectionLength* sin(mRotateX_Pitch);
+	mDirection.y =-tmpDirectionLength* sin(mRotateX_Pitch);
 	mLookat=mPosition+mDirection;
 };

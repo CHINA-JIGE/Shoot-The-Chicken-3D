@@ -2,18 +2,17 @@
 #include "MyConsoleEngine.h"
 #include "Game.h"
 
-ITimer myTimer(TIMER_TIMEUNIT_MILLISECOND);
-
-
 int main() 
 {
-	GamePlay::Init();
+	GamePlay::InitGlobal();
 
 	while (1)
 	{
 		GamePlay::UpdateWindowTitle();
-		GamePlay::UpdateTimer();
-		GamePlay::MouseAndKeyBoradProcess();
-		GamePlay::Render();
+		GamePlay::UpdateGlobalTimer();
+		//a state machine to drive different scene
+		//std::terminate() will be called when quit.
+		GamePlay::GameStateSelector();
 	}
+	return 0;
 }

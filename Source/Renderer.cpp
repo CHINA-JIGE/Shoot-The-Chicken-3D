@@ -11,6 +11,7 @@ IRenderer::IRenderer()
 {
 	for (UINT i = 0;i < 8;i++)m_pPalette[i] = new std::vector<Renderer_Color3ToConsolePixel>;
 	mFunction_GeneratePalette();
+	m_pConsoleWindowTitle = new std::string;
 }
 
 IRenderer::~IRenderer()
@@ -286,6 +287,7 @@ void IRenderer::RenderMesh(IMesh& mesh)
 	IRenderPipeline3D::SetCameraPos(m_pCamera->GetPosition());
 	IRenderPipeline3D::SetMaterial(mesh.mMaterial);
 	IRenderPipeline3D::SetTexture(mesh.m_pTexture);//nullptr is OK
+	IRenderPipeline3D::SetLightingEnabled(TRUE);
 
 	RenderPipeline_DrawCallData drawCallData;
 	drawCallData.offset = 0;
@@ -296,6 +298,33 @@ void IRenderer::RenderMesh(IMesh& mesh)
 	//Pipeline will directly draw to ColorBuffer and ZBuffer......
 	IRenderPipeline3D::DrawTriangles(drawCallData);
 
+}
+
+void IRenderer::RenderPointCollection(IPointCollection & collection)
+{
+	if (m_pCamera == nullptr)return;
+
+	//set WVP matrices
+	MATRIX4x4 matW, matV, matP;
+	matW.Identity();
+	m_pCamera->GetViewMatrix(matV);
+	m_pCamera->GetProjMatrix(matP);
+
+	IRenderPipeline3D::SetWorldMatrix(matW);
+	IRenderPipeline3D::SetProjMatrix(matP);
+	IRenderPipeline3D::SetViewMatrix(matV);
+	IRenderPipeline3D::SetCameraPos(m_pCamera->GetPosition());
+	IRenderPipeline3D::SetTexture(nullptr);//nullptr is OK
+	IRenderPipeline3D::SetLightingEnabled(FALSE);
+
+	RenderPipeline_DrawCallData drawCallData;
+	drawCallData.offset = 0;
+	drawCallData.pIndexBuffer = collection.m_pIB_Mem;
+	drawCallData.pVertexBuffer = collection.m_pVB_Mem;
+	drawCallData.VertexCount = collection.GetVertexCount();
+
+	//Pipeline will directly draw to ColorBuffer and ZBuffer......
+	IRenderPipeline3D::DrawPoint(drawCallData);
 }
 
 void IRenderer::Present()
@@ -330,6 +359,7 @@ void IRenderer::Present()
 void IRenderer::SetWindowTitle(const char * titleStr)
 {
 	::SetConsoleTitleA(titleStr);
+	*m_pConsoleWindowTitle = titleStr;
 }
 
 /****************************************************
@@ -471,18 +501,21 @@ void IRenderer::mFunction_AdjustWindowSize()
 	int frameX_Width = GetSystemMetrics(SM_CXFIXEDFRAME);//frame boarder thickness
 	int frameY_Height = GetSystemMetrics(SM_CYFIXEDFRAME);//frame boarder thickness
 	int frameY_Caption = GetSystemMetrics(SM_CYCAPTION);//caption thickness
+	int scrWidth = GetSystemMetrics(SM_CXSCREEN);
+	int scrHeight = GetSystemMetrics(SM_CYSCREEN);
+
+	int windowWidth = mBufferWidth*c_ConsoleCharSize + 2 * frameX_Width+20;
+	int windowHeight = mBufferHeight*c_ConsoleCharSize/c_ConsoleCharAspectRatio + frameY_Caption + frameY_Height+20;
 
 	//adjust the size of window to fit the buffer size (directly set the window pixel size)
 
-	HWND hwnd = ::GetForegroundWindow();
-	RECT windowRect;
-	::GetWindowRect(hwnd, &windowRect);
+	HWND hwnd = ::FindWindowA(NULL, m_pConsoleWindowTitle->c_str());//::GetForegroundWindow();
 	::MoveWindow(
 		hwnd,
-		windowRect.left,
-		windowRect.top,
-		mBufferWidth*c_ConsoleCharSize*2 + 2*frameX_Width,
-		mBufferHeight*c_ConsoleCharSize*2 + frameY_Caption+frameY_Height, 
+		(scrWidth-windowWidth)/2,
+		(scrHeight-windowHeight)/2,
+		windowWidth,
+		windowHeight,
 		true);
 
 }

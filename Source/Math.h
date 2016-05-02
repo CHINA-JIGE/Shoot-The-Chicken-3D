@@ -20,11 +20,20 @@ namespace Math
 			return sqrt(x*x + y*y);
 		};
 
-		void	Normalize()
+		VECTOR2&	Normalize()
 		{
 			float len = Length();
-			x /= len;
-			y /= len;
+			if (len != 0)
+			{
+				x /= len;
+				y /= len;
+			}
+			else
+			{
+				x = 0.0f;
+				y = 0.0f;
+			}
+			return *this;
 		}
 
 		BOOL	operator==(const VECTOR2& vec)
@@ -97,12 +106,20 @@ namespace Math
 			return sqrt(x*x + y*y + z*z );
 		};
 
-		void	Normalize()
+		VECTOR3&	Normalize()
 		{
 			float len = Length();
-			x /= len;
-			y /= len;
-			z /= len;
+			if (len != 0)
+			{
+				x /= len;
+				y /= len;
+				z /= len;
+			}
+			else
+			{
+				x = y = z = 0.0f;
+			}
+			return *this;
 		}
 
 
@@ -186,13 +203,21 @@ namespace Math
 			return sqrt(x*x + y*y + z*z + w*w);
 		};
 
-		void	Normalize()
+		VECTOR4&	Normalize()
 		{
 			float len = Length();
-			x /= len;
-			y /= len;
-			z /= len;
-			w /= len;
+			if (len != 0.0f)
+			{
+				x /= len;
+				y /= len;
+				z /= len;
+				w /= len;
+			}
+			else
+			{
+				x = y = z = w = 0.0f;
+			}
+			return *this;
 		}
 
 		BOOL	operator==(const VECTOR4& vec)

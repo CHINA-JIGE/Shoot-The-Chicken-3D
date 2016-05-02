@@ -110,19 +110,20 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BulletMgr.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Chicken.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="MainGameLogic.cpp" />
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PointCollection.cpp" />
+    <ClCompile Include="SceneEnvironment.cpp" />
     <ClCompile Include="_GeometryMeshGenerator.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="Picture2D.cpp" />
     <ClCompile Include="RenderPipeline3D.cpp" />
     <ClCompile Include="Math.cpp" />
     <ClCompile Include="FileLoader.cpp" />
-    <ClCompile Include="UnitTest_Mathcpp.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClCompile>
     <ClCompile Include="main.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
@@ -131,8 +132,14 @@
     <ClCompile Include="Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BulletMgr.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="Chicken.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="MainGameLogic.h" />
+    <ClInclude Include="Player.h" />
+    <ClInclude Include="PointCollection.h" />
+    <ClInclude Include="SceneEnvironment.h" />
     <ClInclude Include="_GeometryMeshGenerator.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Picture2D.h" />

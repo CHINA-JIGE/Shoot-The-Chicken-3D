@@ -20,6 +20,27 @@
     <Filter Include="源文件\Engine\_Core">
       <UniqueIdentifier>{9988b8f6-8fae-42a7-9669-73bac56fed32}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\Game\MainGame">
+      <UniqueIdentifier>{8d8f134b-9781-4ca9-8b05-2b434c3381a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Game\MainGame\GameObject">
+      <UniqueIdentifier>{da694da1-e8d9-439d-b495-5e5271cb4f71}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Game\MainGame\GameObject\Player">
+      <UniqueIdentifier>{705a5035-1f16-4ad0-96c9-0bf5712f692c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Game\MainGame\GameObject\Chicken">
+      <UniqueIdentifier>{db026836-07f3-4562-80cc-d4d7f43d4047}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Game\MainGame\GameObject\SceneEnv">
+      <UniqueIdentifier>{c0badbe8-2afc-4b72-87f0-5e91ceb23359}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Game\MainGame\GameObject\BulletMgr">
+      <UniqueIdentifier>{15673e18-1676-4ac3-8c62-330f82093213}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Game\MainGame\GameLogic">
+      <UniqueIdentifier>{cd3c90ef-64b2-4fce-8518-2541c52336ee}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -34,9 +55,6 @@
     <ClCompile Include="Timer.cpp">
       <Filter>源文件\Engine\_Core</Filter>
     </ClCompile>
-    <ClCompile Include="UnitTest_Mathcpp.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="Math.cpp">
       <Filter>源文件\Engine\_Core</Filter>
     </ClCompile>
@@ -49,14 +67,32 @@
     <ClCompile Include="FileLoader.cpp">
       <Filter>源文件\Engine\_Core</Filter>
     </ClCompile>
-    <ClCompile Include="Game.cpp">
-      <Filter>源文件\Game</Filter>
-    </ClCompile>
     <ClCompile Include="Mesh.cpp">
       <Filter>源文件\Engine\_Scene</Filter>
     </ClCompile>
     <ClCompile Include="_GeometryMeshGenerator.cpp">
       <Filter>源文件\Engine\_Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Game.cpp">
+      <Filter>源文件\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>源文件\Game\MainGame\GameObject\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Chicken.cpp">
+      <Filter>源文件\Game\MainGame\GameObject\Chicken</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneEnvironment.cpp">
+      <Filter>源文件\Game\MainGame\GameObject\SceneEnv</Filter>
+    </ClCompile>
+    <ClCompile Include="PointCollection.cpp">
+      <Filter>源文件\Engine\_Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="BulletMgr.cpp">
+      <Filter>源文件\Game\MainGame\GameObject\BulletMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="MainGameLogic.cpp">
+      <Filter>源文件\Game\MainGame\GameLogic</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -95,6 +131,24 @@
     </ClInclude>
     <ClInclude Include="MyConsoleEngine.h">
       <Filter>源文件\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>源文件\Game\MainGame\GameObject\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Chicken.h">
+      <Filter>源文件\Game\MainGame\GameObject\Chicken</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneEnvironment.h">
+      <Filter>源文件\Game\MainGame\GameObject\SceneEnv</Filter>
+    </ClInclude>
+    <ClInclude Include="PointCollection.h">
+      <Filter>源文件\Engine\_Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="BulletMgr.h">
+      <Filter>源文件\Game\MainGame\GameObject\BulletMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="MainGameLogic.h">
+      <Filter>源文件\Game\MainGame\GameLogic</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

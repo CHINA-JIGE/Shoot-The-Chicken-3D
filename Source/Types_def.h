@@ -2,7 +2,6 @@
 
 using namespace Math;
 
-
 const short c_ConsoleCharSize = 3;//size of one char (in pixels)
 
 const float c_ConsoleCharAspectRatio = 3.0f / 5.0f;//used to correct pixel scale
@@ -13,41 +12,19 @@ enum TIMER_TIMEUINT
 	TIMER_TIMEUNIT_SECOND = 1,
 };
 
-/*struct COLOR3
-{
-	COLOR3() { r = g = b = 255U; }
-	COLOR3(BYTE R, BYTE G, BYTE B) { r = R;g = G;b = B; }
-	COLOR3(const VECTOR3& color255)
-	{
-		r = BYTE(Clamp(color255.x,  0, 255.01f));
-		g = BYTE(Clamp(color255.y, 0, 255.01f));
-		b = BYTE(Clamp(color255.z, 0, 255.01f));
-	}
-
-	COLOR3& operator*=(float scale)
-	{
-		r =	BYTE(r * scale);
-		g =	BYTE(g* scale);
-		b =	BYTE(b*scale);
-		return *this;
-	};
-
-	COLOR3 operator *(float scale)
-	{
-		return COLOR3(BYTE(scale*r), BYTE(scale*g), BYTE(scale*b));
-	}
-
-	friend COLOR3 operator*(float scale, const COLOR3& color)
-	{
-		return COLOR3(BYTE(color.r*scale), BYTE(color.g*scale), BYTE(color.b*scale));
-	}
-
-	BYTE r;
-	BYTE g;
-	BYTE b;
-};*/
-
 typedef VECTOR3 COLOR3;
+
+struct BOUNDINGBOX
+{
+	BOUNDINGBOX() 
+	{
+		max = { 1,1,1 };
+		min = { 0,0,0 };
+	}
+
+	VECTOR3 max;
+	VECTOR3 min;
+};
 
 struct DirectionalLight
 {
