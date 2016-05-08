@@ -2,7 +2,9 @@
 
 namespace GamePlay
 {
-	class IPlayer
+	const float c_playerInitalHealth = 100.0f;
+
+	class IPlayer : public Base_GameObject
 	{
 	public:
 
@@ -14,6 +16,12 @@ namespace GamePlay
 
 		void	Render();
 
+		void GetBoundingBox(BOUNDINGBOX& outBox);
+
+		VECTOR3 GetPosition();
+
+		VECTOR3	GetPrevPosition();
+
 	private:
 
 		void	mFunction_Fire(float timeElapsed);//shoot a bullet
@@ -23,13 +31,13 @@ namespace GamePlay
 		//spawn Bullets
 		IBulletManager*	const m_pBulletMgr;
 
+		//to calculate player velocity
 		VECTOR3 mLastPos;
 		VECTOR3 mCurrentPos;
 
-		const float	c_halfPlayerWidth	=20.0f;
-		const float	c_halfPlayerHeight	= 40.0f;
-		const float	c_halfPlayerDepth	= 20.0f;
-		BOUNDINGBOX			mBoundingBox;
+		const float	c_halfPlayerWidth	=5.0f;
+		const float	c_halfPlayerHeight= 5.0f;
+		const float	c_halfPlayerDepth	= 5.0f;
 
 	};
 };

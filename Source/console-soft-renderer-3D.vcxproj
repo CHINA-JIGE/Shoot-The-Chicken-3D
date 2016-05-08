@@ -110,6 +110,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Asteroid.cpp" />
     <ClCompile Include="BulletMgr.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Chicken.cpp" />
@@ -130,8 +131,10 @@
     </ClCompile>
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Timer.cpp" />
+    <ClCompile Include="Base_GameObject.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Asteroid.h" />
     <ClInclude Include="BulletMgr.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Chicken.h" />
@@ -150,6 +153,7 @@
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Types_def.h" />
+    <ClInclude Include="Base_GameObject.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

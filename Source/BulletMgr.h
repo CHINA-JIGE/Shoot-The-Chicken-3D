@@ -17,12 +17,14 @@ namespace GamePlay
 
 		IBulletManager();
 
+		~IBulletManager();
+
 		//generate(spawn) a new bullets
 		void	SpawnBullet(const VECTOR3& pos, const VECTOR3& velocity, const VECTOR3& color);
 
 		void	KillBullet(UINT index);
 
-		void	CollisionDetection(BOUNDINGBOX testBox,BOOL killCollidedBullets);//vector(pos,pos-velocity)
+		void	CollisionDetection(BOUNDINGBOX testBox,BOOL killCollidedBullets,std::vector<VECTOR3>& outCollidePointsList);//vector(pos,pos-velocity)
 
 		void	UpdateBullets();
 
@@ -34,5 +36,6 @@ namespace GamePlay
 
 		IPointCollection		mRenderPointList;
 
+		//std::vector<IMesh*>*	m_pRenderMeshList;
 	};
 }

@@ -149,6 +149,7 @@ void IGeometryMeshGenerator::CreateSphere(float fRadius, UINT iColumnCount, UINT
 	float	StepLength_AngleY =		Math::CONST_PI / (iRingCount +1); // distances between each level (ring)
 	float StepLength_AngleXZ =		2* Math::CONST_PI / iColumnCount;
 
+	UINT k = 0;//for iteration
 	//start to iterate
 	for(UINT i = 0;i < iRingCount ;i++)
 	{
@@ -156,8 +157,6 @@ void IGeometryMeshGenerator::CreateSphere(float fRadius, UINT iColumnCount, UINT
 		//the first column will be duplicated to achieve adequate texture mapping
 		for(UINT j = 0; j <	iColumnCount+1 ; j++)
 		{
-			static UINT k = 0;//for iteration
-
 			//the Y coord of  current ring 
 			tmpY = fRadius *sin(Math::CONST_PI /2 - (i+1) *StepLength_AngleY);
 

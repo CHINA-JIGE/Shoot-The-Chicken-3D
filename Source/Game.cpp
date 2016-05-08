@@ -3,47 +3,54 @@
 
 using namespace GamePlay;
 
+static ITimer				localTimer(TIMER_TIMEUNIT_MILLISECOND);
+
 namespace GamePlay
 {
 	IRenderer				gRenderer;
-	ITimer					gTimer(TIMER_TIMEUNIT_MILLISECOND);
+
 	ICamera				gCamera;
 	IMainGame			gMainGame;
-	GameState			gGameState;
+	int						gRootGameState;
+	float						gTimeElapsed = 0.0f;
+	UINT						gFPS=0;
 
-}
+};
 
 void GamePlay::InitGlobal()
 {
-	gGameState = GameState::GameState_StartAnimation;
+	gRootGameState = GameState::GS_StartAnimation;
 	gRenderer.Init(250, 100);
 	gRenderer.SetWindowTitle("Console Soft Renderer - By Jige");
 	gRenderer.SetCamera(gCamera);
 
 }
 
+void GamePlay::UpdateWindowTitle()
+{
+	std::string titleStr;
+	titleStr = "Soft Renderer - By Jige  FPS:" + std::to_string(gFPS);
+	gRenderer.SetWindowTitle(titleStr.c_str());
+}
+
 void GamePlay::GameStateSelector()
 {
-	switch (UINT(gGameState))
+	switch (UINT(gRootGameState))
 	{
-	case GameState::GameState_StartAnimation:
+	case GameState::GS_StartAnimation:
 		StartAnimation();
 		break;
 
-	case GameState::GameState_StartMenu:
+	case GameState::GS_StartMenu:
 		StartMenu();
 		break;
 
-	case GameState::GameState_ChooseSceneMenu:
+	case GameState::GS_ChooseSceneMenu:
 		ChooseSceneMenu();
 		break;
 
-	case GameState::GameState_MainGame:
+	case GameState::GS_MainGame:
 		MainGame();
-		break;
-
-	case GameState::GameState_PauseMenu:
-		PauseMenu();
 		break;
 
 	default:
@@ -55,116 +62,27 @@ void GamePlay::GameStateSelector()
 
 void GamePlay::StartAnimation()
 {
-	gGameState = GameState::GameState_StartMenu;
+	gRootGameState = GameState::GS_StartMenu;
 }
 
 void GamePlay::StartMenu()
 {
 	gMainGame.Init();
-	gGameState = GameState::GameState_MainGame;
+	gRootGameState = GameState::GS_MainGame;
 
 }
 
 void GamePlay::MainGame()
 {
+	//use unified global time line
+	localTimer.NextTick();
+	gTimeElapsed = Clamp(localTimer.GetInterval(), 0.0f, 100.0f);
+	gFPS = localTimer.GetFPS();
+
 	gMainGame.UpdateLogic();
 	gMainGame.Render();
-}
-
-void	GamePlay::PauseMenu()
-{
-
 }
 
 void GamePlay::ChooseSceneMenu()
 {
 }
-
-
-void GamePlay::UpdateGlobalTimer()
-{
-	gTimer.NextTick();
-}
-
-void GamePlay::UpdateWindowTitle()
-{
-	std::string titleStr;
-	titleStr = "Soft Renderer - By Jige  FPS:" + std::to_string(gTimer.GetFPS());
-	gRenderer.SetWindowTitle(titleStr.c_str());
-}
-
-/*
-void GamePlay::MouseAndKeyBoradProcess()
-{
-	//--------------------------keyboard------------------------------
-	float timeElapsed = Clamp(float(myTimer.GetInterval()),0,100.0f);
-
-	VECTOR2 moveVector = { 0,0 };
-	if (IS_KEY_DOWN('A'))
-	{
-		myCamera.fps_MoveRight(-0.05f*timeElapsed);
-	}
-	if (IS_KEY_DOWN('D'))
-	{
-		myCamera.fps_MoveRight(0.05f*timeElapsed);
-	}
-	if (IS_KEY_DOWN('W'))
-	{
-		myCamera.fps_MoveForward(0.05f*timeElapsed);
-	}
-	if (IS_KEY_DOWN('S'))
-	{
-		myCamera.fps_MoveForward(-0.05f*timeElapsed);
-	}
-
-
-
-	//-------------------------------cursor movement----------------------------------
-	static POINT lastCursorPos = { 0,0 };
-	static POINT currentCursorPos = { 0,0 };
-	static const int scrWidth = ::GetSystemMetrics(SM_CXSCREEN);
-	static const int scrHeight = ::GetSystemMetrics(SM_CYSCREEN);
-	lastCursorPos = currentCursorPos;
-	::GetCursorPos(&currentCursorPos);
-
-	//if cursor reach the boundary, go to another side
-	if (currentCursorPos.x == scrWidth - 1)
-	{
-		::SetCursorPos(0, currentCursorPos.y);
-		lastCursorPos = { 0,currentCursorPos.y };
-		currentCursorPos = lastCursorPos;
-	}
-	else
-	{
-		if (currentCursorPos.x == 0)
-		{
-			::SetCursorPos(scrWidth - 1, currentCursorPos.y);
-			lastCursorPos = { scrWidth - 1,currentCursorPos.y };
-			currentCursorPos = lastCursorPos;
-		}
-	}
-
-	if (currentCursorPos.y == scrHeight - 1)
-	{
-		::SetCursorPos(currentCursorPos.x, 0);
-		lastCursorPos = { currentCursorPos.x,0 };
-		currentCursorPos = lastCursorPos;
-	}
-	else
-	{
-		if (currentCursorPos.y == 0)
-		{
-			::SetCursorPos(currentCursorPos.x, scrHeight - 1);
-			lastCursorPos = { currentCursorPos.x,scrHeight - 1 };
-			currentCursorPos = lastCursorPos;
-		}
-	}
-
-	//camera rotation
-	int cursorDeltaX = currentCursorPos.x - lastCursorPos.x;
-	int cursorDeltaY = (currentCursorPos.y - lastCursorPos.y);
-	myCamera.RotateY_Yaw(0.0005f * cursorDeltaX*timeElapsed);
-	myCamera.RotateX_Pitch(0.0005f* cursorDeltaY*timeElapsed);
-
-}
-*/

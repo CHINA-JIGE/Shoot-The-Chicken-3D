@@ -8,11 +8,12 @@
 #include <fstream>
 #include <sstream>
 #include <unordered_map>
+#include <random>
 
 #include "Math.h"
 #include "Types_def.h"
-#include "PointCollection.h"
 
+#include "PointCollection.h"
 #include "FileLoader.h"
 #include "Picture2D.h"
 #include "_GeometryMeshGenerator.h"

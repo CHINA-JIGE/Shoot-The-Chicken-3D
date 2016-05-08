@@ -14,10 +14,27 @@ IPointCollection::IPointCollection()
 	m_pIB_Mem = new std::vector<UINT>;
 }
 
+IPointCollection::~IPointCollection()
+{
+	delete m_pVB_Mem;
+	delete m_pIB_Mem;
+}
+
 void IPointCollection::AddPoint(const Vertex & vec)
 {
 	m_pVB_Mem->push_back(vec);
 	m_pIB_Mem->push_back(m_pVB_Mem->size()-1);
+}
+
+void IPointCollection::AddPoint(const VECTOR3 & pos, const VECTOR3 & color)
+{
+	Vertex v;
+	v.pos = pos;
+	v.color = { color.x,color.y,color.z,1.0f };
+	v.normal = { 0,0,0 };
+	v.texcoord = { 0,0 };
+	m_pVB_Mem->push_back(v);
+	m_pIB_Mem->push_back(m_pVB_Mem->size() - 1);
 }
 
 void IPointCollection::SetPoint(UINT index, const Vertex & vec)

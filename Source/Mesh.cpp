@@ -28,17 +28,22 @@ IMesh::IMesh()
 
 	Material defaultMat;
 	defaultMat.ambient = { 0.2f,0.2f,0.2f };
-	defaultMat.diffuse	= { 0,0,1.0f };
+	defaultMat.diffuse	= {0.8f,0.8f,0.8f };
 	defaultMat.specular = { 1.0f,1.0f,1.0f };
 	defaultMat.specularSmoothLevel = 20;
 	IMesh::SetMaterial(defaultMat);
 
 	m_pTexture = nullptr;
+}
+
+IMesh::~IMesh()
+{
 };
 
 void IMesh::Destroy()
 {
-
+	delete m_pVB_Mem;
+	delete m_pIB_Mem;
 };
 
 void	IMesh::CreatePlane(float fWidth,float fDepth,UINT iRowCount,UINT iColumnCount)
@@ -188,6 +193,11 @@ void IMesh::SetPosition(float x,float y,float z)
 	mPosition.z = z;
 }
 
+void IMesh::SetPosition(const VECTOR3 & pos)
+{
+	mPosition = pos;
+}
+
 void IMesh::SetRotation(float angleX, float angleY, float angleZ)
 {
 	mRotationX_Pitch	= angleX;
@@ -208,6 +218,42 @@ void IMesh::SetRotationY_Yaw(float angleY)
 void IMesh::SetRotationZ_Roll(float angleZ)
 {
 	mRotationZ_Roll = angleZ;
+}
+
+VECTOR3 IMesh::GetPosition()
+{
+	return mPosition;
+}
+
+void IMesh::RotateX_Pitch(float angle)
+{
+	SetRotationX_Pitch(mRotationX_Pitch + angle);
+}
+
+void IMesh::RotateY_Yaw(float angle)
+{
+	SetRotationY_Yaw(mRotationY_Yaw + angle);
+}
+
+void IMesh::RotateZ_Roll(float angle)
+{
+	SetRotationZ_Roll(mRotationZ_Roll + angle);
+}
+
+float IMesh::GetRotationY_Yaw()
+{
+	return mRotationY_Yaw;
+}
+
+float IMesh::GetRotationX_Pitch()
+{
+	return mRotationX_Pitch;
+}
+
+float IMesh::GetRotationZ_Roll()
+{
+	return mRotationZ_Roll;
+;
 }
 
 void IMesh::GetWorldMatrix(MATRIX4x4 & outMat) 
@@ -237,10 +283,10 @@ void IMesh::GetVertexBuffer(std::vector<Vertex>& outBuff)
 	outBuff.assign(iterBegin,iterLast);
 }
 
-BOUNDINGBOX IMesh::ComputeBoundingBox()
+void IMesh::ComputeBoundingBox(BOUNDINGBOX& outBox)
 {
 	mFunction_ComputeBoundingBox();
-	return mBoundingBox;
+	outBox= mBoundingBox;
 }
 
 
@@ -278,6 +324,12 @@ void IMesh::mFunction_ComputeBoundingBox()
 	//遍历所有顶点，算出包围盒3分量均最 小/大 的两个顶点
 	for (i = 0;i < m_pVB_Mem->size();i++)
 	{
+		if (i == 0)
+		{
+			mBoundingBox.min = m_pVB_Mem->at(0).pos;
+			mBoundingBox.max = m_pVB_Mem->at(0).pos;
+		}
+
 		//N_DEFAULT_VERTEX
 		tmpV = m_pVB_Mem->at(i).pos;
 		if (tmpV.x <(mBoundingBox.min.x)) { mBoundingBox.min.x = tmpV.x; }
@@ -302,6 +354,11 @@ void IMesh::mFunction_ComputeBoundingBox(std::vector<VECTOR3>* pVertexBuffer)
 	//遍历所有顶点，算出包围盒3分量均最 小/大 的两个顶点
 	for (i = 0;i < pVertexBuffer->size();i++)
 	{
+		if (i == 0)
+		{
+			mBoundingBox.min = m_pVB_Mem->at(0).pos;
+			mBoundingBox.max = m_pVB_Mem->at(0).pos;
+		}
 		tmpV = pVertexBuffer->at(i);
 		if (tmpV.x <(mBoundingBox.min.x)) { mBoundingBox.min.x = tmpV.x; }
 		if (tmpV.y <(mBoundingBox.min.y)) { mBoundingBox.min.y = tmpV.y; }

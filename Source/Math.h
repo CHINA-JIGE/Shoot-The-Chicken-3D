@@ -141,6 +141,11 @@ namespace Math
 			return VECTOR3(x - vec.x, y - vec.y, z - vec.z);
 		}
 
+		friend VECTOR3 operator-(const VECTOR3& v1, const VECTOR3& v2)
+		{
+			return VECTOR3(v1.x - v2.x, v1.y - v2.y, v1.z - v2.z);
+		};
+
 		VECTOR3& operator+=(const VECTOR3& vec)
 		{
 			x += vec.x;
@@ -346,6 +351,18 @@ namespace Math
 		float m[4][4];
 	};
 
+	struct BOUNDINGBOX
+	{
+		BOUNDINGBOX()
+		{
+			max = { 1,1,1 };
+			min = { 0,0,0 };
+		}
+
+		VECTOR3 max;
+		VECTOR3 min;
+	};
+
 
 	extern float Vec2_Dot(const VECTOR2& vec1, const VECTOR2& vec2);
 
@@ -405,4 +422,5 @@ namespace Math
 
 	extern VECTOR3 Lerp(const VECTOR3& start, const VECTOR3& end, float t);
 
+	extern BOOL Intersect_Ray_AABB(const VECTOR3& rayStart, const VECTOR3& rayEnd,const BOUNDINGBOX& box, VECTOR3& outIntersectPoint);
 }

@@ -2,7 +2,24 @@
 
 namespace GamePlay
 {
-	class IChickenMonster
+	const float c_chickenInitialHealth = 10000.0f;
+
+	enum CHICKEN_MATERIAL_TYPE
+	{
+		CHICKEN_MATERIAL_TYPE_COMMON = 0,
+		CHICKEN_MATERIAL_TYPE_HIT = 1
+	};
+
+	enum CHICKEN_ATTACK_STATE
+	{
+		CHICKEN_ATTACK_STATE_CHASE_PLAYER =0,
+		CHICKEN_ATTACK_STATE_TYPE1	=	1,
+		CHICKEN_ATTACK_STATE_TYPE2 = 2,
+		CHICKEN_ATTACK_STATE_ULTIMATE_EXPLODE =3,
+	};
+
+
+	class IChickenMonster: public Base_GameObject
 	{
 	public:
 
@@ -10,22 +27,36 @@ namespace GamePlay
 
 		void	Init();
 
-		void	UpdateMovement();
-
-		void	Fire();
+		void	Update(const VECTOR3& playerPos);
 
 		void	Render();
 
-		BOUNDINGBOX GetBoundingBox();
+		void GetBoundingBox(BOUNDINGBOX& outBox);
+
+		void	BeHitAndChangeColor();
 
 	private:
+
+		void		mFunction_UpdateMovement(const VECTOR3& shootDir);
+
+		void		mFunction_Fire(VECTOR3 firePos);
+
+		void		mFunction_UpdateTexture();
+
+
+		const float	c_playerInitHealth = 1000.0f;
 
 		//spawn Bullets
 		IBulletManager* const 	m_pBulletMgr;
 
-		IMesh		mMesh;
-		IPicture		mTexture;
+		VECTOR3 mPos;
+		VECTOR3 mLookat;
 
-		BOUNDINGBOX			mBoundingBox;
+		IMesh		mMesh;
+		IPicture		mTexture_Common;
+		CHICKEN_MATERIAL_TYPE			mMatType;
+		Material								mMat_Common;
+		Material								mMat_Red;
+		CHICKEN_ATTACK_STATE		mAttackState;//which attack mode the chicken is using
 	};
 };

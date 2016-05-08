@@ -15,9 +15,13 @@ class IPointCollection
 
 		IPointCollection();
 
+		~IPointCollection();
+
 		IPointCollection(const IPointCollection& c) = delete;
 
 		void		AddPoint(const Vertex& vec);
+
+		void		AddPoint(const VECTOR3& pos, const VECTOR3& color);
 
 		void		SetPoint(UINT index,const Vertex& vec);
 

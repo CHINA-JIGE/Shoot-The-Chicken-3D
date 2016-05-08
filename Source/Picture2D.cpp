@@ -13,6 +13,11 @@ IPicture::IPicture()
 	m_pColorBuffer = new std::vector<COLOR3>;
 }
 
+IPicture::~IPicture()
+{
+	delete m_pColorBuffer;
+}
+
 BOOL IPicture::LoadPPM(std::string ppmFilePath)
 {
 	BOOL yes=IFileManager::ImportFile_PPM(ppmFilePath, mWidth, mHeight, *m_pColorBuffer);

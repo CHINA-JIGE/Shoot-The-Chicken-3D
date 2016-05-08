@@ -8,8 +8,6 @@
 
 #include "MyConsoleEngine.h"
 
-using namespace Math;
-
 float Math::Vec2_Dot(const VECTOR2& vec1, const VECTOR2& vec2)
 {
 	return vec1.x*vec2.x + vec1.y*vec2.y;
@@ -258,4 +256,110 @@ inline VECTOR3 Math::Lerp(const VECTOR3& start, const VECTOR3& end, float t)
 	return VECTOR3(Lerp(start.x, end.x, t), Lerp(start.y, end.y, t),Lerp(start.z,end.z,t));
 }
 
+inline BOOL Math::Intersect_Ray_AABB(const VECTOR3& rayStart, const VECTOR3& rayEnd, const BOUNDINGBOX& box, VECTOR3& outIntersectPoint)
+{
+	/*
+	Y
+	|	 /Z
+	|  /
+	|/_____X
 
+	*/
+
+	VECTOR3 dir = VECTOR3(rayEnd) - rayStart;
+	bool bPlaneXY = (dir.z != 0);
+	bool bPlaneXZ = (dir.y != 0);
+	bool bPlaneYZ = (dir.x != 0);
+
+	//<point,ratio> pair
+	std::vector<std::pair<VECTOR3,float>> intersectResult;
+
+	//determine if one point is within a rectangle
+	auto func_isPointInArea= [](const VECTOR2& p,const VECTOR2& min, const VECTOR2& max)->BOOL
+	{
+		if (p.x >= min.x && p.x <= max.x && p.y >= min.y && p.y <= max.y)
+		{
+			return TRUE;
+		}
+		else
+		{
+			return FALSE;
+		}
+	};
+
+	//compute intersect point, add to list if intersect succeed
+	auto func_intersect = [&](float t, const VECTOR2& min, const VECTOR2& max)
+	{
+		if (t >= 0.0f && t <= 1.0f)
+		{
+			VECTOR3 intersectPoint = Lerp(rayStart, rayEnd, t);
+
+			if (func_isPointInArea(
+				VECTOR2(intersectPoint.x, intersectPoint.y),
+				VECTOR2(min.x, min.y),
+				VECTOR2(max.x, max.y)
+				) == TRUE)
+			{
+				intersectResult.push_back(std::make_pair(intersectPoint,t));
+			}
+		}
+	};
+
+	float t = 0.0f;
+	//then test  6 faces of bounding box
+	if (bPlaneXY)
+	{
+		//lerp ratio 
+		t = (box.min.z - rayStart.z) / dir.z;
+		func_intersect(t, VECTOR2(box.min.x, box.min.y), VECTOR2(box.max.x, box.max.y));
+
+		t = (box.max.z - rayStart.z) / dir.z;
+		func_intersect(t, VECTOR2(box.min.x, box.min.y), VECTOR2(box.max.x, box.max.y));
+	}
+
+	if (bPlaneXZ)
+	{
+		//lerp ratio 
+		t = (box.min.y - rayStart.y) / dir.y;
+		func_intersect(t, VECTOR2(box.min.x, box.min.z), VECTOR2(box.max.x, box.max.z));
+
+		t = (box.max.y - rayStart.y) / dir.y;
+		func_intersect(t, VECTOR2(box.min.x, box.min.z), VECTOR2(box.max.x, box.max.z));
+	}
+
+	if (bPlaneYZ)
+	{
+		//lerp ratio 
+		t = (box.min.x - rayStart.x) / dir.x;
+		func_intersect(t, VECTOR2(box.min.y, box.min.z), VECTOR2(box.max.y, box.max.z));
+
+		t = (box.max.x - rayStart.x) / dir.x;
+		func_intersect(t, VECTOR2(box.min.y, box.min.z), VECTOR2(box.max.y, box.max.z));
+	}
+
+	//no intersect point
+	if (intersectResult.size() == 0)
+	{
+		outIntersectPoint = { 0,0,0 };
+		return FALSE;
+	}
+	else
+	{
+		//find the nearest intersect result
+		UINT nearestPointIndex = 0;
+		for (UINT i = 0;i < intersectResult.size();++i)
+		{
+			static float smallestRatio = intersectResult.at(0).second;
+			if(intersectResult.at(i).second<smallestRatio)
+			{
+				smallestRatio = intersectResult.at(i).second;
+				nearestPointIndex = i;
+			}
+		}
+
+		//finish traversal, output nearest point
+		outIntersectPoint = intersectResult.at(nearestPointIndex).first;
+		return TRUE;
+	}
+
+};

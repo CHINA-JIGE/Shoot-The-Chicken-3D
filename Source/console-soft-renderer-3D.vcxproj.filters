@@ -41,6 +41,12 @@
     <Filter Include="源文件\Game\MainGame\GameLogic">
       <UniqueIdentifier>{cd3c90ef-64b2-4fce-8518-2541c52336ee}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\Game\MainGame\GameObject\_Base_GameObject">
+      <UniqueIdentifier>{eb862792-d44c-44d8-83f5-7827d1447fd7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Game\MainGame\GameObject\Asteroid">
+      <UniqueIdentifier>{4e3dfa7b-8f44-410e-8032-d0bc5425650e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -93,6 +99,12 @@
     </ClCompile>
     <ClCompile Include="MainGameLogic.cpp">
       <Filter>源文件\Game\MainGame\GameLogic</Filter>
+    </ClCompile>
+    <ClCompile Include="Base_GameObject.cpp">
+      <Filter>源文件\Game\MainGame\GameObject\_Base_GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Asteroid.cpp">
+      <Filter>源文件\Game\MainGame\GameObject\Asteroid</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -149,6 +161,12 @@
     </ClInclude>
     <ClInclude Include="MainGameLogic.h">
       <Filter>源文件\Game\MainGame\GameLogic</Filter>
+    </ClInclude>
+    <ClInclude Include="Base_GameObject.h">
+      <Filter>源文件\Game\MainGame\GameObject\_Base_GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Asteroid.h">
+      <Filter>源文件\Game\MainGame\GameObject\Asteroid</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

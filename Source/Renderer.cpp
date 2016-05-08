@@ -505,7 +505,7 @@ void IRenderer::mFunction_AdjustWindowSize()
 	int scrHeight = GetSystemMetrics(SM_CYSCREEN);
 
 	int windowWidth = mBufferWidth*c_ConsoleCharSize + 2 * frameX_Width+20;
-	int windowHeight = mBufferHeight*c_ConsoleCharSize/c_ConsoleCharAspectRatio + frameY_Caption + frameY_Height+20;
+	int windowHeight = int(mBufferHeight*c_ConsoleCharSize/c_ConsoleCharAspectRatio) + frameY_Caption + frameY_Height+20;
 
 	//adjust the size of window to fit the buffer size (directly set the window pixel size)
 

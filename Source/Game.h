@@ -1,6 +1,9 @@
 #pragma once
 
 #include "MyConsoleEngine.h"
+
+#include "Base_GameObject.h"
+#include "Asteroid.h"
 #include "SceneEnvironment.h"
 #include "Chicken.h"
 #include "Player.h"
@@ -8,28 +11,65 @@
 
 namespace GamePlay
 {
-	enum GameState
+	/*enum GameState
 	{
-		GameState_StartAnimation = 1,
-		GameState_StartMenu = 2,
-		GameState_ChooseSceneMenu = 3,
-		GameState_MainGame = 4,
-		GameState_PauseMenu = 5,
+		GS_StartAnimation = 1,
+		GS_StartMenu = 2,
+		GS_ChooseSceneMenu = 3,
+		GS_MainGame = 4,
+	};*/
+	namespace GameState
+	{
+		const int GS_StartAnimation = 1;
+		const int GS_StartMenu = 2;
+		const int GS_ChooseSceneMenu=3;
+		const int GS_MainGame = 4;
+
+		namespace  StartMenu
+		{
+			const int GS_Choose_Start =20;
+			const int GS_Choose_Quit = 21;
+		}
+
+		namespace  ChooseSceneMenu
+		{
+			const int GS_ChooseScene1 = 30;
+		};
+
+		namespace MainGame
+		{
+			const int GS_Playing = 40;
+			const int GS_GameOverMenu = 41;
+			const int GS_PauseMenu = 42;
+
+			namespace  GameOverMenu 
+			{
+				const int GS_Choose_Restart = 410;
+				const int GS_Choose_Quit = 411;
+			};
+
+			namespace PauseMenu 
+			{ 
+				const int GS_Choose_Continue=420;
+				const int GS_Choose_Quit=421;
+			};
+
+		};
 	};
 
 	extern IRenderer			gRenderer;
-	extern ITimer				gTimer;
+	extern UINT					gFPS;
+	extern float					gTimeElapsed;
 	extern ICamera				gCamera;
-	extern GameState			gGameState;
+	extern int						gRootGameState;
 	extern IMainGame		gMainGame;
-	
+
+
 	//global initialization
 	void	InitGlobal();
 
 	//driven program of game state machine
 	void	GameStateSelector();
-
-	void	UpdateGlobalTimer();
 
 	void UpdateWindowTitle();
 
@@ -42,8 +82,5 @@ namespace GamePlay
 	void	ChooseSceneMenu();
 
 	void	MainGame();
-
-	void	PauseMenu();
-
 
 };

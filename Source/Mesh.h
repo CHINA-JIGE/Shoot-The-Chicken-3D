@@ -15,6 +15,8 @@
 		//¹¹Ôìº¯Êý
 		IMesh();
 
+		~IMesh();
+
 		void	CreatePlane(float fWidth, float fDepth, UINT iRowCount = 5, UINT iColumnCount = 5);
 
 		void CreateBox(float fWidth, float fHeight, float fDepth, UINT iDepthStep = 3, UINT iWidthStep = 3, UINT iHeightStep = 3);
@@ -35,6 +37,8 @@
 
 		void		SetPosition(float x, float y, float z);
 
+		void		SetPosition(const VECTOR3& pos);
+
 		void		SetRotation(float angleX, float angleY, float angleZ);
 
 		void		SetRotationX_Pitch(float angleX);
@@ -42,6 +46,20 @@
 		void		SetRotationY_Yaw(float angleY);
 
 		void		SetRotationZ_Roll(float angleZ);
+
+		VECTOR3		GetPosition();
+
+		void		RotateX_Pitch(float angle);
+
+		void		RotateY_Yaw(float angle);
+
+		void		RotateZ_Roll(float angle);
+
+		float		GetRotationY_Yaw();
+
+		float		GetRotationX_Pitch();
+
+		float		GetRotationZ_Roll();
 
 	//In order to avoid directly compute inverse of Matrix
 
@@ -53,7 +71,7 @@
 
 		void		GetVertexBuffer(std::vector<Vertex>& outBuff);
 
-		BOUNDINGBOX ComputeBoundingBox();
+		void		ComputeBoundingBox(BOUNDINGBOX& outBox);
 
 	private:
 

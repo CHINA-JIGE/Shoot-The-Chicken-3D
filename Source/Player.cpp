@@ -3,7 +3,8 @@
 using namespace GamePlay;
 
 IPlayer::IPlayer(IBulletManager* BulletMgr)
-	:m_pBulletMgr(BulletMgr)
+	:m_pBulletMgr(BulletMgr),
+	Base_GameObject(c_playerInitalHealth)
 {
 	
 };
@@ -12,31 +13,48 @@ void IPlayer::Init()
 {
 	::SetCursorPos(0, 0);
 	//------------------PLAYER EYE--------------------
-	gCamera.SetPosition(100.0f, 100.0f, 200.0f);
-	gCamera.SetLookAt(0, 0, 0);
+	gCamera.SetPosition(0.0f, 0.0f, 0.0f);
+	gCamera.SetLookAt(100.0f, -100.0f, -200.0f);
 	gCamera.SetViewAngle(Math::CONST_PI / 2.0f, 2.5f);
-	gCamera.SetViewFrustumPlane(1.0f, 1100.0f);
-	mBoundingBox.min = { -c_halfPlayerWidth,	-c_halfPlayerHeight ,-c_halfPlayerDepth};
-	mBoundingBox.max = { c_halfPlayerWidth,	c_halfPlayerHeight ,	c_halfPlayerDepth };
-
+	gCamera.SetViewFrustumPlane(1.0f, 2500.0f);
+	
 }
 
 void IPlayer::Update()
 {
-	float timeElapsed = Clamp(float(gTimer.GetInterval()), 0, 200.0f);
-
-	mFunction_UpdateMovement(timeElapsed);
-	mFunction_Fire(timeElapsed);
-
-	//Update BoundingBox
-	mBoundingBox.min = { mCurrentPos.x-c_halfPlayerWidth,	mCurrentPos.y-c_halfPlayerHeight,	mCurrentPos.z-c_halfPlayerDepth };
-	mBoundingBox.max = { mCurrentPos.x+c_halfPlayerWidth,mCurrentPos.y + c_halfPlayerHeight,mCurrentPos.z + c_halfPlayerDepth };
+	mFunction_UpdateMovement(gTimeElapsed);
+	mFunction_Fire(gTimeElapsed);
 }
-
 
 void IPlayer::Render()
 {
-	
+
+}
+
+void IPlayer::GetBoundingBox(BOUNDINGBOX & outBox)
+{
+	outBox.min =
+	{
+		mCurrentPos.x - c_halfPlayerWidth,
+		mCurrentPos.y - c_halfPlayerHeight,
+		mCurrentPos.z - c_halfPlayerDepth
+	};
+	outBox.max =
+	{
+		mCurrentPos.x + c_halfPlayerWidth,
+		mCurrentPos.y + c_halfPlayerHeight,
+		mCurrentPos.z + c_halfPlayerDepth
+	};
+}
+
+VECTOR3 IPlayer::GetPosition()
+{
+	return mCurrentPos;
+}
+
+VECTOR3 IPlayer::GetPrevPosition()
+{
+	return mLastPos;
 }
 
 /*************************************************************
@@ -60,26 +78,33 @@ void IPlayer::mFunction_Fire(float timeElapsed)
 		VECTOR3 vel_Bullet = unitCameraDir;
 
 		//add some offset to fire pos(in strafe direction,left and right relative to player)
-		VECTOR3 pos_Bullet1 = mCurrentPos+
-			VECTOR3( 40.0f*cos(gCamera.GetRotationY_Yaw()),0, -40.0f*sin(gCamera.GetRotationY_Yaw()))
-		+ unitCameraDir*c_halfPlayerWidth*2;
 
+		//in case that the bullets collide with self bounding box
+		float gunDistanceFromPlayer = 50.0f;
+
+		float gunDistanceFromMainAxis = 50.0f;
+
+		//right gun
+		VECTOR3 pos_Bullet1 = mCurrentPos+
+			VECTOR3(gunDistanceFromMainAxis*cos(gCamera.GetRotationY_Yaw()),0, -gunDistanceFromMainAxis*sin(gCamera.GetRotationY_Yaw()))
+		+ unitCameraDir*gunDistanceFromPlayer;
+
+		//left gun
 		VECTOR3 pos_Bullet2 = mCurrentPos +
-			VECTOR3(-40.0f*cos(gCamera.GetRotationY_Yaw()), 0, 40.0f*sin(gCamera.GetRotationY_Yaw()))
-			+ unitCameraDir*c_halfPlayerWidth * 2;
+			VECTOR3(-gunDistanceFromMainAxis*cos(gCamera.GetRotationY_Yaw()), 0, gunDistanceFromMainAxis*sin(gCamera.GetRotationY_Yaw()))
+			+ unitCameraDir*gunDistanceFromPlayer;
 
 		//-----------------Spawn Bullet------------------
 
 		//right bullet
-		m_pBulletMgr->SpawnBullet(pos_Bullet1, vel_Bullet, VECTOR3(1.0f, 0, 0));
+		m_pBulletMgr->SpawnBullet(pos_Bullet1, vel_Bullet*0.8f, { (rand() % 255) / 255.0f, (rand() % 255) / 255.0f, (rand() % 255) / 255.0f});
 		//left bullet
-		m_pBulletMgr->SpawnBullet(pos_Bullet2, vel_Bullet, VECTOR3(1.0f, 0, 0));
+		m_pBulletMgr->SpawnBullet(pos_Bullet2, vel_Bullet*0.8f, { (rand() % 255) / 255.0f, (rand() % 255) / 255.0f, (rand() % 255) / 255.0f});
 
 		//reset cool down time
 		fireCoolingDownTime = 0.0f;
 	}
 }
-
 
 void IPlayer::mFunction_UpdateMovement(float timeElapsed)
 {
@@ -113,12 +138,21 @@ void IPlayer::mFunction_UpdateMovement(float timeElapsed)
 
 	//in case that camera moves faster if 3 directions has projection of speed
 	moveVector.Normalize();
-	moveVector *= (0.05f*timeElapsed);
+	moveVector *= (0.2f*timeElapsed);
 	gCamera.fps_MoveRight(moveVector.x);
 	gCamera.fps_MoveForward(moveVector.z);
 	gCamera.fps_MoveUp(moveVector.y);
+
+	//restrict player movement to a Box
+	VECTOR3 camPos = gCamera.GetPosition();
+	camPos = { Clamp(camPos.x,-c_halfMovementRestrictBoxWidth,c_halfMovementRestrictBoxWidth),
+		Clamp(camPos.y,-c_halfMovementRestrictBoxWidth,c_halfMovementRestrictBoxWidth),
+		Clamp(camPos.z,-c_halfMovementRestrictBoxWidth,c_halfMovementRestrictBoxWidth) };
+	gCamera.SetPosition(camPos);
+
+	//update Position
 	mLastPos = mCurrentPos;
-	mCurrentPos = gCamera.GetPosition();
+	mCurrentPos = camPos;
 
 
 	//-------------------------------cursor movement----------------------------------
