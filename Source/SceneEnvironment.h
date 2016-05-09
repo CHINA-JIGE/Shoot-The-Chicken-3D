@@ -17,13 +17,15 @@ namespace GamePlay
 
 		void		Render();
 
+		BOOL	CollisionDetection_Rocks(const VECTOR3& rayStart, const VECTOR3& rayEnd,VECTOR3& outCollidePoint);
+
 	private:
 			Material				mDefaultMaterial;
 			IPicture					mSkyTexture;
 			IMesh					mSkyModel;
 
-			IPicture					mAsteroidTexture[10];
-			IMesh					mAsteroidMesh[10];
+			static const  UINT  c_asteroidCount = 20;
+			IAsteroid				mAsteroid[c_asteroidCount];
 
 			DirectionalLight	mSceneLight;
 

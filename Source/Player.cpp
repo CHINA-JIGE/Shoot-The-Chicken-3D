@@ -13,10 +13,11 @@ void IPlayer::Init()
 {
 	::SetCursorPos(0, 0);
 	//------------------PLAYER EYE--------------------
-	gCamera.SetPosition(0.0f, 0.0f, 0.0f);
-	gCamera.SetLookAt(100.0f, -100.0f, -200.0f);
+	gCamera.SetPosition(200.0f, 150.0f, 200.0f);
+	gCamera.SetLookAt(0, 0, 0);
 	gCamera.SetViewAngle(Math::CONST_PI / 2.0f, 2.5f);
 	gCamera.SetViewFrustumPlane(1.0f, 2500.0f);
+	Base_GameObject::SetHP(c_playerInitalHealth);
 	
 }
 
@@ -28,7 +29,7 @@ void IPlayer::Update()
 
 void IPlayer::Render()
 {
-
+	
 }
 
 void IPlayer::GetBoundingBox(BOUNDINGBOX & outBox)

@@ -20,28 +20,22 @@ namespace GamePlay
 
 		void	Init();
 
-		void	UpdateLogic();
-
-		void	Render();
+		void	UpdateAndRenderMainGame();//including Menus
 
 	private:
 
 		//update logic
 		void					mFunction_UpdateLogic_Playing();
 
-		void					mFunction_UpdateLogic_GameOverMenu();
+		void					mFunction_UpdateAndRender_GameOverMenu(BOOL hasWon);
 
-		void					mFunction_UpdateLogic_PauseMenu();
+		void					mFunction_UpdateAndRender_PauseMenu();
 
 		//render function 
 		void					mFunction_Render_Playing();
 
-		void					mFunction_Render_GameOverMenu();
-
-		void					mFunction_Render_PauseMenu();
-
 		//render only after all other stuffs have been rendered
-		void					mFunction_Render_HUD();
+		void					mFunction_Render_Playing_HUD();
 
 		void					mFunction_CollisionDetectionAndInteract();
 
@@ -50,5 +44,12 @@ namespace GamePlay
 		ISceneModelManager	mSceneMgr;
 		IBulletManager				mBulletMgr;
 		int								mMainGameState;
+		BOOL							mIsPlayerVictorious;//has player won??
+
+		IPicture				mPauseMenuBgr_Continue;
+		IPicture				mPauseMenuBgr_Back;
+
+		IPicture				mGameOverMenuBgr_Win;
+		IPicture				mGameOverMenuBgr_Lose;
 	};
 };

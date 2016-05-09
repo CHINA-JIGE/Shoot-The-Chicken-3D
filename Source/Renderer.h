@@ -29,9 +29,15 @@ public:
 
 	void		DrawTriangle(COLOR3 color, const VECTOR2& v1_pixel, const VECTOR2& v2_pixel, const VECTOR2& v3_pixel);
 	
+	void		DrawRect(const COLOR3& color, UINT x1,UINT y1,UINT x2,UINT y2);
+
 	void		Present();
 
 	void		SetWindowTitle(const char* titleStr);
+
+	UINT		GetBufferWidth();
+
+	UINT		GetBufferHeight();
 
 private:
 

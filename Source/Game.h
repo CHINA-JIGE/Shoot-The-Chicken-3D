@@ -2,6 +2,7 @@
 
 #include "MyConsoleEngine.h"
 
+#include "Menus.h"
 #include "Base_GameObject.h"
 #include "Asteroid.h"
 #include "SceneEnvironment.h"
@@ -11,13 +12,6 @@
 
 namespace GamePlay
 {
-	/*enum GameState
-	{
-		GS_StartAnimation = 1,
-		GS_StartMenu = 2,
-		GS_ChooseSceneMenu = 3,
-		GS_MainGame = 4,
-	};*/
 	namespace GameState
 	{
 		const int GS_StartAnimation = 1;
@@ -42,18 +36,17 @@ namespace GamePlay
 			const int GS_GameOverMenu = 41;
 			const int GS_PauseMenu = 42;
 
-			namespace  GameOverMenu 
+			namespace  GameOverMenu
 			{
-				const int GS_Choose_Restart = 410;
-				const int GS_Choose_Quit = 411;
+				const int GS_Win_Choose_Back = 410;
+				const int GS_Lose_Choose_Back = 411;
 			};
 
-			namespace PauseMenu 
-			{ 
-				const int GS_Choose_Continue=420;
-				const int GS_Choose_Quit=421;
+			namespace PauseMenu
+			{
+				const int GS_Choose_Continue = 420;
+				const int GS_Choose_Quit = 421;
 			};
-
 		};
 	};
 
@@ -62,8 +55,9 @@ namespace GamePlay
 	extern float					gTimeElapsed;
 	extern ICamera				gCamera;
 	extern int						gRootGameState;
-	extern IMainGame		gMainGame;
 
+	extern IMainGame		gMainGame;
+	extern IMenus				gMenus;
 
 	//global initialization
 	void	InitGlobal();

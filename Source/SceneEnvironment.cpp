@@ -16,14 +16,23 @@ void ISceneModelManager::Init(SCENE_MODEL_ID model)
 	switch (UINT(model))
 	{
 	case SCENE_MODEL_ID::SCENEMODEL_COSMOS1:
+		//sky texture
 		mSkyTexture.LoadPPM("Media/universe.ppm");
-		mSkyModel.CreateSphere(1000.0f,20,20,TRUE);
+
+		//sky dome
+		mSkyModel.CreateSphere(2000.0f,20,20,TRUE);
+	
+		for (UINT i = 0;i < c_asteroidCount;++i)
+		{
+			mAsteroid[i].Init((i % 3));
+		}
 		break;
 
 	default:
 		DEBUG_MSG1("Scene Model ID Invalid!!");
 		break;
 	};
+
 	mSkyModel.SetPosition(0, 0, 0);
 	mSkyModel.SetMaterial(mDefaultMaterial);
 	mSkyModel.SetTexture(&mSkyTexture);
@@ -36,6 +45,7 @@ void ISceneModelManager::Init(SCENE_MODEL_ID model)
 	mSceneLight.mIsEnabled = TRUE;
 	mSceneLight.mSpecularColor = { 1.0f,1.0f,1.0f };
 	mSceneLight.mSpecularIntensity = 1.2f;
+	
 	gRenderer.SetLight(0, mSceneLight);
 
 	//-----------------Init Cursor--------------------
@@ -46,9 +56,11 @@ void ISceneModelManager::Update()
 {
 	VECTOR3 pos = gCamera.GetPosition();
 	mSkyModel.SetPosition(pos.x, pos.y, pos.z);
+	for (UINT i = 0;i < c_asteroidCount;i++)mAsteroid[i].Update();
 }
 
 void ISceneModelManager::Render()
 {
 	gRenderer.RenderMesh(mSkyModel);
+	for (UINT i = 0;i < c_asteroidCount;i++)mAsteroid[i].Render();
 }

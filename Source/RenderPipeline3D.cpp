@@ -222,9 +222,11 @@ void IRenderPipeline3D::VertexShader(Vertex& inVertex)
 
 	//Normal also need transformation,actually it need a World-Inverse-Transpose
 	//But I rule out all non-Orthogonal Transformation, so inverse can just use Transpose to substitude
-	//thus inverse-transpose yields world matrix itself
+	//thus inverse-transpose yields world matrix itself(without translation)
+	MATRIX4x4 WorldMat_NoTrans = mWorldMatrix;
+	WorldMat_NoTrans.SetColumn(3, { 0,0,0,1.0f });
 	VECTOR4 normW(inVertex.normal.x, inVertex.normal.y, inVertex.normal.z, 1.0f);
-	normW = Matrix_Multiply(mWorldMatrix, normW);
+	normW = Matrix_Multiply(WorldMat_NoTrans, normW);
 
 
 	//-----TexCoord
@@ -236,7 +238,7 @@ void IRenderPipeline3D::VertexShader(Vertex& inVertex)
 	//...Vertex Light or directly use vertex color
 	if (mLightEnabled)
 	{
-		outVertex.color = mFunction_VertexLighting(inVertex.pos, inVertex.normal);
+		outVertex.color = mFunction_VertexLighting(inVertex.pos, VECTOR3(normW.x,normW.y,normW.z));
 	}
 	else
 	{
@@ -501,7 +503,15 @@ void IRenderPipeline3D::PixelShader_DrawPoints(RasterizedFragment & inVertex)
 {
 	COLOR3 outColor;
 	outColor = COLOR3(inVertex.color.x, inVertex.color.y, inVertex.color.z);
-	m_pOutColorBuffer->at(inVertex.pixelY*mBufferWidth + inVertex.pixelX) = outColor;
+	
+	//draw a bigger point (2x2 pixel)
+	int px1 = Clamp(inVertex.pixelX - 1, 0, mBufferWidth);
+	int px2 = Clamp(inVertex.pixelX + 1, 0, mBufferWidth);
+	int py1 = Clamp(inVertex.pixelY - 1, 0, mBufferHeight);
+	int py2 = Clamp(inVertex.pixelY +1, 0, mBufferHeight);
+	for (int i = px1;i < px2;i++)
+		for (int j = py1;j < py2;j++)
+			m_pOutColorBuffer->at(j*mBufferWidth +i) = outColor;
 }
 
 //Draw Points

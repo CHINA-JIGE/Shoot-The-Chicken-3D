@@ -268,7 +268,15 @@ void IRenderer::DrawTriangle(COLOR3 color, const VECTOR2 & v1_pixel, const VECTO
 	//Pipeline will directly draw to ColorBuffer and ZBuffer......
 	IRenderPipeline3D::DrawTriangles(drawCallData);
 
+}
+
+void IRenderer::DrawRect(const COLOR3 & color, UINT x1, UINT y1, UINT x2, UINT y2)
+{
+	for (UINT i = x1;i <= x2;++i)
+		for (UINT j = y1;j <= y2;++j)
+			mFunction_SetPixel(i, j, color);
 };
+
 
 
 void IRenderer::RenderMesh(IMesh& mesh)
@@ -360,6 +368,16 @@ void IRenderer::SetWindowTitle(const char * titleStr)
 {
 	::SetConsoleTitleA(titleStr);
 	*m_pConsoleWindowTitle = titleStr;
+}
+
+UINT IRenderer::GetBufferWidth()
+{
+	return mBufferWidth;
+}
+
+UINT IRenderer::GetBufferHeight()
+{
+	return mBufferHeight;
 }
 
 /****************************************************

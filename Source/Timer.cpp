@@ -104,7 +104,7 @@ double ITimer::GetInterval()const
 		return mDeltaTime; 
 		break;
 	case TIMER_TIMEUNIT_SECOND:
-		return (mDeltaTime/1000); 
+		return (mDeltaTime/1000.0); 
 		break;
 	};
 	return 0;

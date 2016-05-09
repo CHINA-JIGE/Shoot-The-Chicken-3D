@@ -14,16 +14,17 @@ namespace GamePlay
 	int						gRootGameState;
 	float						gTimeElapsed = 0.0f;
 	UINT						gFPS=0;
+	IMenus					gMenus;
 
 };
 
 void GamePlay::InitGlobal()
 {
 	gRootGameState = GameState::GS_StartAnimation;
-	gRenderer.Init(250, 100);
+	gRenderer.Init(250, 85);
 	gRenderer.SetWindowTitle("Console Soft Renderer - By Jige");
 	gRenderer.SetCamera(gCamera);
-
+	gMenus.Init();
 }
 
 void GamePlay::UpdateWindowTitle()
@@ -54,7 +55,8 @@ void GamePlay::GameStateSelector()
 		break;
 
 	default:
-		std::terminate();
+		DEBUG_MSG1("game state error!!");
+		exit(0);
 		break;
 	}
 }
@@ -67,9 +69,7 @@ void GamePlay::StartAnimation()
 
 void GamePlay::StartMenu()
 {
-	gMainGame.Init();
-	gRootGameState = GameState::GS_MainGame;
-
+	gMenus.UpdateAndRender_StartMenu();
 }
 
 void GamePlay::MainGame()
@@ -79,8 +79,7 @@ void GamePlay::MainGame()
 	gTimeElapsed = Clamp(localTimer.GetInterval(), 0.0f, 100.0f);
 	gFPS = localTimer.GetFPS();
 
-	gMainGame.UpdateLogic();
-	gMainGame.Render();
+	gMainGame.UpdateAndRenderMainGame();
 }
 
 void GamePlay::ChooseSceneMenu()

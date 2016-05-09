@@ -116,6 +116,7 @@
     <ClCompile Include="Chicken.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="MainGameLogic.cpp" />
+    <ClCompile Include="Menus.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PointCollection.cpp" />
     <ClCompile Include="SceneEnvironment.cpp" />
@@ -140,6 +141,7 @@
     <ClInclude Include="Chicken.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="MainGameLogic.h" />
+    <ClInclude Include="Menus.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PointCollection.h" />
     <ClInclude Include="SceneEnvironment.h" />

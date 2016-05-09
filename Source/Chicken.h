@@ -2,7 +2,7 @@
 
 namespace GamePlay
 {
-	const float c_chickenInitialHealth = 10000.0f;
+	const float c_chickenInitialHealth = 1000.0f;
 
 	enum CHICKEN_MATERIAL_TYPE
 	{
@@ -43,9 +43,6 @@ namespace GamePlay
 
 		void		mFunction_UpdateTexture();
 
-
-		const float	c_playerInitHealth = 1000.0f;
-
 		//spawn Bullets
 		IBulletManager* const 	m_pBulletMgr;
 
@@ -54,7 +51,7 @@ namespace GamePlay
 
 		IMesh		mMesh;
 		IPicture		mTexture_Common;
-		CHICKEN_MATERIAL_TYPE			mMatType;
+		CHICKEN_MATERIAL_TYPE	mMatType;
 		Material								mMat_Common;
 		Material								mMat_Red;
 		CHICKEN_ATTACK_STATE		mAttackState;//which attack mode the chicken is using

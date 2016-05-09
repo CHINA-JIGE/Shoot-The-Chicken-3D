@@ -35,9 +35,9 @@ namespace GamePlay
 		VECTOR3 mLastPos;
 		VECTOR3 mCurrentPos;
 
-		const float	c_halfPlayerWidth	=5.0f;
-		const float	c_halfPlayerHeight= 5.0f;
-		const float	c_halfPlayerDepth	= 5.0f;
+		const float	c_halfPlayerWidth	=20.0f;
+		const float	c_halfPlayerHeight= 30.0f;
+		const float	c_halfPlayerDepth	= 20.0f;
 
 	};
 };

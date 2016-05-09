@@ -47,6 +47,9 @@
     <Filter Include="源文件\Game\MainGame\GameObject\Asteroid">
       <UniqueIdentifier>{4e3dfa7b-8f44-410e-8032-d0bc5425650e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\Game\MainGame\Menus">
+      <UniqueIdentifier>{990a7721-6bc0-434b-b45c-bb47d68ab708}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -105,6 +108,9 @@
     </ClCompile>
     <ClCompile Include="Asteroid.cpp">
       <Filter>源文件\Game\MainGame\GameObject\Asteroid</Filter>
+    </ClCompile>
+    <ClCompile Include="Menus.cpp">
+      <Filter>源文件\Game\MainGame\Menus</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -167,6 +173,9 @@
     </ClInclude>
     <ClInclude Include="Asteroid.h">
       <Filter>源文件\Game\MainGame\GameObject\Asteroid</Filter>
+    </ClInclude>
+    <ClInclude Include="Menus.h">
+      <Filter>源文件\Game\MainGame\Menus</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
