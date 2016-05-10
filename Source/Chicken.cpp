@@ -2,7 +2,6 @@
 
 using namespace GamePlay;
 
-
 static float movePatternTimeCounter = 0.0f;
 
 static float attackPatternTimeCounter = 0.0f;
@@ -60,6 +59,11 @@ void IChickenMonster::GetBoundingBox(BOUNDINGBOX& outBox)
 void IChickenMonster::BeHitAndChangeColor()
 {
 	mMatType = CHICKEN_MATERIAL_TYPE_HIT;
+}
+
+VECTOR3 GamePlay::IChickenMonster::GetPosition()
+{
+	return mPos;
 }
 
 /***********************************************************
@@ -255,7 +259,7 @@ void IChickenMonster::mFunction_Fire(VECTOR3 shootDir)
 	{
 		if (attackPatternTimeCounter > fireTimeThreshold_explode)
 		{
-			for (int i = 0;i < 2000;++i)
+			for (int i = 0;i < 1000;++i)
 			{
 				//shoot direction (add some random offset)
 				VECTOR3 dir = { dirDist3(rndEngine),dirDist3(rndEngine) ,dirDist3(rndEngine) };

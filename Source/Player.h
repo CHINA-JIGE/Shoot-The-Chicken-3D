@@ -2,7 +2,7 @@
 
 namespace GamePlay
 {
-	const float c_playerInitalHealth = 100.0f;
+	const float c_playerInitalHealth=500.0f;
 
 	class IPlayer : public Base_GameObject
 	{
@@ -35,9 +35,9 @@ namespace GamePlay
 		VECTOR3 mLastPos;
 		VECTOR3 mCurrentPos;
 
-		const float	c_halfPlayerWidth	=20.0f;
-		const float	c_halfPlayerHeight= 30.0f;
-		const float	c_halfPlayerDepth	= 20.0f;
+		static const float	c_halfPlayerWidth;
+		static const float	c_halfPlayerHeight;
+		static const float	c_halfPlayerDepth;
 
 	};
 };

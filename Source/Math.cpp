@@ -256,7 +256,7 @@ inline VECTOR3 Math::Lerp(const VECTOR3& start, const VECTOR3& end, float t)
 	return VECTOR3(Lerp(start.x, end.x, t), Lerp(start.y, end.y, t),Lerp(start.z,end.z,t));
 }
 
-inline BOOL Math::Intersect_Ray_AABB(const VECTOR3& rayStart, const VECTOR3& rayEnd, const BOUNDINGBOX& box, VECTOR3& outIntersectPoint)
+inline BOOL Math::Intersect_Ray_AABB(const VECTOR3& rayStart, const VECTOR3& rayEnd, const BOUNDINGBOX& box, VECTOR3& outIntersectPoint,BOOL testFrontSide)
 {
 	/*
 	Y
@@ -288,8 +288,14 @@ inline BOOL Math::Intersect_Ray_AABB(const VECTOR3& rayStart, const VECTOR3& ray
 	};
 
 	//compute intersect point, add to list if intersect succeed
-	auto func_intersect = [&](float t, const VECTOR2& min, const VECTOR2& max)
+	auto func_intersect = [&](float t, const VECTOR2& min, const VECTOR2& max, VECTOR3 faceNorm, BOOL testFrontSide)
 	{
+		//if testFrontSide==TRUE && ray come from the back
+		if (Vec3_Dot(faceNorm, rayEnd - rayStart) > 0.0f && testFrontSide == TRUE)
+		{
+			return;
+		}
+
 		if (t >= 0.0f && t <= 1.0f)
 		{
 			VECTOR3 intersectPoint = Lerp(rayStart, rayEnd, t);
@@ -311,30 +317,55 @@ inline BOOL Math::Intersect_Ray_AABB(const VECTOR3& rayStart, const VECTOR3& ray
 	{
 		//lerp ratio 
 		t = (box.min.z - rayStart.z) / dir.z;
-		func_intersect(t, VECTOR2(box.min.x, box.min.y), VECTOR2(box.max.x, box.max.y));
+		func_intersect(
+			t, 
+			VECTOR2(box.min.x, box.min.y), 
+			VECTOR2(box.max.x, box.max.y),
+			VECTOR3(0,0,-1.0f),testFrontSide
+			);
 
 		t = (box.max.z - rayStart.z) / dir.z;
-		func_intersect(t, VECTOR2(box.min.x, box.min.y), VECTOR2(box.max.x, box.max.y));
+		func_intersect(t, 
+			VECTOR2(box.min.x, box.min.y), 
+			VECTOR2(box.max.x, box.max.y),
+			VECTOR3(0, 0, 1.0f), testFrontSide
+			);
 	}
 
 	if (bPlaneXZ)
 	{
 		//lerp ratio 
 		t = (box.min.y - rayStart.y) / dir.y;
-		func_intersect(t, VECTOR2(box.min.x, box.min.z), VECTOR2(box.max.x, box.max.z));
+		func_intersect(t, 
+			VECTOR2(box.min.x, box.min.z), 
+			VECTOR2(box.max.x, box.max.z),
+			VECTOR3(0, -1.0f,0), testFrontSide
+			);
 
 		t = (box.max.y - rayStart.y) / dir.y;
-		func_intersect(t, VECTOR2(box.min.x, box.min.z), VECTOR2(box.max.x, box.max.z));
+		func_intersect(t, 
+			VECTOR2(box.min.x, box.min.z), 
+			VECTOR2(box.max.x, box.max.z),
+			VECTOR3(0, 1.0f,0), testFrontSide
+			);
 	}
 
 	if (bPlaneYZ)
 	{
 		//lerp ratio 
 		t = (box.min.x - rayStart.x) / dir.x;
-		func_intersect(t, VECTOR2(box.min.y, box.min.z), VECTOR2(box.max.y, box.max.z));
+		func_intersect(t, 
+			VECTOR2(box.min.y, box.min.z), 
+			VECTOR2(box.max.y, box.max.z),
+			VECTOR3(1.0f, 0, 0), testFrontSide
+			);
 
 		t = (box.max.x - rayStart.x) / dir.x;
-		func_intersect(t, VECTOR2(box.min.y, box.min.z), VECTOR2(box.max.y, box.max.z));
+		func_intersect(t, 
+			VECTOR2(box.min.y, box.min.z), 
+			VECTOR2(box.max.y, box.max.z),
+			VECTOR3(1.0f,0,0),testFrontSide
+			);
 	}
 
 	//no intersect point

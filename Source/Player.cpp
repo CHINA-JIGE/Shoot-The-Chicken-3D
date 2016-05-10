@@ -2,6 +2,10 @@
 
 using namespace GamePlay;
 
+const float IPlayer::c_halfPlayerWidth = 25.0f;
+const float IPlayer::c_halfPlayerHeight = 35.0f;
+const float IPlayer::c_halfPlayerDepth = 25.0f;
+
 IPlayer::IPlayer(IBulletManager* BulletMgr)
 	:m_pBulletMgr(BulletMgr),
 	Base_GameObject(c_playerInitalHealth)
@@ -81,14 +85,17 @@ void IPlayer::mFunction_Fire(float timeElapsed)
 		//add some offset to fire pos(in strafe direction,left and right relative to player)
 
 		//in case that the bullets collide with self bounding box
-		float gunDistanceFromPlayer = 50.0f;
+		float gunDistanceFromPlayer = 10.0f;
 
-		float gunDistanceFromMainAxis = 50.0f;
+		float gunDistanceFromMainAxis =30.0f;
 
 		//right gun
-		VECTOR3 pos_Bullet1 = mCurrentPos+
+		/*VECTOR3 pos_Bullet1 = mCurrentPos+
 			VECTOR3(gunDistanceFromMainAxis*cos(gCamera.GetRotationY_Yaw()),0, -gunDistanceFromMainAxis*sin(gCamera.GetRotationY_Yaw()))
-		+ unitCameraDir*gunDistanceFromPlayer;
+		+ unitCameraDir*gunDistanceFromPlayer;*/
+		VECTOR3 pos_Bullet1 = mCurrentPos +
+			VECTOR3(gunDistanceFromMainAxis*cos(gCamera.GetRotationY_Yaw()), 0, -gunDistanceFromMainAxis*sin(gCamera.GetRotationY_Yaw()))
+			+ unitCameraDir*gunDistanceFromPlayer;
 
 		//left gun
 		VECTOR3 pos_Bullet2 = mCurrentPos +
@@ -146,10 +153,10 @@ void IPlayer::mFunction_UpdateMovement(float timeElapsed)
 
 	//restrict player movement to a Box
 	VECTOR3 camPos = gCamera.GetPosition();
-	camPos = { Clamp(camPos.x,-c_halfMovementRestrictBoxWidth,c_halfMovementRestrictBoxWidth),
+	/*camPos = { Clamp(camPos.x,-c_halfMovementRestrictBoxWidth,c_halfMovementRestrictBoxWidth),
 		Clamp(camPos.y,-c_halfMovementRestrictBoxWidth,c_halfMovementRestrictBoxWidth),
 		Clamp(camPos.z,-c_halfMovementRestrictBoxWidth,c_halfMovementRestrictBoxWidth) };
-	gCamera.SetPosition(camPos);
+	gCamera.SetPosition(camPos);*/
 
 	//update Position
 	mLastPos = mCurrentPos;

@@ -50,6 +50,12 @@ void IBulletManager::KillBullet(UINT index)
 	}
 }
 
+void IBulletManager::KillAllBullet()
+{
+	m_pBulletList->clear();
+	mRenderPointList.ClearAll();
+}
+
 void IBulletManager::CollisionDetection(BOUNDINGBOX testBox,BOOL killCollidedBullets, std::vector<VECTOR3>& outCollidePointsList)
 {
 	outCollidePointsList.clear();
@@ -64,7 +70,7 @@ void IBulletManager::CollisionDetection(BOUNDINGBOX testBox,BOOL killCollidedBul
 
 		VECTOR3 outIntersectPoint;
 		//Apply Ray(segment)-AABB intersection
-		if (Intersect_Ray_AABB(currentPos, nextPos, testBox, outIntersectPoint))
+		if (Intersect_Ray_AABB(currentPos, nextPos, testBox, outIntersectPoint,TRUE))
 		{
 			//user might like to know the intersect position to adequately react
 			outCollidePointsList.push_back(outIntersectPoint);

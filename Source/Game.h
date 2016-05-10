@@ -32,9 +32,11 @@ namespace GamePlay
 
 		namespace MainGame
 		{
+			const int GS_MainGameStartAnimation = 45;
 			const int GS_Playing = 40;
 			const int GS_GameOverMenu = 41;
 			const int GS_PauseMenu = 42;
+			const int GS_DeathExplode = 43;
 
 			namespace  GameOverMenu
 			{

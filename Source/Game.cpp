@@ -22,7 +22,7 @@ void GamePlay::InitGlobal()
 {
 	gRootGameState = GameState::GS_StartAnimation;
 	gRenderer.Init(250, 85);
-	gRenderer.SetWindowTitle("Console Soft Renderer - By Jige");
+	gRenderer.SetWindowTitle("Shoot The Chicken 3D - By Jige");
 	gRenderer.SetCamera(gCamera);
 	gMenus.Init();
 }
@@ -30,7 +30,7 @@ void GamePlay::InitGlobal()
 void GamePlay::UpdateWindowTitle()
 {
 	std::string titleStr;
-	titleStr = "Soft Renderer - By Jige  FPS:" + std::to_string(gFPS);
+	titleStr = "Shoot The Chicken 3D - By Jige  FPS:" + std::to_string(gFPS);
 	gRenderer.SetWindowTitle(titleStr.c_str());
 }
 

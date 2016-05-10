@@ -72,3 +72,9 @@ void IPointCollection::PopBack()
 {
 	if (m_pVB_Mem->size() > 0)m_pVB_Mem->pop_back();
 }
+
+void IPointCollection::ClearAll()
+{
+	m_pVB_Mem->clear();
+	m_pIB_Mem->clear();
+}

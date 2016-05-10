@@ -2,7 +2,7 @@
 
 namespace GamePlay
 {
-	const float c_chickenInitialHealth = 1000.0f;
+	const float c_chickenInitialHealth=5000.0f;
 
 	enum CHICKEN_MATERIAL_TYPE
 	{
@@ -34,6 +34,8 @@ namespace GamePlay
 		void GetBoundingBox(BOUNDINGBOX& outBox);
 
 		void	BeHitAndChangeColor();
+
+		VECTOR3 GetPosition();
 
 	private:
 

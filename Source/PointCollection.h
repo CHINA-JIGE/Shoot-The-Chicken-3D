@@ -33,6 +33,8 @@ class IPointCollection
 
 		void		PopBack();
 
+		void		ClearAll();
+
 	private:
 		std::vector<UINT>*		m_pIB_Mem;
 		std::vector<Vertex>*		m_pVB_Mem;

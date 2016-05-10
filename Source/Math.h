@@ -422,5 +422,5 @@ namespace Math
 
 	extern VECTOR3 Lerp(const VECTOR3& start, const VECTOR3& end, float t);
 
-	extern BOOL Intersect_Ray_AABB(const VECTOR3& rayStart, const VECTOR3& rayEnd,const BOUNDINGBOX& box, VECTOR3& outIntersectPoint);
+	extern BOOL Intersect_Ray_AABB(const VECTOR3& rayStart, const VECTOR3& rayEnd,const BOUNDINGBOX& box, VECTOR3& outIntersectPoint, BOOL testFrontSide);
 }

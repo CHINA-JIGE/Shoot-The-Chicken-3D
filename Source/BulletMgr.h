@@ -24,6 +24,8 @@ namespace GamePlay
 
 		void	KillBullet(UINT index);
 
+		void	KillAllBullet();
+
 		void	CollisionDetection(BOUNDINGBOX testBox,BOOL killCollidedBullets,std::vector<VECTOR3>& outCollidePointsList);//vector(pos,pos-velocity)
 
 		void	UpdateBullets();

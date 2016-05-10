@@ -2,6 +2,13 @@
 
 using namespace GamePlay;
 
+//I just arbitarily decide
+const VECTOR3 c_CameraInitalPos = VECTOR3(1000.0f, 1000.0f, 1000.0f);
+const VECTOR3 c_CameraIntialLookat = VECTOR3(0.0f, 1000.0f, 1000.0f);
+const VECTOR3 c_CameraTargetPos = VECTOR3(200.0f, 200.0f, 200.0f);
+const VECTOR3 c_CameraTargetLookat = VECTOR3(0, 0, 0);
+
+
 IMainGame::IMainGame()
 	:mChickenBoss(&mBulletMgr),
 	mPlayer(&mBulletMgr),
@@ -14,7 +21,10 @@ void IMainGame::Init()
 	mSceneMgr.Init(SCENE_MODEL_ID::SCENEMODEL_COSMOS1);
 	mChickenBoss.Init();
 	mPlayer.Init();
-	mMainGameState = GameState::MainGame::GS_Playing;
+	mMainGameState = GameState::MainGame::GS_MainGameStartAnimation;
+	//set camera pos
+	gCamera.SetPosition(c_CameraInitalPos);
+	gCamera.SetLookAt(c_CameraIntialLookat);
 
 	mPauseMenuBgr_Continue.LoadPPM("Media/GUI/PauseMenu_Continue.ppm");
 	mPauseMenuBgr_Back.LoadPPM("Media/GUI/PauseMenu_Back.ppm");
@@ -26,13 +36,22 @@ void IMainGame::UpdateAndRenderMainGame()
 {
 	switch (mMainGameState)
 	{
+	case GameState::MainGame::GS_MainGameStartAnimation:
+	{
+		mFunction_UpdateAndRenderStartAnimaton();
+		break;
+	}
+
 	case GameState::MainGame::GS_Playing:
 	{
-		gRenderer.Clear();
-		mFunction_UpdateLogic_Playing();
-		mFunction_Render_Playing();
-		mFunction_Render_Playing_HUD();
-		gRenderer.Present();
+		mFunction_UpdateAndRenderPlaying();
+		break;
+	}
+
+	case GameState::MainGame::GS_DeathExplode:
+	{
+		//chicken/player die, boom
+		mFunction_UpdateAndRenderDeathExplode();
 		break;
 	}
 
@@ -54,19 +73,53 @@ void IMainGame::UpdateAndRenderMainGame()
 	}
 }
 
+
 /**********************************************************
 								PRIVATE
 *********************************************************/
-void IMainGame::mFunction_UpdateLogic_Playing()
-{
 
+void IMainGame::mFunction_UpdateAndRenderStartAnimaton()
+{
+	//timer of start animation
+	static float startAnimationTimeCounter = 0.0f;
+	startAnimationTimeCounter += gTimeElapsed;
+
+	//move to target position
+	VECTOR3 camPos = gCamera.GetPosition();
+	VECTOR3 camLookat = gCamera.GetLookAt();
+	float restDistance = (camPos - c_CameraTargetPos).Length();
+
+	//proceed until the camera reach preset location
+	if (restDistance > 10.0f)
+	{
+		gRenderer.Clear();
+
+		//1 second proceed approximatly 30% of the planned route
+		gCamera.SetPosition(Lerp(camPos, c_CameraTargetPos, gTimeElapsed*0.001f));
+		gCamera.SetLookAt(Lerp(camLookat, c_CameraTargetLookat, gTimeElapsed*0.001f));
+
+		//render without HUD
+		mSceneMgr.Render();
+		mChickenBoss.Render();
+
+		gRenderer.Present();
+	}
+	else
+	{
+		//reach destination
+		mMainGameState = GameState::MainGame::GS_Playing;
+		startAnimationTimeCounter = 0.0f;
+	}
+}
+
+void IMainGame::mFunction_UpdateAndRenderPlaying()
+{
+	//------------------------------LOGICS-----------------
 	mSceneMgr.Update();
 	mPlayer.Update();
 	mChickenBoss.Update(mPlayer.GetPosition());
-
 	//collision detection
 	mFunction_CollisionDetectionAndInteract();
-
 	mBulletMgr.UpdateBullets();
 
 	if (IS_KEY_DOWN(VK_ESCAPE))
@@ -78,31 +131,31 @@ void IMainGame::mFunction_UpdateLogic_Playing()
 	//state transition-  switch to Game Over Menu
 	if (mPlayer.IsDead() == TRUE)
 	{
-		mMainGameState = GameState::MainGame::GS_GameOverMenu;
-		mIsPlayerVictorious = FALSE;
+		mFunction_GameOverAnimationInit(FALSE);
 	}
 
 	if (mChickenBoss.IsDead() == TRUE)
 	{
-		mMainGameState = GameState::MainGame::GS_GameOverMenu;
-		mIsPlayerVictorious = TRUE;
+		mFunction_GameOverAnimationInit(TRUE);
 	}
-}
 
-void IMainGame::mFunction_Render_Playing()
-{
+	gRenderer.Clear();
+	//------------------------render 3D----------------
 	mSceneMgr.Render();
 	mChickenBoss.Render();
 	mPlayer.Render();
 	mBulletMgr.Render();
-}
 
-void IMainGame::mFunction_Render_Playing_HUD()
-{
-	//blood bar
+	//-------------------------HUD-----------------------
+	//player blood bar
 	UINT bloodBarWidth = UINT(50.0f* (mPlayer.GetHP() / c_playerInitalHealth));
 	gRenderer.DrawRect({ 1.0f,0,0 }, 5, 3, 5 + bloodBarWidth, 5);
 
+	//chicken boss blood bar
+	UINT chickenBloodBarWidth = UINT(80.0f*(mChickenBoss.GetHP() / c_chickenInitialHealth));
+	gRenderer.DrawRect({ 1.0f,1.0f,0 }, 60, 3, 60 + chickenBloodBarWidth, 5);
+
+	gRenderer.Present();
 }
 
 void IMainGame::mFunction_CollisionDetectionAndInteract()
@@ -132,6 +185,94 @@ void IMainGame::mFunction_CollisionDetectionAndInteract()
 
 }
 
+void IMainGame::mFunction_GameOverAnimationInit(BOOL hasPlayerWon)
+{
+	static std::default_random_engine rndEngine;
+	static std::uniform_real_distribution<float> unitDist(-1.0f, 1.0f);
+
+	if (hasPlayerWon)
+	{
+		mMainGameState = GameState::MainGame::GS_DeathExplode;
+		//clear bullets
+		mBulletMgr.KillAllBullet();
+		//player WIN
+		mIsPlayerVictorious = TRUE;
+		//set camera to look at chicken
+		gCamera.SetLookAt(mChickenBoss.GetPosition());
+		//..explode fireworks
+		for (int i = 0;i < 2000;++i)
+		{
+			//shoot direction (add some random offset)
+			VECTOR3 dir = { unitDist(rndEngine),unitDist(rndEngine) ,unitDist(rndEngine) };
+			//Y direction offset ( a whole column of bullets)
+			dir.Normalize();
+			mBulletMgr.SpawnBullet(mChickenBoss.GetPosition(), dir, VECTOR3(1, 0,0));
+		}
+	}
+	else
+	{
+		mMainGameState = GameState::MainGame::GS_DeathExplode;
+		//clear bullets
+		mBulletMgr.KillAllBullet();
+		//player LOSE
+		mIsPlayerVictorious = FALSE;
+		//..explode fireworks
+		for (int i = 0;i < 2000;++i)
+		{
+			//shoot direction (add some random offset)
+			VECTOR3 dir = { unitDist(rndEngine),unitDist(rndEngine) ,unitDist(rndEngine) };
+			//Y direction offset ( a whole column of bullets)
+			dir.Normalize();
+			mBulletMgr.SpawnBullet(mPlayer.GetPosition(), dir, VECTOR3(1, 0, 0));
+		}
+
+		//move to another position to watch the explosion
+		gCamera.SetPosition(mPlayer.GetPosition() + VECTOR3(300.0f,300.0f,300.0f));
+		gCamera.SetLookAt(mPlayer.GetPosition());
+	}
+}
+
+void IMainGame::mFunction_UpdateAndRenderDeathExplode()
+{
+	static float deathExplodeTimeCounter = 0.0f;
+	deathExplodeTimeCounter += gTimeElapsed;
+
+
+	if (deathExplodeTimeCounter < 1000.0f)
+	{
+		gRenderer.Clear();
+
+		mChickenBoss.Render();
+		mSceneMgr.Render();
+
+		gRenderer.Present();
+	}
+
+	//time to enjoy watching the explosion!!
+	if (deathExplodeTimeCounter>=1000.0f && deathExplodeTimeCounter < 3000.0f)
+	{
+		gRenderer.Clear();
+
+		if(mIsPlayerVictorious==FALSE)
+		{
+			//if player die, chicken lives, then chicken should be rendered
+			mChickenBoss.Render();
+		}
+
+		mSceneMgr.Render();
+		mBulletMgr.UpdateBullets();
+		mBulletMgr.Render();
+
+		gRenderer.Present();
+	}
+
+	//time to switch to death menu
+	if (deathExplodeTimeCounter >= 3000.0f)
+	{
+		mMainGameState = GameState::MainGame::GS_GameOverMenu;
+		deathExplodeTimeCounter = 0.0f;
+	}
+}
 
 //------------------------------MENUS------------------------------
 void IMainGame::mFunction_UpdateAndRender_GameOverMenu(BOOL hasWon)

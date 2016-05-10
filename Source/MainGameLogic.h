@@ -23,21 +23,21 @@ namespace GamePlay
 		void	UpdateAndRenderMainGame();//including Menus
 
 	private:
+		
+		void					mFunction_UpdateAndRenderStartAnimaton();
 
-		//update logic
-		void					mFunction_UpdateLogic_Playing();
+		void					mFunction_UpdateAndRenderPlaying();
 
 		void					mFunction_UpdateAndRender_GameOverMenu(BOOL hasWon);
 
 		void					mFunction_UpdateAndRender_PauseMenu();
 
-		//render function 
-		void					mFunction_Render_Playing();
+		void					mFunction_UpdateAndRenderDeathExplode();//chicken die
 
-		//render only after all other stuffs have been rendered
-		void					mFunction_Render_Playing_HUD();
-
+		//..............OTHERS
 		void					mFunction_CollisionDetectionAndInteract();
+
+		void					mFunction_GameOverAnimationInit(BOOL hasPlayerWon);
 
 		IChickenMonster			mChickenBoss;
 		IPlayer							mPlayer;
