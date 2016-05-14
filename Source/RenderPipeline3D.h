@@ -82,6 +82,8 @@ private:
 	//----------------------Helper function-----------------
 	BOOL		mFunction_HorizontalIntersect(float y,const VECTOR2& v1, const VECTOR2& v2, const VECTOR2& v3, UINT& outX1,UINT& outX2);
 
+	void			mFunction_SetZ(UINT x, UINT y,float z);
+
 	float			mFunction_GetZ(UINT x, UINT y);
 
 	BOOL		mFunction_DepthTest(UINT x,UINT y,float testZ);

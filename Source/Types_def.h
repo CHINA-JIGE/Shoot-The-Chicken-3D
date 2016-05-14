@@ -2,9 +2,9 @@
 
 using namespace Math;
 
-const short c_ConsoleCharSize = 5;//size of one char (in pixels)
+const short c_ConsoleCharSize = 3;//size of one char (in pixels)
 
-const float c_ConsoleCharAspectRatio = 5.0f / 8.0f;//used to correct pixel scale
+const float c_ConsoleCharAspectRatio = 3.0f / 5.0f;//used to correct pixel scale
 
 enum TIMER_TIMEUINT
 {

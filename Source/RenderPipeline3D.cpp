@@ -421,6 +421,9 @@ void IRenderPipeline3D::RasterizeTriangles()
 					float depth = 1.0f / (s / v2.posH.z + t / v3.posH.z + (1 - s - t) / v1.posH.z);
 					if (mFunction_DepthTest(i, j, depth) == FALSE)goto label_nextPixel;
 
+					//write to  depth buffer
+					mFunction_SetZ(i, j, depth);
+
 					//I will use normal bilinear interpolation to see the result first
 					outVertex.pixelX = i;
 					outVertex.pixelY = j;
@@ -477,9 +480,13 @@ void IRenderPipeline3D::RasterizePoints()
 		float depth = v1.posH.z;
 		if (mFunction_DepthTest(UINT(v1_pixel.x), UINT(v1_pixel.y), depth) == FALSE)goto label_nextPixel;
 
+
 		//I will use normal bilinear interpolation to see the result first
 		outVertex.pixelX = UINT(v1_pixel.x);
 		outVertex.pixelY = UINT(v1_pixel.y);
+
+		//write to  depth buffer
+		mFunction_SetZ(outVertex.pixelX, outVertex.pixelY, depth);
 
 		//perspective correct interpolation
 		outVertex.color = v1.color;
@@ -639,6 +646,11 @@ BOOL IRenderPipeline3D::mFunction_HorizontalIntersect(float y, const VECTOR2 & v
 			return FALSE;
 	}
 
+}
+
+void IRenderPipeline3D::mFunction_SetZ(UINT x, UINT y, float z)
+{
+	m_pZBuffer->at(y*mBufferWidth + x)=z;
 }
 
 inline float IRenderPipeline3D::mFunction_GetZ(UINT x, UINT y)

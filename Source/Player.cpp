@@ -75,7 +75,7 @@ void IPlayer::mFunction_Fire(float timeElapsed)
 	static float fireCoolingDownTime = 0.0f;
 
 	//100ms cool down time to shoot 1 bullets
-	static const float fireTimeCoolDownThresold = 300.0f;
+	static const float fireTimeCoolDownThresold = 100.0f;
 
 	fireCoolingDownTime += timeElapsed;
 
@@ -90,9 +90,10 @@ void IPlayer::mFunction_Fire(float timeElapsed)
 		//add some offset to fire pos(in strafe direction,left and right relative to player)
 
 		//in case that the bullets collide with self bounding box
-		float gunDistanceFromPlayer = 10.0f;
+		float gunDistanceFromPlayer = 0.0f;
 
-		float gunDistanceFromMainAxis =30.0f;
+		//OR!!! the bullet could hit SELF bounding box
+		float gunDistanceFromMainAxis = min(c_halfPlayerWidth,c_halfPlayerDepth)-1.0f;
 
 		//right gun
 		/*VECTOR3 pos_Bullet1 = mCurrentPos+
@@ -212,7 +213,7 @@ void IPlayer::mFunction_UpdateMovement(float timeElapsed)
 	//camera rotation
 	int cursorDeltaX = currentCursorPos.x - lastCursorPos.x;
 	int cursorDeltaY = (currentCursorPos.y - lastCursorPos.y);
-	gCamera.RotateY_Yaw(0.0005f * cursorDeltaX*timeElapsed);
-	gCamera.RotateX_Pitch(0.0005f* cursorDeltaY*timeElapsed);
+	gCamera.RotateY_Yaw(0.0002f * cursorDeltaX*timeElapsed);
+	gCamera.RotateX_Pitch(0.0002f* cursorDeltaY*timeElapsed);
 
 }
