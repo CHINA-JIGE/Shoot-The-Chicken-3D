@@ -2,7 +2,7 @@
 
 namespace GamePlay
 {
-	const float c_playerInitalHealth=500.0f;
+
 
 	class IPlayer : public Base_GameObject
 	{
@@ -22,7 +22,11 @@ namespace GamePlay
 
 		VECTOR3	GetPrevPosition();
 
+		float GetInitialHealth() const;
+
 	private:
+
+		const float c_playerInitalHealth = 400.0f;
 
 		void	mFunction_Fire(float timeElapsed);//shoot a bullet
 

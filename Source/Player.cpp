@@ -62,6 +62,11 @@ VECTOR3 IPlayer::GetPrevPosition()
 	return mLastPos;
 }
 
+float IPlayer::GetInitialHealth() const
+{
+	return c_playerInitalHealth;
+}
+
 /*************************************************************
 								P R I V A T E
 ***************************************************************/
@@ -70,7 +75,7 @@ void IPlayer::mFunction_Fire(float timeElapsed)
 	static float fireCoolingDownTime = 0.0f;
 
 	//100ms cool down time to shoot 1 bullets
-	static const float fireTimeCoolDownThresold = 100.0f;
+	static const float fireTimeCoolDownThresold = 300.0f;
 
 	fireCoolingDownTime += timeElapsed;
 

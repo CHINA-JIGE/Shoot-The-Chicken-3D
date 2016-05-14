@@ -148,12 +148,18 @@ void IMainGame::mFunction_UpdateAndRenderPlaying()
 
 	//-------------------------HUD-----------------------
 	//player blood bar
-	UINT bloodBarWidth = UINT(50.0f* (mPlayer.GetHP() / c_playerInitalHealth));
+	UINT bloodBarWidth = UINT(50.0f* (mPlayer.GetHP() / mPlayer.GetInitialHealth()));
 	gRenderer.DrawRect({ 1.0f,0,0 }, 5, 3, 5 + bloodBarWidth, 5);
 
 	//chicken boss blood bar
-	UINT chickenBloodBarWidth = UINT(80.0f*(mChickenBoss.GetHP() / c_chickenInitialHealth));
+	UINT chickenBloodBarWidth = UINT(80.0f*(mChickenBoss.GetHP() / mChickenBoss.GetInitialHealth()));
 	gRenderer.DrawRect({ 1.0f,1.0f,0 }, 60, 3, 60 + chickenBloodBarWidth, 5);
+
+	//cross in the middle
+	UINT width = gRenderer.GetBufferWidth();
+	UINT height = gRenderer.GetBufferHeight();
+	gRenderer.DrawLine({ 1.0f,1.0f,1.0f }, width / 2 - 4, height / 2, width / 2 + 4, height / 2);
+	gRenderer.DrawLine({ 1.0f,1.0f,1.0f }, width / 2, height / 2 -4, width / 2, height / 2 +4);
 
 	gRenderer.Present();
 }
@@ -183,6 +189,18 @@ void IMainGame::mFunction_CollisionDetectionAndInteract()
 		mChickenBoss.BeHitAndChangeColor();
 	}
 
+	collidePointList.clear();
+	for (UINT i = 0;i < mSceneMgr.GetAsteroidCount();++i)
+	{
+		//retrieve bounding box of each asteroid
+		BOUNDINGBOX rockBox;
+		mSceneMgr.GetAsteroidBoundingBox(i, rockBox);
+
+		//do nothing except killing collided bullets
+		mBulletMgr.CollisionDetection(rockBox, TRUE, collidePointList);
+	}
+
+	collidePointList.clear();
 }
 
 void IMainGame::mFunction_GameOverAnimationInit(BOOL hasPlayerWon)

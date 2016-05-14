@@ -357,7 +357,7 @@ inline BOOL Math::Intersect_Ray_AABB(const VECTOR3& rayStart, const VECTOR3& ray
 		func_intersect(t, 
 			VECTOR2(box.min.y, box.min.z), 
 			VECTOR2(box.max.y, box.max.z),
-			VECTOR3(1.0f, 0, 0), testFrontSide
+			VECTOR3(-1.0f, 0, 0), testFrontSide
 			);
 
 		t = (box.max.x - rayStart.x) / dir.x;
@@ -393,4 +393,4 @@ inline BOOL Math::Intersect_Ray_AABB(const VECTOR3& rayStart, const VECTOR3& ray
 		return TRUE;
 	}
 
-};
+}

@@ -64,3 +64,20 @@ void ISceneModelManager::Render()
 	gRenderer.RenderMesh(mSkyModel);
 	for (UINT i = 0;i < c_asteroidCount;i++)mAsteroid[i].Render();
 }
+
+void ISceneModelManager::GetAsteroidBoundingBox(UINT index, BOUNDINGBOX & outBox)
+{
+	if (index < c_asteroidCount)
+	{
+		mAsteroid[index].GetBoundingBox(outBox);
+	}
+	else
+	{
+		DEBUG_MSG1("Asteroid Index invalid!!");
+	}
+}
+
+UINT GamePlay::ISceneModelManager::GetAsteroidCount() const
+{
+	return c_asteroidCount;
+}

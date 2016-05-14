@@ -98,7 +98,7 @@ void IBulletManager::UpdateBullets()
 		//m_pRenderMeshList->at(i)->SetPosition(currBullet.pos);
 
 		//if bullets are out of boundary, kill them 
-		const float maxDistance = 800.0f;
+		const float maxDistance = 500.0f;
 		if (currBullet.travelledDistance >= maxDistance)
 		{
 			bulletDeleteList.push_back(i);

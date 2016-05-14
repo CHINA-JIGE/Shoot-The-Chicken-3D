@@ -2,7 +2,7 @@
 
 namespace GamePlay
 {
-	const float c_chickenInitialHealth=5000.0f;
+
 
 	enum CHICKEN_MATERIAL_TYPE
 	{
@@ -37,7 +37,11 @@ namespace GamePlay
 
 		VECTOR3 GetPosition();
 
+		float GetInitialHealth() const;
+
 	private:
+
+		const float c_chickenInitialHealth = 2500.0f;
 
 		void		mFunction_UpdateMovement(const VECTOR3& shootDir);
 

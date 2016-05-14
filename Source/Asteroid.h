@@ -20,6 +20,8 @@ namespace GamePlay
 
 		void		Render();
 
+		void		GetBoundingBox(BOUNDINGBOX& outBox);
+
 	private:
 		IPicture					mTexture;
 		IMesh					mMesh;

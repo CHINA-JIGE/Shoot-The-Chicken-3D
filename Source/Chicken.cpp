@@ -61,9 +61,14 @@ void IChickenMonster::BeHitAndChangeColor()
 	mMatType = CHICKEN_MATERIAL_TYPE_HIT;
 }
 
-VECTOR3 GamePlay::IChickenMonster::GetPosition()
+VECTOR3 IChickenMonster::GetPosition()
 {
 	return mPos;
+}
+
+float IChickenMonster::GetInitialHealth() const
+{
+	return c_chickenInitialHealth;
 }
 
 /***********************************************************
@@ -183,7 +188,7 @@ void IChickenMonster::mFunction_Fire(VECTOR3 shootDir)
 
 	//different types of bullets have various cool down time
 	const float fireTimeThreshold_common = 500.0f;
-	const float fireTimeThreshold_rotate1 = 100.0f;
+	const float fireTimeThreshold_rotate1 = 200.0f;
 	const float fireTimeThreshold_rotate2 = 300.0f;
 	const float fireTimeThreshold_explode = 2000.0f;
 	static std::default_random_engine rndEngine;
@@ -221,12 +226,12 @@ void IChickenMonster::mFunction_Fire(VECTOR3 shootDir)
 		{
 			shootDir.Normalize();
 
-			for (int i = 0;i < 30;++i)
+			for (int i = 0;i < 20;++i)
 			{
 				//shoot direction (add some random offset)
 				VECTOR3 dir = { shootDir.x,0,shootDir.z };
 				//Y direction offset ( a whole column of bullets)
-				dir.y += ((-15 + i) * 0.05f);
+				dir.y += ((-10 + i) * 0.1f);
 				dir.Normalize();
 				m_pBulletMgr->SpawnBullet(mPos, dir*0.5f, VECTOR3(1.0f, 0, 0));
 			}
@@ -243,7 +248,7 @@ void IChickenMonster::mFunction_Fire(VECTOR3 shootDir)
 		{
 			shootDir.Normalize();
 
-			for (int i = 0;i < 50;++i)
+			for (int i = 0;i < 20;++i)
 			{
 				VECTOR3 dir = shootDir + VECTOR3(dirDist2(rndEngine), dirDist2(rndEngine), dirDist2(rndEngine));
 				m_pBulletMgr->SpawnBullet(mPos, dir, VECTOR3(0,1.0f, 0));

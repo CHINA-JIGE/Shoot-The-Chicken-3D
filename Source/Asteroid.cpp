@@ -68,3 +68,8 @@ void IAsteroid::Render()
 {
 	gRenderer.RenderMesh(mMesh);
 }
+
+void IAsteroid::GetBoundingBox(BOUNDINGBOX & outBox)
+{
+	mMesh.ComputeBoundingBox(outBox);
+}

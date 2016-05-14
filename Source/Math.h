@@ -2,7 +2,6 @@
 
 namespace Math
 {
-	
 	const float CONST_PI = 3.1415926f;
 
 	struct VECTOR2
@@ -103,7 +102,7 @@ namespace Math
 
 		float	Length() const
 		{
-			return sqrt(x*x + y*y + z*z );
+			return sqrtf(x*x + y*y + z*z );
 		};
 
 		VECTOR3&	Normalize()
@@ -423,4 +422,5 @@ namespace Math
 	extern VECTOR3 Lerp(const VECTOR3& start, const VECTOR3& end, float t);
 
 	extern BOOL Intersect_Ray_AABB(const VECTOR3& rayStart, const VECTOR3& rayEnd,const BOUNDINGBOX& box, VECTOR3& outIntersectPoint, BOOL testFrontSide);
+
 }
