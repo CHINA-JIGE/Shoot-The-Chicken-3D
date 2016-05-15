@@ -2,7 +2,7 @@
 
 using namespace GamePlay;
 
-void ISceneModelManager::Init(SCENE_MODEL_ID model)
+void ISceneModelManager::Init(SCENE_TYPE model)
 {
 
 	//------------------Init Art Resources------------------
@@ -15,7 +15,7 @@ void ISceneModelManager::Init(SCENE_MODEL_ID model)
 	//-----------SKY-DOME---------------------------
 	switch (UINT(model))
 	{
-	case SCENE_MODEL_ID::SCENEMODEL_COSMOS1:
+	case SCENE_TYPE::SCENE_COSMOS1:
 		//sky texture
 		mSkyTexture.LoadPPM("Media/universe.ppm");
 
@@ -25,6 +25,19 @@ void ISceneModelManager::Init(SCENE_MODEL_ID model)
 		for (UINT i = 0;i < c_asteroidCount;++i)
 		{
 			mAsteroid[i].Init((i % 3));
+		}
+		break;
+
+	case SCENE_TYPE::SCENE_CHECKERBOARD:
+		//sky texture
+		mSkyTexture.LoadPPM("Media/checkerBoard.ppm");
+
+		//sky dome
+		mSkyModel.CreateSphere(2000.0f, 20, 20, TRUE);
+
+		for (UINT i = 0;i < c_asteroidCount;++i)
+		{
+			mAsteroid[i].Init(AsteroidType::AsteroidType_Box);
 		}
 		break;
 

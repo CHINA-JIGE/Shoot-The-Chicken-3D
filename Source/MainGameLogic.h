@@ -18,7 +18,7 @@ namespace GamePlay
 
 		IMainGame();
 
-		void	Init();
+		void	Init(SCENE_TYPE modelID);
 
 		void	UpdateAndRenderMainGame();//including Menus
 

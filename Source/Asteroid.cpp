@@ -20,10 +20,16 @@ void IAsteroid::Init(UINT asteroidType)
 			mMesh.LoadFile_OBJ("Media/rock2.obj");
 			break;
 
-		default:
 		case AsteroidType_Rock3:
 			mMesh.LoadFile_OBJ("Media/rock3.obj");
 			break;
+
+		case AsteroidType_Box:
+		default:
+			float width = rand() % 50 + 50;
+			mMesh.CreateBox(width, width, width, 3, 3, 3);
+			break;
+
 	}
 
 	//texture

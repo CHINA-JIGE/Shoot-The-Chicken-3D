@@ -3,8 +3,12 @@
 using namespace GamePlay;
 
 //I just arbitarily decide
-const VECTOR3 c_CameraInitalPos = VECTOR3(1000.0f, 1000.0f, 1000.0f);
-const VECTOR3 c_CameraIntialLookat = VECTOR3(0.0f, 1000.0f, 1000.0f);
+const VECTOR3 c_CameraInitalPos_Cosmos = VECTOR3(1000.0f, 1000.0f, 1000.0f);
+const VECTOR3 c_CameraIntialLookat_Cosmos = VECTOR3(0.0f, 1000.0f, 1000.0f);
+
+const VECTOR3 c_CameraInitalPos_CheckerBoard= VECTOR3(-800.0f, 800.0f, 1000.0f);
+const VECTOR3 c_CameraIntialLookat_CheckerBoard = VECTOR3(0.0f, 1000.0f, 1000.0f);
+
 const VECTOR3 c_CameraTargetPos = VECTOR3(200.0f, 200.0f, 200.0f);
 const VECTOR3 c_CameraTargetLookat = VECTOR3(0, 0, 0);
 
@@ -16,15 +20,29 @@ IMainGame::IMainGame()
 {
 }
 
-void IMainGame::Init()
+void IMainGame::Init(SCENE_TYPE modelID)
 {
-	mSceneMgr.Init(SCENE_MODEL_ID::SCENEMODEL_COSMOS1);
-	mChickenBoss.Init();
+	mSceneMgr.Init(modelID);
+	mChickenBoss.Init(modelID);
 	mPlayer.Init();
 	mMainGameState = GameState::MainGame::GS_MainGameStartAnimation;
 	//set camera pos
-	gCamera.SetPosition(c_CameraInitalPos);
-	gCamera.SetLookAt(c_CameraIntialLookat);
+	switch (modelID)
+	{
+	case SCENE_TYPE::SCENE_COSMOS1:
+		gCamera.SetPosition(c_CameraInitalPos_Cosmos);
+		gCamera.SetLookAt(c_CameraIntialLookat_Cosmos);
+		break;
+		
+	case SCENE_TYPE::SCENE_CHECKERBOARD:
+		gCamera.SetPosition(c_CameraInitalPos_CheckerBoard);
+		gCamera.SetLookAt(c_CameraIntialLookat_CheckerBoard);
+		break;
+
+	default:
+		break;
+	}
+
 
 	mPauseMenuBgr_Continue.LoadPPM("Media/GUI/PauseMenu_Continue.ppm");
 	mPauseMenuBgr_Back.LoadPPM("Media/GUI/PauseMenu_Back.ppm");

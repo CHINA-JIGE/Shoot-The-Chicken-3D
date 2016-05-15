@@ -2,16 +2,17 @@
 
 namespace GamePlay
 {
-	enum SCENE_MODEL_ID
+	enum SCENE_TYPE
 	{
-		SCENEMODEL_COSMOS1 = 1
+		SCENE_COSMOS1 = 1,
+		SCENE_CHECKERBOARD=2,
 	};
 
 	class ISceneModelManager
 	{
 	public:
 
-		void		Init(SCENE_MODEL_ID model);
+		void		Init(SCENE_TYPE type);
 
 		void		Update();
 

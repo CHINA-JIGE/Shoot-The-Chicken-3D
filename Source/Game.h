@@ -27,7 +27,8 @@ namespace GamePlay
 
 		namespace  ChooseSceneMenu
 		{
-			const int GS_ChooseScene1 = 30;
+			const int GS_Cosmos = 30;
+			const int GS_CheckerBoard = 31;
 		};
 
 		namespace MainGame

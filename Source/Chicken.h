@@ -25,7 +25,7 @@ namespace GamePlay
 
 		IChickenMonster(IBulletManager* pBulletMgr);
 
-		void	Init();
+		void	Init(SCENE_TYPE modelID);
 
 		void	Update(const VECTOR3& playerPos);
 

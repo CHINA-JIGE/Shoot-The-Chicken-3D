@@ -64,6 +64,7 @@ void GamePlay::GameStateSelector()
 
 void GamePlay::StartAnimation()
 {
+	//currently no start animation
 	gRootGameState = GameState::GS_StartMenu;
 }
 
@@ -84,4 +85,5 @@ void GamePlay::MainGame()
 
 void GamePlay::ChooseSceneMenu()
 {
+	gMenus.UpdateAndRender_ChooseScene();
 }

@@ -7,6 +7,7 @@ namespace GamePlay
 		AsteroidType_Rock1 = 0,
 		AsteroidType_Rock2 = 1,
 		AsteroidType_Rock3 =2,
+		AsteroidType_Box=3,
 	};
 
 

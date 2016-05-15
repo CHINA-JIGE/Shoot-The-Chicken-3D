@@ -20,16 +20,28 @@ IChickenMonster::IChickenMonster(IBulletManager * pBulletMgr)
 	mMat_Common.specular = { 0.5f,0.5f,0.5f };
 }
 
-void IChickenMonster::Init()
+void IChickenMonster::Init(SCENE_TYPE type)
 {
-	mTexture_Common.LoadPPM("Media/chicken.ppm");
+	//different type, different texture
+	switch (type)
+	{
+	case SCENE_TYPE::SCENE_COSMOS1:
+		mTexture_Common.LoadPPM("Media/chicken.ppm");
+		break;
+
+	case SCENE_TYPE::SCENE_CHECKERBOARD:
+		mTexture_Common.LoadPPM("Media/checkerBoard.ppm");
+		break;
+	}
+
+	//chicken mesh
 	mMesh.LoadFile_OBJ("Media/chicken.obj");
 	mPos = VECTOR3(0,0,0);
 	mLookat=VECTOR3(100.0f, -100.0f, 0.0f);
 
-
 	mMesh.SetMaterial(mMat_Common);
 
+	//chicken will change its material to relative red when hit.
 	mMatType = CHICKEN_MATERIAL_TYPE_COMMON;
 	mMesh.SetTexture(&mTexture_Common);
 	mMesh.SetPosition(mPos.x,mPos.y,mPos.z);

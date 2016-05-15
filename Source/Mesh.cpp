@@ -317,10 +317,11 @@ void	IMesh::mFunction_UpdateWorldMatrix()
 
 void IMesh::mFunction_ComputeBoundingBox()
 {
+	mFunction_UpdateWorldMatrix();
 	//计算包围盒.......重载1
 
 	UINT i = 0;
-	VECTOR3 tmpV;
+	VECTOR4 tmpV;
 	//遍历所有顶点，算出包围盒3分量均最 小/大 的两个顶点
 	for (i = 0;i < m_pVB_Mem->size();i++)
 	{
@@ -331,35 +332,8 @@ void IMesh::mFunction_ComputeBoundingBox()
 		}
 
 		//N_DEFAULT_VERTEX
-		tmpV = m_pVB_Mem->at(i).pos;
-		if (tmpV.x <(mBoundingBox.min.x)) { mBoundingBox.min.x = tmpV.x; }
-		if (tmpV.y <(mBoundingBox.min.y)) { mBoundingBox.min.y = tmpV.y; }
-		if (tmpV.z <(mBoundingBox.min.z)) { mBoundingBox.min.z = tmpV.z; }
-
-		if (tmpV.x >(mBoundingBox.max.x)) { mBoundingBox.max.x = tmpV.x; }
-		if (tmpV.y >(mBoundingBox.max.y)) { mBoundingBox.max.y = tmpV.y; }
-		if (tmpV.z >(mBoundingBox.max.z)) { mBoundingBox.max.z = tmpV.z; }
-	}
-
-	mBoundingBox.max += mPosition;
-	mBoundingBox.min += mPosition;
-}
-
-void IMesh::mFunction_ComputeBoundingBox(std::vector<VECTOR3>* pVertexBuffer)
-{
-	//计算包围盒.......重载2
-
-	UINT i = 0;
-	VECTOR3 tmpV;
-	//遍历所有顶点，算出包围盒3分量均最 小/大 的两个顶点
-	for (i = 0;i < pVertexBuffer->size();i++)
-	{
-		if (i == 0)
-		{
-			mBoundingBox.min = m_pVB_Mem->at(0).pos;
-			mBoundingBox.max = m_pVB_Mem->at(0).pos;
-		}
-		tmpV = pVertexBuffer->at(i);
+		tmpV = VECTOR4(m_pVB_Mem->at(i).pos.x, m_pVB_Mem->at(i).pos.y, m_pVB_Mem->at(i).pos.z, 1.0f);
+		//tmpV = Math::Matrix_Multiply(mMatrixWorld, VECTOR4(tmpV.x,tmpV.y,tmpV.z,1.0f));
 		if (tmpV.x <(mBoundingBox.min.x)) { mBoundingBox.min.x = tmpV.x; }
 		if (tmpV.y <(mBoundingBox.min.y)) { mBoundingBox.min.y = tmpV.y; }
 		if (tmpV.z <(mBoundingBox.min.z)) { mBoundingBox.min.z = tmpV.z; }

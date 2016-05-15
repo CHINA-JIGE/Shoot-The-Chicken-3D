@@ -2,10 +2,6 @@
 
 using namespace Math;
 
-const short c_ConsoleCharSize = 3;//size of one char (in pixels)
-
-const float c_ConsoleCharAspectRatio = 3.0f / 5.0f;//used to correct pixel scale
-
 enum TIMER_TIMEUINT
 {
 	TIMER_TIMEUNIT_MILLISECOND = 0,
