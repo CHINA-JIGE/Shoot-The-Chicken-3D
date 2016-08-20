@@ -26,7 +26,7 @@ void IAsteroid::Init(UINT asteroidType)
 
 		case AsteroidType_Box:
 		default:
-			float width = rand() % 50 + 50;
+			float width = rand() % 70 + 70;
 			mMesh.CreateBox(width, width, width, 3, 3, 3);
 			break;
 

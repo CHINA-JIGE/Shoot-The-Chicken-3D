@@ -26,7 +26,7 @@ namespace GamePlay
 
 	private:
 
-		const float c_playerInitalHealth = 400.0f;
+		const float c_playerInitalHealth = 300.0f;
 
 		void	mFunction_Fire(float timeElapsed);//shoot a bullet
 

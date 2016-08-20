@@ -347,6 +347,39 @@ void IMesh::mFunction_ComputeBoundingBox()
 	mBoundingBox.min += mPosition;
 }
 
+void IMesh::mFunction_ComputeBoundingBox(std::vector<VECTOR3>* pVertexBuffer)
+{
+	mFunction_UpdateWorldMatrix();
+	//计算包围盒.......重载1
+
+	UINT i = 0;
+	VECTOR4 tmpV;
+	//遍历所有顶点，算出包围盒3分量均最 小/大 的两个顶点
+	for (i = 0;i < pVertexBuffer->size();i++)
+	{
+		if (i == 0)
+		{
+			mBoundingBox.min = pVertexBuffer->at(0);
+			mBoundingBox.max = pVertexBuffer->at(0);
+		}
+
+		//N_DEFAULT_VERTEX
+		tmpV = VECTOR4(pVertexBuffer->at(i).x, pVertexBuffer->at(i).y, pVertexBuffer->at(i).z, 1.0f);
+		//tmpV = Math::Matrix_Multiply(mMatrixWorld, VECTOR4(tmpV.x,tmpV.y,tmpV.z,1.0f));
+		if (tmpV.x <(mBoundingBox.min.x)) { mBoundingBox.min.x = tmpV.x; }
+		if (tmpV.y <(mBoundingBox.min.y)) { mBoundingBox.min.y = tmpV.y; }
+		if (tmpV.z <(mBoundingBox.min.z)) { mBoundingBox.min.z = tmpV.z; }
+
+		if (tmpV.x >(mBoundingBox.max.x)) { mBoundingBox.max.x = tmpV.x; }
+		if (tmpV.y >(mBoundingBox.max.y)) { mBoundingBox.max.y = tmpV.y; }
+		if (tmpV.z >(mBoundingBox.max.z)) { mBoundingBox.max.z = tmpV.z; }
+	}
+
+	mBoundingBox.max += mPosition;
+	mBoundingBox.min += mPosition;
+}
+
+
 inline VECTOR2 IMesh::mFunction_ComputeTexCoord_SphericalWrap(VECTOR3 vBoxCenter, VECTOR3 vPoint)
 {
 	//额...这个函数做简单的纹理球形包裹
