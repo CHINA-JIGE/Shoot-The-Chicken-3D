@@ -22,3 +22,6 @@ https://www.zhihu.com/question/24786878/answer/100713585
 最后，因为Win10控制台好像变了不少，所以Win10下运行貌似图像会乱掉
 （因为字符的输出不用换行，所以强制限定了窗口的大小，窗口大小设置代码在Renderer.cpp的IRenderer::mFunction_AdjustWindowSize()函数里，
 有可能是因为win10的控制台字体窗体之类的尺寸有点变化导致画面乱掉，但手头上没有win10来测试所以这bug也一直没修...）
+
+推荐运行平台:Windows 8.1
+开发平台:Windows 8.1 + VS2015
