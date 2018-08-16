@@ -39,7 +39,7 @@ void IRenderer::Init(UINT bufferWidth, UINT bufferHeight)
 	CONSOLE_FONT_INFOEX fontInfo = { 0 };
 	::GetCurrentConsoleFontEx(m_hScreenOutput, FALSE, &fontInfo);
 	fontInfo.cbSize = sizeof(fontInfo);
-	fontInfo.dwFontSize = { c_ConsoleCharSize,c_ConsoleCharSize };
+	fontInfo.dwFontSize = { c_ConsoleCharSizeX, c_ConsoleCharSizeY };
 	fontInfo.FontWeight = 700;		//range from 100~1000, 400 is normal while >400 is bold
 	::SetCurrentConsoleFontEx(m_hScreenOutput, FALSE, &fontInfo);
 
@@ -516,22 +516,40 @@ inline UINT IRenderer::mFunction_GetIndex(UINT x, UINT y)
 
 void IRenderer::mFunction_AdjustWindowSize()
 {
+
+#ifdef SHOOT_THE_CHICKEN_SYSTEM_VER_WIN8_1
 	int frameX_Width = GetSystemMetrics(SM_CXFIXEDFRAME);//frame boarder thickness
 	int frameY_Height = GetSystemMetrics(SM_CYFIXEDFRAME);//frame boarder thickness
 	int frameY_Caption = GetSystemMetrics(SM_CYCAPTION);//caption thickness
 	int scrWidth = GetSystemMetrics(SM_CXSCREEN);
 	int scrHeight = GetSystemMetrics(SM_CYSCREEN);
-
 	int windowWidth = mBufferWidth*c_ConsoleCharSize + 2 * frameX_Width+20;
 	int windowHeight = int(mBufferHeight*c_ConsoleCharSize/c_ConsoleCharAspectRatio) + frameY_Caption + frameY_Height+20;
+#endif
+
+#ifdef SHOOT_THE_CHICKEN_SYSTEM_VER_WIN10
+	int frameX_Width = GetSystemMetrics(SM_CXBORDER);//frame boarder thickness
+	int frameY_Height = GetSystemMetrics(SM_CYBORDER);//frame boarder thickness
+	int frameY_Caption = GetSystemMetrics(SM_CYCAPTION);//caption thickness
+	int scrWidth = GetSystemMetrics(SM_CXSCREEN);
+	int scrHeight = GetSystemMetrics(SM_CYSCREEN);
+	int windowWidth = mBufferWidth*c_ConsoleCharSizeX + 2 * frameX_Width +16;
+	int windowHeight = int(mBufferHeight* c_ConsoleCharSizeY) + frameY_Caption + frameY_Height +20;
+#endif
+
 
 	//adjust the size of window to fit the buffer size (directly set the window pixel size)
-
 	HWND hwnd = ::FindWindowA(NULL, m_pConsoleWindowTitle->c_str());//::GetForegroundWindow();
+
+	//get the top left rect
+	RECT prevRect;
+	::GetWindowRect(hwnd, &prevRect);
+
+	//set new window size(to keep appropriate width and height)
 	::MoveWindow(
 		hwnd,
-		(scrWidth-windowWidth)/2,
-		(scrHeight-windowHeight)/2,
+		prevRect.left,
+		prevRect.top,
 		windowWidth,
 		windowHeight,
 		true);

@@ -17,6 +17,26 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
+#GenFiles
+*.lib
+*.pdb
+
+#temp dir
+/Source/temp/
+
+#exe
+/Source/Exec/
+
+#Compiled shader/effect
+*.fxo
+
+#other
+*.db
+*.tlog
+*.log
+*.cod
+*.opendb
+
 # =========================
 # Operating System Files
 # =========================
@@ -31,13 +51,9 @@ $RECYCLE.BIN/
 # Thumbnails
 ._*
 
-# Files that might appear in the root of a volume
-.DocumentRevisions-V100
-.fseventsd
+# Files that might appear on external disk
 .Spotlight-V100
-.TemporaryItems
 .Trashes
-.VolumeIcon.icns
 
 # Directories potentially created on remote AFP share
 .AppleDB

@@ -1,8 +1,22 @@
 #pragma once
 
-const short c_ConsoleCharSize = 3;//size of one char (in pixels)
 
+
+//#define SHOOT_THE_CHICKEN_SYSTEM_VER_WIN8_1
+#define SHOOT_THE_CHICKEN_SYSTEM_VER_WIN10
+
+#ifdef SHOOT_THE_CHICKEN_SYSTEM_VER_WIN8_1
+const short c_ConsoleCharSizeX = 3;//size of one char (in pixels)
+const short c_ConsoleCharSizeY = 5;//size of one char (in pixels)
 const float c_ConsoleCharAspectRatio = 3.0f / 5.0f;//used to correct pixel scale
+#endif
+
+#ifdef SHOOT_THE_CHICKEN_SYSTEM_VER_WIN10
+const short c_ConsoleCharSizeX = 4;//size of one char (in pixels)
+const short c_ConsoleCharSizeY = 6;//size of one char (in pixels)
+const float c_ConsoleCharAspectRatio = 4.0f / 6.0f;//used to correct pixel scale
+#endif
+
 
 class IRenderer : private IRenderPipeline3D
 {
